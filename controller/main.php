@@ -50,6 +50,7 @@ class main
 		global $phpbb_container;
 		$this->geshi_path = $phpbb_container->getParameter('phpbbde.pastebin.geshi');
 		$this->ext_path   = $phpbb_container->getParameter('phpbbde.pastebin.path');
+		$this->geshi_lang = $phpbb_container->getParameter('phpbbde.pastebin.geshilangs');
 	}
 	
 	/**
@@ -221,11 +222,11 @@ class main
 						$result = $db->sql_query($sql);
 						$row = $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
-		echo "a";
+
 						if ($row)
-						{ echo "b";
+						{
 							if (strcasecmp($row['code'], $confirm_code) === 0)
-							{ echo "c";
+							{
 								$sql = 'DELETE FROM ' . CONFIRM_TABLE . "
 									WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
 										AND session_id = '" . $db->sql_escape($user->session_id) . "'
@@ -327,11 +328,12 @@ class main
 					}
 		
 					// highlight using geshi (http://qbnz.com/highlighter/)
-					require($this->ext_path . 'geshi.' . $this->php_ext);
+					//require($this->ext_path . 'vendor/autoload.' . $this->php_ext);
+					require($this->geshi_path . 'geshi.' . $this->php_ext);
 		
 					$code = htmlspecialchars_decode($snippet_text);
 
-					$geshi = new \phpbbde\pastebin\GeSHi($code, $highlight, $pastebin->geshi_dir);
+					$geshi = new \GeSHi($code, $highlight, $pastebin->geshi_dir);
 					$geshi->set_header_type(GESHI_HEADER_NONE);
 					$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 100);
 		
@@ -354,7 +356,7 @@ class main
 					$snippet_download_url = $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "download", "s" => $row['snippet_id']));
 						
 					$template->assign_vars(array(
-							'SNIPPET_TEXT'			=> $snippet_text,
+							'SNIPPET_TEXT_ORIG'		=> $snippet_text,
 							'SNIPPET_TEXT_DISPLAY'	=> $snippet_text_display,
 		
 							'SNIPPET_DESC'			=> $row['snippet_desc'],
@@ -374,7 +376,7 @@ class main
 							'U_SNIPPET_DOWNLOAD'	=> $snippet_download_url,
 		
 							'S_HIGHLIGHT'			=> $highlight,
-							'S_HIDDEN_FIELDS'		=> (sizeof($s_hidden_fields)) ? build_hidden_fields($s_hidden_fields) : '',
+							'S_HIDDEN_FIELDS_V'		=> build_hidden_fields($s_hidden_fields),
 							'S_FORM_ACTION_MOD'		=> $this->helper->route('phpbbde_pastebin_main_controller', array(), true, $user->session_id),
 					));
 		

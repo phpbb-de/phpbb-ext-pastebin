@@ -15,7 +15,8 @@
 		}
 	],
 	"require": {
-		"php": ">=5.3.3"
+		"php": ">=5.3.3",
+		"easybook/geshi": ">=1.0.8.4"
 	},
 	"extra": {
 		"display-name": "phpBB.de - Pastebin",

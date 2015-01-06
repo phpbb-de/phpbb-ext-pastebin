@@ -1,12 +1,13 @@
 parameters:
     phpbbde.pastebin.path: %core.root_path%ext/phpbbde/pastebin/
-    phpbbde.pastebin.geshi: %phpbbde.pastebin.path%geshi/
+    phpbbde.pastebin.geshi: %phpbbde.pastebin.path%vendor/easybook/geshi/
+    phpbbde.pastebin.geshilangs: %phpbbde.pastebin.geshi%geshi/
     tables.phpbbde.pastebin.pastebin: %core.table_prefix%pastebin
 services:
     phpbbde.pastebin.functions.pastebin:
         class: phpbbde\pastebin\functions\pastebin
         arguments:
-            - %phpbbde.pastebin.geshi%
+            - %phpbbde.pastebin.geshilangs%
     phpbbde.pastebin.controller.main:
         class: phpbbde\pastebin\controller\main
         arguments:

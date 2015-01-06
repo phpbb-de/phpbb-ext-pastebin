@@ -1,0 +1,68 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "a93a6800cf0c2d624ea1e8d7ef8ffe15",
+    "packages": [
+        {
+            "name": "easybook/geshi",
+            "version": "1.0.8.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/easybook/geshi.git",
+                "reference": "43551c725634f1f799e8437297ea32b8251a5879"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/easybook/geshi/zipball/43551c725634f1f799e8437297ea32b8251a5879",
+                "reference": "43551c725634f1f799e8437297ea32b8251a5879",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">4.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "./"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Benny Baumann",
+                    "email": "BenBE@geshi.org",
+                    "homepage": "http://blog.benny-baumann.de/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Nigel McNie",
+                    "email": "nigel@geshi.org"
+                }
+            ],
+            "description": "GeSHi - Generic Syntax Highlighter. This is an unmodified port of GeSHi project code found on SourceForge.",
+            "homepage": "http://qbnz.com/highlighter",
+            "keywords": [
+                "highlight",
+                "highlighter",
+                "syntax"
+            ],
+            "time": "2013-11-07 14:45:36"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.3.3"
+    },
+    "platform-dev": []
+}
