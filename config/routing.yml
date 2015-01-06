@@ -1,0 +1,3 @@
+phpbbde_pastebin_main_controller:
+    pattern: /pastebin/
+    defaults: { _controller: phpbbde.pastebin.controller.main:handle, name: "" }

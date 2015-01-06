@@ -1,0 +1,26 @@
+{
+	"name": "phpbbde/pastebin",
+	"type": "phpbb-extension",
+	"description": "Provides a pastebin including syntax highlighting",
+	"homepage": "https://www.phpbb.de/community/",
+	"version": "1.0.0",
+	"time": "2015-01-03",
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Martin Beckmann",
+			"email": "gn#36@phpbb.de",
+			"homepage": "https://www.phpbb.de/",
+			"role": "Lead Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.3.3"
+	},
+	"extra": {
+		"display-name": "phpBB.de - Pastebin",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.1.*@dev,<3.2.*@dev"
+		}
+	}
+}

@@ -1,0 +1,105 @@
+	<p>
+		{L_PASTEBIN_EXPLAIN}
+	</p>
+	<br />
+
+	<!-- IF S_AUTH_POST -->
+	<p>
+		{L_PASTEBIN_POST_EXPLAIN}
+	</p>
+	<br />
+
+	<form id="pastebinform" method="post" action="{S_FORM_ACTION}"{S_FORM_ENCTYPE}>
+	<div class="panel" id="postingbox">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<h3>{L_PASTEBIN_POST}</h3>
+
+		<fieldset class="fields1">
+		<!-- IF S_ERROR -->
+		<p class="error">{S_ERROR}</p>
+		<!-- ENDIF -->
+		<dl>
+			<dt><label for="snippet_title">{L_SNIPPET_TITLE}:</label></dt>
+			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_title" id="snippet_title" value="{SNIPPET_TITLE}" tabindex="1" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="snippet_desc">{L_SNIPPET_DESC}:</label></dt>
+			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_desc" id="snippet_desc" value="{SNIPPET_DESC}" tabindex="2" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="snippet_highlight">{L_SNIPPET_HIGHLIGHT}:</label></dt>
+			<dd><select name="snippet_highlight" id="snippet_highlight">{HIGHLIGHT_SELECT}</select></dd>
+		</dl>
+		<!-- IF ORIGINAL -->
+		<dl>
+			<dt><label for="snippet_prunable">{L_SNIPPET_PRUNABLE}:</label><br /><span>{L_SNIPPET_PRUNABLE_EXPLAIN}</span></dt>
+			<dd><label for="snippet_prunable"><input type="checkbox" name="snippet_prunable" id="snippet_prunable"<!-- IF SNIPPET_PRUNABLE --> checked="checked"<!-- ENDIF --> /> {L_SHORT_PRUNABLE}</label></dd>
+		</dl>
+		<!-- ELSE -->
+		<dl>
+			<dt><label for="pruning_months">{L_PRUNING_MONTHS}:</label></dt>
+			<dd><select name="pruning_months" id="pruning_months">{PRUNING_MONTHS_SELECT}</select> {L_PRUNING_MONTH_SHORT}</dd>
+		</dl>
+		<!-- ENDIF -->
+		</fieldset>
+
+		<h3>{L_SNIPPET_TEXT}</h3>
+
+		<fieldset class="fields1">
+		<dl>
+			<dt><label for="fileupload">{L_FILENAME}:</label></dt>
+			<dd>
+				<input type="file" name="fileupload" id="fileupload" maxlength="{FILESIZE}" value="" class="inputbox autowidth" />
+			</dd>
+		</dl>
+
+		<p class="importantnotice">{L_PASTEBIN_UPLOAD_EXPLAIN}</p>
+
+		<dl>
+			<dd><textarea name="snippet_text" id="snippet_text" class="inputbox" rows="15" cols="76" tabindex="3">{SNIPPET_TEXT}</textarea></dd>
+		</dl>
+		</fieldset>
+
+		<!-- IF S_CONFIRM_CODE -->
+		<h3>{L_PASTEBIN_CONFIRM}</h3>
+		<p>{L_PASTEBIN_CONFIRM_EXPLAIN}</p>
+
+		<fieldset class="fields2">
+		<dl>
+			<dt><label for="confirm_code">{L_CONFIRM_CODE}:</label></dt>
+			<dd>{CONFIRM_IMG}</dd>
+			<dd><input type="text" name="confirm_code" id="confirm_code" size="8" maxlength="8" class="inputbox narrow" title="{L_PASTEBIN_CONFIRM}" tabindex="4" /></dd>
+
+			<dd>{L_CONFIRM_CODE_EXPLAIN}</dd>
+		</dl>
+		</fieldset>
+		<!-- ENDIF -->
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<div class="panel bg2">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<fieldset class="submit-buttons">
+			{S_HIDDEN_FIELDS}
+			{S_FORM_TOKEN}
+			<input class="button2" type="reset" value="{L_RESET}" accesskey="r" />&nbsp;
+			<input class="button1" name="submit" type="submit" value="{L_SUBMIT}" accesskey="s" tabindex="5" />&nbsp;
+		</fieldset>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+	</form>
+
+	<!-- ELSE -->
+		<h2>{L_PASTEBIN_NO_AUTH}</h2>
+		<p>
+			<!-- IF not S_USER_LOGGED_IN -->
+			{L_PASTEBIN_NO_AUTH_GUEST_EXPLAIN}
+			<!-- ELSE -->
+			{L_PASTEBIN_NO_AUTH_EXPLAIN}
+			<!-- ENDIF -->
+		</p>
+	<!-- ENDIF -->
