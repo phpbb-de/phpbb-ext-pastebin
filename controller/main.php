@@ -19,8 +19,50 @@ class main
 	const SECONDS_MONTH = 2592000;
 	const SECONDS_YEAR  = 31536000;
 	
+	/** @var \phpbb\auth\auth */
+	protected $auth;
+	
+	/** @var \phpbb\cache\service */
+	protected $cache;
+	
+	/** @var \phpbb\config\config */
+	protected $config;
+	
+	/** @var \phpbb\request\request */
+	protected $request;
+	
+	/** @var \phpbb\db\driver\driver_interface */
+	protected $db;
+	
+	/** @var \phpbb\template\template */
+	protected $template;
+	
+	/** @var \phpbb\user */
+	protected $user;
+	
+	/** @var \phpbb\controller\helper */
+	protected $helper;
+	
+	/** @var string */
+	protected $root_path;
+	
+	/** @var string */
+	protected $php_ext;
+	
+	/** @var \phpbbde\pastebin\functions\pastebin */
+	protected $pastebin;
+	
+	/** @var string */
+	protected $ext_path;
+	
+	/** @var string */
+	protected $geshi_path;
+	
+	/** @var string */
+	protected $geshi_lang;
 	
 	/**
+	 * Construct
 	 * 
 	 * @param \phpbb\auth\auth $auth
 	 * @param \phpbb\cache\service $cache
@@ -83,6 +125,9 @@ class main
 		return $phpbb_container->getParameter('tables.phpbbde.pastebin.' . $name);
 	}
 	
+	/**
+	 * Handle all Pastebin display
+	 */
 	private function display_pb()
 	{
 		$pastebin 	= $this->pastebin;
@@ -359,8 +404,8 @@ class main
 							'SNIPPET_TEXT_ORIG'		=> $snippet_text,
 							'SNIPPET_TEXT_DISPLAY'	=> $snippet_text_display,
 		
-							'SNIPPET_DESC'			=> $row['snippet_desc'],
-							'SNIPPET_TITLE'			=> $row['snippet_title'],
+							'SNIPPET_DESC_V'		=> $row['snippet_desc'],
+							'SNIPPET_TITLE_V'		=> $row['snippet_title'],
 							'SNIPPET_AUTHOR'		=> $row['username'],
 							'SNIPPET_AUTHOR_ID'		=> $row['user_id'],
 							'SNIPPET_AUTHOR_COLOUR'	=> $row['user_colour'],

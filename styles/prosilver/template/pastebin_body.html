@@ -1,22 +1,12 @@
 <!-- INCLUDE overall_header.html -->
 
-<h1>{L_PASTEBIN}</h1>
-
-<div id="content">
-	<!-- IF S_MODE eq 'view' -->
-		<!-- INCLUDE pastebin_view.html -->
-	<!-- ELSE -->
-		<!-- INCLUDE pastebin_post.html -->
-	<!-- ENDIF -->
-</div>
-
-<hr class="hide" />
+<h2>{L_PASTEBIN}</h2>
 
 <div id="extras">
 	
 
 	<!-- IF S_AUTH_POST or S_MODE eq 'view' -->
-	<div class="mini-panel">
+	<div class="mini-panel navbar">
 		<span class="corners-top"><span></span></span>
 
 		<h3>{L_PASTEBIN}</h3>
@@ -30,7 +20,7 @@
 	<!-- ENDIF -->
 
 	<!-- IF S_AUTH_EDIT && S_MODE eq 'view' -->
-	<div class="mini-panel">
+	<div class="mini-panel navbar">
 		<span class="corners-top"><span></span></span>
 
 		<h3>{L_MODERATE_SNIPPET}</h3>
@@ -65,7 +55,7 @@
 	<!-- ENDIF -->
 
 	<!-- IF S_AUTH_VIEW -->
-	<div class="mini-panel">
+	<div class="mini-panel navbar">
 		<span class="corners-top"><span></span></span>
 
 		<h3>{L_LATEST_SNIPPETS}</h3>
@@ -86,5 +76,17 @@
 	</div>
 	<!-- ENDIF -->
 </div>
+
+
+
+<div id="content">
+    <!-- IF S_MODE eq 'view' -->
+        <!-- INCLUDE pastebin_view.html -->
+    <!-- ELSE -->
+        <!-- INCLUDE pastebin_post.html -->
+    <!-- ENDIF -->
+</div>
+
+
 
 <!-- INCLUDE overall_footer.html -->

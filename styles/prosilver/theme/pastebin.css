@@ -3,3 +3,43 @@
     background-position: 0 50%;
     background-repeat: no-repeat;
 }
+
+#pastebin-codebox {
+	font-size: 1.2em;
+}
+
+#pastebin-codebox dd {
+	margin: 0px 0px 0px 4em;
+	padding: 0.5em 0px 0px 0.5px;
+}
+
+#pastebin-codebox dt {
+	text-transform: uppercase;
+	border-bottom: 1px solid #ccc;
+	font-size: 0.8em;
+	font-weight: bold;
+	display:block;
+	padding: 0.2em 0px 0.2px 0.1em;
+}
+
+.mini-panel {
+	display: block;
+	padding: 1em ;
+	margin: 1em;
+	
+	
+}
+#content {
+	width: 70%;
+}
+#extras {
+	float: right;
+	width: 30%;
+}
+
+.mini-panel h3 {
+	margin-top: 0px;
+}
+.mini-panel ul {
+	padding-left: 1em;
+}
