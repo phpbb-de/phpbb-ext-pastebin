@@ -1,11 +1,10 @@
 <?php
 /**
-* permissions_pastebin (Pastebin Permission Set) [German]
+* permissions_pastebin (Pastebin Permission Set)
 *
 * @package language
 * @version 0.1.3
-* Translator Mahony http://www.sportschulekang.de and http://nationsofmetal.na.funpic.de/forum/
-* @copyright (c) 2007 eviL3
+* @copyright (c) 2007 eviL3, gn#36
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 */
 
