@@ -50,5 +50,3 @@ $lang = array_merge($lang, array(
 	'acl_m_pastebin_edit'		=> array('lang' => 'Kann Snippets editieren', 'cat' => 'pastebin'),
 	'acl_m_pastebin_delete'		=> array('lang' => 'Kann Snippets löschen', 'cat' => 'pastebin'),
 ));
-
-?>

@@ -49,5 +49,3 @@ $lang = array_merge($lang, array(
 	'acl_m_pastebin_edit'		=> array('lang' => 'Can edit pastebin entries', 'cat' => 'pastebin'),
 	'acl_m_pastebin_delete'		=> array('lang' => 'Can delete pastebin entries', 'cat' => 'pastebin'),
 ));
-
-?>

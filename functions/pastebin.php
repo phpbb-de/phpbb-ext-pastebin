@@ -57,7 +57,7 @@ class pastebin
 		global $phpEx;
 
 		$geshi_list = array();
-		
+
 		$d = dir($this->geshi_dir);
 		while (false !== ($file = $d->read()))
 		{
@@ -99,5 +99,3 @@ class pastebin
 		return $output;
 	}
 }
-
-?>

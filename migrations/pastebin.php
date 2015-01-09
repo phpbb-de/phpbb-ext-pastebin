@@ -16,14 +16,14 @@ class pastebin extends \phpbb\db\migration\migration
 	{
 		return array();
 	}
-	
+
 	public function update_schema()
 	{
 		return array(
 			'add_tables' => array(
 				$this->table('pastebin') => array(
 					'COLUMNS' => array(
-						'snippet_id' 		=> array('UINT:8', NULL, 'auto_increment'),
+						'snippet_id' 		=> array('UINT:8', null, 'auto_increment'),
 						'snippet_author' 	=> array('UINT:8', 0),
 						'snippet_time' 		=> array('UINT:11', 0),
 						'snippet_prune_on'  => array('UINT:11', 0),
@@ -41,14 +41,14 @@ class pastebin extends \phpbb\db\migration\migration
 			),
 		);
 	}
-	
+
 	public function revert_schema()
 	{
 		return array(
 			'drop_tables' => array($this->table('pastebin')),	
 		);
 	}
-	
+
 	public function update_data()
 	{
 		return array(
@@ -60,7 +60,7 @@ class pastebin extends \phpbb\db\migration\migration
 				array('config.add', array('pastebin_version', '0.2.2')),
 		);
 	}
-	
+
 	public function revert_data()
 	{
 		return array(
@@ -72,8 +72,7 @@ class pastebin extends \phpbb\db\migration\migration
 				array('config.remove', array('pastebin_version')),
 		);
 	}
-	
-	
+
 	private function table($name)
 	{
 		return $this->table_prefix . $name;

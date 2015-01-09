@@ -25,7 +25,7 @@ class header_events implements EventSubscriberInterface
 				'core.page_header_after'	=> 'page_header_after',
 		);
 	}
-	
+
 	/**
 	 * Constructor
 	 *
@@ -45,11 +45,11 @@ class header_events implements EventSubscriberInterface
 		$this->php_ext = $php_ext;
 		$this->user = $user;
 	}
-	
+
 	public function page_header_after($event)
 	{
 		$this->user->add_lang_ext('phpbbde/pastebin', 'global');
-		
+
 		$this->template->assign_vars(array(
 				// Main Menu
 				'U_PASTEBIN' => $this->helper->route('phpbbde_pastebin_main_controller'),
