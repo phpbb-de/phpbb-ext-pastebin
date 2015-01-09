@@ -180,7 +180,8 @@ class main
 			'S_AUTH_POST'	=> ($auth->acl_get('u_pastebin_post')) ? true : false,
 			'S_AUTH_EDIT'	=> ($auth->acl_get('m_pastebin_edit')) ? true : false,
 			'S_AUTH_DELETE'	=> ($auth->acl_get('m_pastebin_delete')) ? true : false,
-		));
+		));
+
 		// Now let's decide what to do
 		switch ($mode)
 		{
