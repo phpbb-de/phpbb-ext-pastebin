@@ -16,7 +16,7 @@ class pastebin extends \phpbb\db\migration\migration
 	{
 		return array();
 	}
-	
+
 	public function effectively_installed()
 	{
 		return !empty($this->config['pastebin_version']) && version_compare($this->config['pastebin_version'], '0.2.2', '>=');
