@@ -16,6 +16,11 @@ class pastebin extends \phpbb\db\migration\migration
 	{
 		return array();
 	}
+	
+	public function effectively_installed()
+	{
+		return !empty($this->config['pastebin_version']) && version_compare($this->config['pastebin_version'], '0.2.2', '>=');
+	}
 
 	public function update_schema()
 	{
@@ -45,7 +50,7 @@ class pastebin extends \phpbb\db\migration\migration
 	public function revert_schema()
 	{
 		return array(
-			'drop_tables' => array($this->table('pastebin')),	
+			'drop_tables' => array($this->table('pastebin')),
 		);
 	}
 
