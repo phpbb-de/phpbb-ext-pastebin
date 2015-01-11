@@ -10,8 +10,6 @@
 
 namespace phpbbde\pastebin\cron;
 
-use Symfony\Component\DependencyInjection\Container;
-
 class main extends \phpbb\cron\task\base
 {
 	/** @var string phpBB root path */
