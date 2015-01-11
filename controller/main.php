@@ -63,7 +63,7 @@ class main
 
 	/**
 	 * Construct
-	 * 
+	 *
 	 * @param \phpbb\auth\auth $auth
 	 * @param \phpbb\cache\service $cache
 	 * @param \phpbb\request\request $request
@@ -493,14 +493,14 @@ class main
 						}
 						else
 						{
-							$sql = 'DELETE FROM ' . PASTEBIN_TABLE . '
+							$sql = 'DELETE FROM ' . $this->table('pastebin') . '
 								WHERE snippet_id = ' . $snippet_id;
 							$redirect_append = '';
 						}
 					}
 					else
 					{
-						$sql = 'UPDATE ' . PASTEBIN_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array(
+						$sql = 'UPDATE ' . $this->table('pastebin') . ' SET ' . $db->sql_build_array('UPDATE', array(
 								'snippet_prunable'	=> (int) $prunable,
 								'snippet_highlight'	=> $highlight,
 								'snippet_prune_on'	=> $row['snippet_time'] + ($pruning_months * $this::SECONDS_MONTH),

@@ -32,20 +32,19 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
-// Adding new category
-$lang['permission_cat']['pastebin']	= 'Pastebin';
-
-// Adding new permission set
-//$lang['permission_type']['pastebin_'] = 'Pastebin Permissions';
-
 // Adding the permissions
 $lang = array_merge($lang, array(
+	// Category
+	'ACL_CAT_PASTEBIN' => 'Pastebin',
+
 	// User perms
-	'acl_u_pastebin_view'		=> array('lang' => 'Can view pastebin entries', 'cat' => 'pastebin'),
-	'acl_u_pastebin_post'		=> array('lang' => 'Can post pastebin entries', 'cat' => 'pastebin'),
-	'acl_u_pastebin_post_novc'	=> array('lang' => 'Can post pastebin entries without visual confirmation', 'cat' => 'pastebin'),
+	'ACL_U_PASTEBIN_VIEW'			=> 'Can view pastebin entries',
+	'ACL_U_PASTEBIN_POST'			=> 'Can post pastebin entries',
+	'ACL_U_PASTEBIN_POST_NOVC'		=> 'Can post pastebin entries without visual confirmation',
+	'ACL_U_PASTEBIN_POST_NOTLIM'	=> 'Can post non-pruned pastebin entries',
 
 	// Moderator perms
-	'acl_m_pastebin_edit'		=> array('lang' => 'Can edit pastebin entries', 'cat' => 'pastebin'),
-	'acl_m_pastebin_delete'		=> array('lang' => 'Can delete pastebin entries', 'cat' => 'pastebin'),
+	'ACL_M_PASTEBIN_EDIT'			=> 'Can edit pastebin entries',
+	'ACL_M_PASTEBIN_DELETE'			=> 'Can delete pastebin entries',
+	'ACL_M_PASTEBIN_POST_NOTLIM'	=> 'Can deactivate pruning of selected pastebin entries',
 ));

@@ -22,7 +22,7 @@ class header_events implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-				'core.page_header_after'	=> 'page_header_after',
+			'core.page_header_after'	=> 'page_header_after',
 		);
 	}
 
