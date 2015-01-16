@@ -190,5 +190,3 @@ $lang['PASTEBIN_LANGUAGES'] = array(
 	'z80'				=> 'ZiLOG Z80 Assembler',
 */
 );
-
-?>

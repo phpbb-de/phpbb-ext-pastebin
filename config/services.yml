@@ -2,6 +2,7 @@ parameters:
     phpbbde.pastebin.path: %core.root_path%ext/phpbbde/pastebin/
     phpbbde.pastebin.geshi: %phpbbde.pastebin.path%vendor/easybook/geshi/
     phpbbde.pastebin.geshilangs: %phpbbde.pastebin.geshi%geshi/
+    phpbbde.pastebin.cron.prune_interval: 86400
     tables.phpbbde.pastebin.pastebin: %core.table_prefix%pastebin
 services:
     phpbbde.pastebin.functions.pastebin:
@@ -33,3 +34,21 @@ services:
             - %core.php_ext%
         tags:
             - { name: event.listener }
+    phpbbde.pastebin.acp_listener:
+        class: phpbbde\pastebin\event\acp_events
+        tags:
+            - { name: event.listener }
+    phpbbde.pastebin.cron.main:
+        class: phpbbde\pastebin\cron\main
+        arguments:
+            - @cache
+            - @config
+            - @dbal.conn
+            - @log
+            - %phpbbde.pastebin.path%
+            - %core.root_path%
+            - %core.php_ext%
+        calls:
+            - [set_name, [phpbbde.pastebin.cron.main]]
+        tags:
+            - { name: cron.task }
