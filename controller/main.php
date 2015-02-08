@@ -396,8 +396,6 @@ class main
 							's'		=> $snippet_id,
 					));
 
-
-
 					$snippet_download_url = $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "download", "s" => $data['snippet_id']));
 
 					$template->assign_vars(array(
