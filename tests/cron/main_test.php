@@ -10,6 +10,11 @@
 
 class phpbbde_cron_main_test extends phpbb_database_test_case
 {
+	static protected function setup_extensions()
+	{
+		return array('phpbbde/pastebin');
+	}
+
 	public function getDataSet()
 	{
 		return $this->createXMLDataSet(dirname(__FILE__) . '/fixtures/three_pastebin_entries.xml');
