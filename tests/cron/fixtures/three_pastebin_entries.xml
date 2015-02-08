@@ -14,7 +14,7 @@
             <value>1</value>
             <value>2</value>
             <value>1420396503</value>
-            <value>9422988503</value>
+            <value>2147483646</value>
             <value>Should not prune</value>
             <value>This entry should not be pruned anytime soon (pruning active but date in the far future).</value>
             <value><![CDATA[<?php
