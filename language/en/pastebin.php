@@ -80,6 +80,7 @@ $lang = array_merge($lang, array(
 	'RETURN_SNIPPET'			=> '%sShow entry%s',
 
 	'SHORT_PRUNABLE'			=> 'Prunable',
+	'INFINITE'					=> 'Infinite',
 	'SNIPPET_NEW'				=> 'New entry',
 	'SNIPPET_DESC'				=> 'Description',
 	'SNIPPET_DOWNLOAD'			=> 'Download entry',
