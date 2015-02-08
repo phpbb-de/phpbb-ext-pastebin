@@ -26,7 +26,7 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 
 		global $phpbb_root_path, $phpEx, $user, $phpbb_dispatcher, $cache, $phpbb_container;
 
-		$cache = new phpbb_mock_cache;
+		$cache = $this->getMock('\phpbb\cache\service');
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
 		$user = new \phpbb_mock_user;
 		$auth = $this->getMock('\phpbb\auth\auth');
@@ -79,7 +79,7 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 		$db = $this->new_dbal();
 		$this->db = $db;
 
-		$cache = new phpbb_mock_cache;
+		$cache = $this->getMock('\phpbb\cache\service');
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
 		$user = new \phpbb_mock_user;
 		$auth = $this->getMock('\phpbb\auth\auth');
