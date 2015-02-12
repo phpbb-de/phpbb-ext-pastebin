@@ -26,11 +26,23 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 
 		global $phpbb_root_path, $phpEx, $user, $phpbb_dispatcher, $cache, $phpbb_container;
 
-		$cache = $this->getMock('\phpbb\cache\service');
+
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
 		$user = new \phpbb_mock_user;
 		$auth = $this->getMock('\phpbb\auth\auth');
 		$phpbb_container = new \phpbb_mock_container_builder();
+		$params = array(
+			'phpbbde.pastebin.path' 		=> $phpbb_root_path . 'ext/phpbbde/pastebin/',
+			'phpbbde.pastebin.geshi' 		=> $phpbb_root_path . 'ext/phpbbde/pastebin/' . 'vendor/easybook/geshi/',
+			'phpbbde.pastebin.geshilangs' 	=> $phpbb_root_path . 'ext/phpbbde/pastebin/' . 'vendor/easybook/geshi/' . 'geshi/',
+			'phpbbde.pastebin.cron.prune_interval' => 86400,
+			'tables.phpbbde.pastebin.pastebin' => 'phpbb_pastebin',
+		);
+		foreach($params as $name => $value)
+		{
+			$phpbb_container->setParameter($name, $value);
+		}
+
 	}
 
 	public function test_construct()
@@ -52,7 +64,7 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 		$this->assertEquals($task->should_run(), true);
 
 		// 2: Has just run
-		$task = $this->get_task($now - 1);
+		$task = $this->get_task(time() - 1);
 		$this->assertEquals($task->should_run(), false);
 	}
 
@@ -63,33 +75,35 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 		$sql = 'SELECT count(*) as cnt FROM phpbb_pastebin';
 
 		$result = $this->db->sql_query($sql);
-		$row = $this->sql_fetchrow($result);
+		$row = $this->db->sql_fetchrow($result);
 		$this->assertEquals($row['cnt'], 2);
 
 		$sql = 'SELECT snippet_id FROM phpbb_pastebin';
 		$result = $this->db->sql_query($sql);
-		$rows = $this->sql_fetchrowset($result);
+		$rows = $this->db->sql_fetchrowset($result);
 		$this->assertEquals($rows, array(array('snippet_id' => 1), array('snippet_id' => 3)));
 	}
 
 	private function get_task($last_run = 0)
 	{
-		global $phpbb_root_path, $phpEx, $user, $phpbb_dispatcher, $cache, $phpbb_container;
+		global $phpbb_root_path, $phpEx, $user, $phpbb_dispatcher, $cache, $phpbb_container, $config;
 		$pastebin_path = dirname(__FILE__) . '/../../';
 		$db = $this->new_dbal();
 		$this->db = $db;
 
-		$cache = $this->getMock('\phpbb\cache\service');
-		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
-		$user = new \phpbb_mock_user;
-		$auth = $this->getMock('\phpbb\auth\auth');
-		$phpbb_container = new \phpbb_mock_container_builder();
+		//$cache = $this->getMock('\phpbb\cache\driver\driver_interface');
+		//$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
+		//$user = new \phpbb_mock_user;
+		//$auth = $this->getMock('\phpbb\auth\auth');
+		//$phpbb_container = new \phpbb_mock_container_builder();
 
 
 		$config = new \phpbb\config\config(array(
 			'phpbbde_pastebin_prune_last_run' => $last_run,
 			'phpbbde_pastebin_version' => '0.2.2',
 		));
+
+		$cache = new \phpbb\cache\service($this->getMock('\phpbb\cache\driver\driver_interface'), $config, $db, $phpbb_root_path, $phpEx);
 
 		$log = new \phpbb\log\log($db, $user, $auth, $phpbb_dispatcher, $phpbb_root_path, 'adm/', $phpEx, LOG_TABLE);
 
