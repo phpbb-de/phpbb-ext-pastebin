@@ -24,24 +24,13 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 	{
 		parent::setUp();
 
-		global $phpbb_root_path, $phpEx, $user, $phpbb_dispatcher, $cache, $phpbb_container;
+		global $phpbb_root_path, $phpEx, $user, $phpbb_dispatcher;
 
 
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
 		$user = new \phpbb_mock_user;
 		$auth = $this->getMock('\phpbb\auth\auth');
-		$phpbb_container = new \phpbb_mock_container_builder();
-		$params = array(
-			'phpbbde.pastebin.path' 		=> $phpbb_root_path . 'ext/phpbbde/pastebin/',
-			'phpbbde.pastebin.geshi' 		=> $phpbb_root_path . 'ext/phpbbde/pastebin/' . 'vendor/easybook/geshi/',
-			'phpbbde.pastebin.geshilangs' 	=> $phpbb_root_path . 'ext/phpbbde/pastebin/' . 'vendor/easybook/geshi/' . 'geshi/',
-			'phpbbde.pastebin.cron.prune_interval' => 86400,
-			'tables.phpbbde.pastebin.pastebin' => 'phpbb_pastebin',
-		);
-		foreach($params as $name => $value)
-		{
-			$phpbb_container->setParameter($name, $value);
-		}
+
 
 	}
 
@@ -86,17 +75,10 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 
 	private function get_task($last_run = 0)
 	{
-		global $phpbb_root_path, $phpEx, $user, $phpbb_dispatcher, $cache, $phpbb_container, $config;
+		global $phpbb_root_path, $phpEx, $user, $phpbb_dispatcher, $cache, $config;
 		$pastebin_path = dirname(__FILE__) . '/../../';
 		$db = $this->new_dbal();
 		$this->db = $db;
-
-		//$cache = $this->getMock('\phpbb\cache\driver\driver_interface');
-		//$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
-		//$user = new \phpbb_mock_user;
-		//$auth = $this->getMock('\phpbb\auth\auth');
-		//$phpbb_container = new \phpbb_mock_container_builder();
-
 
 		$config = new \phpbb\config\config(array(
 			'phpbbde_pastebin_prune_last_run' => $last_run,
@@ -107,6 +89,6 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 
 		$log = new \phpbb\log\log($db, $user, $auth, $phpbb_dispatcher, $phpbb_root_path, 'adm/', $phpEx, LOG_TABLE);
 
-		return new \phpbbde\pastebin\cron\main($cache, $config, $db, $log, $pastebin_path, $phpbb_root_path, $phpEx);
+		return new \phpbbde\pastebin\cron\main($cache, $config, $db, $log, $pastebin_path, $phpbb_root_path, $phpEx, 86400, 'phpbb_pastebin');
 	}
 }

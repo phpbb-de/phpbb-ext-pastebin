@@ -48,6 +48,8 @@ services:
             - %phpbbde.pastebin.path%
             - %core.root_path%
             - %core.php_ext%
+            - %phpbbde.pastebin.cron.prune_interval%
+            - %tables.phpbbde.pastebin.pastebin%
         calls:
             - [set_name, [phpbbde.pastebin.cron.main]]
         tags:
