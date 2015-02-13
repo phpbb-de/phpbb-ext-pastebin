@@ -85,9 +85,10 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 			'phpbbde_pastebin_version' => '0.2.2',
 		));
 
-		$cache = new \phpbb\cache\service($this->getMock('\phpbb\cache\driver\driver_interface'), $config, $db, $phpbb_root_path, $phpEx);
+		$cache = $this->getMockBuilder('\phpbb\cache\service')->disableOriginalConstructor()->getMock();
 
-		$log = new \phpbb\log\log($db, $user, $auth, $phpbb_dispatcher, $phpbb_root_path, 'adm/', $phpEx, LOG_TABLE);
+		//$log = new \phpbb\log\log($db, $user, $auth, $phpbb_dispatcher, $phpbb_root_path, 'adm/', $phpEx, LOG_TABLE);
+		$log = $this->getMockBuilder('\phpbb\log\log')->disableOriginalConstructor()->getMock();
 
 		return new \phpbbde\pastebin\cron\main($cache, $config, $db, $log, $pastebin_path, $phpbb_root_path, $phpEx, 86400, 'phpbb_pastebin');
 	}
