@@ -83,6 +83,7 @@ $lang = array_merge($lang, array(
 	'RETURN_SNIPPET'			=> '%sEintrag anzeigen%s',
 
 	'SHORT_PRUNABLE'			=> 'Prunable - automatisch löschbar',
+	'INFINITE'					=> 'Unendlich',
 	'SNIPPET_NEW'				=> 'Neuer Eintrag',
 	'SNIPPET_DESC'				=> 'Beschreibung',
 	'SNIPPET_DOWNLOAD'			=> 'Eintrag herunterladen',

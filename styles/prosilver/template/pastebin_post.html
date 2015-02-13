@@ -31,17 +31,12 @@
 			<dt><label for="snippet_highlight">{L_SNIPPET_HIGHLIGHT}:</label></dt>
 			<dd><select name="snippet_highlight" id="snippet_highlight">{HIGHLIGHT_SELECT}</select></dd>
 		</dl>
-		<!-- IF ORIGINAL -->
-		<dl>
-			<dt><label for="snippet_prunable">{L_SNIPPET_PRUNABLE}:</label><br /><span>{L_SNIPPET_PRUNABLE_EXPLAIN}</span></dt>
-			<dd><label for="snippet_prunable"><input type="checkbox" name="snippet_prunable" id="snippet_prunable"<!-- IF SNIPPET_PRUNABLE --> checked="checked"<!-- ENDIF --> /> {L_SHORT_PRUNABLE}</label></dd>
-		</dl>
-		<!-- ELSE -->
+		
 		<dl>
 			<dt><label for="pruning_months">{L_PRUNING_MONTHS}:</label></dt>
 			<dd><select name="pruning_months" id="pruning_months">{PRUNING_MONTHS_SELECT}</select> {L_PRUNING_MONTH_SHORT}</dd>
 		</dl>
-		<!-- ENDIF -->
+		
 		</fieldset>
 
 		<h3>{L_SNIPPET_TEXT}</h3>

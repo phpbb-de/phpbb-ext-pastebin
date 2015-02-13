@@ -201,10 +201,16 @@ class main
 						'snippet_title'		=> utf8_normalize_nfc(str_replace("\n", '', $this->request->variable('snippet_title', '', true))),
 						'snippet_desc'		=> utf8_normalize_nfc(str_replace("\n", '', $this->request->variable('snippet_desc', '', true))),
 						'snippet_text'		=> utf8_normalize_nfc($this->request->variable('snippet_text', '', true)),
-						'snippet_prunable'	=> isset($_REQUEST['snippet_prunable']) ? true : false,
+						'snippet_prunable'	=> 1,
 						'snippet_highlight'	=> $this->request->variable('snippet_highlight', ''),
 						'snippet_prune_on'	=> max(1, min(6, $this->request->variable('pruning_months', 0))),
 				);
+
+				if($this->auth->acl_get('u_pastebin_post_notlim') && $this->request->variable('pruning_months',0) == -1)
+				{
+					//Infinite Time...
+					$data['snippet_prunable'] = 0;
+				}
 
 				$snippet_contents = $data['snippet_text'];
 
@@ -314,7 +320,7 @@ class main
 
 					$snippet_id = $db->sql_nextid();
 
-					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', array("mode=view", "s=$snippet_id"));
+					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', array('mode' => "view", 's' => $snippet_id));
 
 					// Uncomment for instant redirect :)
 					//redirect($redirect_url);
@@ -342,10 +348,10 @@ class main
 						'WHERE'		=> "pb.snippet_author = u.user_id AND pb.snippet_id = $snippet_id",
 				));
 				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
+				$data   = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
 
-				if (!$row)
+				if (!$data)
 				{
 					$message = $user->lang['NO_VALID_SNIPPET'];
 					$message .= '<br /><br />';
@@ -361,11 +367,11 @@ class main
 						trigger_error('PASTEBIN_AUTH_NO_VIEW');
 					}
 
-					page_header(sprintf($user->lang['PASTEBIN_VIEW'], $row['snippet_title']));
+					page_header(sprintf($user->lang['PASTEBIN_VIEW'], $data['snippet_title']));
 
-					$snippet_text = $row['snippet_text'];
+					$snippet_text = $data['snippet_text'];
 
-					$highlight = (isset($_REQUEST['highlight'])) ? $this->request->variable('highlight', '') : $row['snippet_highlight'];
+					$highlight = (isset($_REQUEST['highlight'])) ? $this->request->variable('highlight', '') : $data['snippet_highlight'];
 
 					if (!$pastebin->geshi_check($highlight))
 					{
@@ -390,33 +396,24 @@ class main
 							's'		=> $snippet_id,
 					));
 
-					$pruning_months_select = '';
-					for ($i = 1; $i < 7; $i++)
-					{
-						$selected = ($i == (($row['snippet_prune_on'] - $row['snippet_time']) / $this::SECONDS_MONTH)) ? ' selected="selected"' : '';
-						$pruning_months_select .= '<option' . $selected . ' value="' . $i . '">' . $i . '</option>';
-					}
-
-					$snippet_download_url = $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "download", "s" => $row['snippet_id']));
+					$snippet_download_url = $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "download", "s" => $data['snippet_id']));
 
 					$template->assign_vars(array(
 						'SNIPPET_TEXT_ORIG'		=> $snippet_text,
 						'SNIPPET_TEXT_DISPLAY'	=> $snippet_text_display,
 
-						'SNIPPET_DESC_V'		=> $row['snippet_desc'],
-						'SNIPPET_TITLE_V'		=> $row['snippet_title'],
-						'SNIPPET_AUTHOR'		=> $row['username'],
-						'SNIPPET_AUTHOR_ID'		=> $row['user_id'],
-						'SNIPPET_AUTHOR_COLOUR'	=> $row['user_colour'],
-						'SNIPPET_AUTHOR_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-						'SNIPPET_DATE'			=> $user->format_date($row['snippet_time']),
-						'SNIPPET_PRUNABLE'		=> ($row['snippet_prunable']) ? true : false,
-						'PRUNING_MONTHS_SELECT'	=> $pruning_months_select,
-						'HIGHLIGHT_SELECT'		=> $pastebin->highlight_select($highlight),
-						'HIGHLIGHT_SELECT_MOD'	=> $pastebin->highlight_select($row['snippet_highlight']),
+						'SNIPPET_DESC_V'		=> $data['snippet_desc'],
+						'SNIPPET_TITLE_V'		=> $data['snippet_title'],
+						'SNIPPET_AUTHOR'		=> $data['username'],
+						'SNIPPET_AUTHOR_ID'		=> $data['user_id'],
+						'SNIPPET_AUTHOR_COLOUR'	=> $data['user_colour'],
+						'SNIPPET_AUTHOR_FULL'	=> get_username_string('full', $data['user_id'], $data['username'], $data['user_colour']),
+						'SNIPPET_DATE'			=> $user->format_date($data['snippet_time']),
+
+						'HIGHLIGHT_SELECT_MOD'	=> $pastebin->highlight_select($data['snippet_highlight']),
 						'DOWNLOAD_SNIPPET_EXPLAIN'	=> sprintf($user->lang['DOWNLOAD_SNIPPET_EXPLAIN'], '<a href="' . $snippet_download_url . '">', '</a>'),
 
-						'U_SNIPPET'				=> $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "view", "s" => $row['snippet_id'])),
+						'U_SNIPPET'				=> $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "view", "s" => $data['snippet_id'])),
 						'U_SNIPPET_DOWNLOAD'	=> $snippet_download_url,
 
 						'S_HIGHLIGHT'			=> $highlight,
@@ -583,9 +580,36 @@ class main
 		$pruning_months_select = '';
 		for ($i = 1; $i < 7; $i++)
 		{
-			$selected = ($i == 1) ? ' selected="selected"' : '';
+			if(isset($data['snippet_prune_on']))
+			{
+				$selected = ($data['snippet_prune_on'] - $data['snippet_time'] == $i * $this::SECONDS_MONTH) ? ' selected="selected"' : '';
+			}
+			else
+			{
+				$selected = ($i == 1) ? ' selected="selected"' : '';
+			}
 			$pruning_months_select .= '<option' . $selected . ' value="' . $i . '">' . $i . '</option>';
 		}
+
+		//Allow infinite storage if it is already set and we are editing, or if the user is allowed to
+		if((isset($data['snippet_prunable']) && !$data['snippet_prunable']) || $this->auth->acl_get('u_pastebin_post_notlim'))
+		{
+			if(isset($data['snippet_prunable']))
+			{
+				$selected = ($data['snippet_prunable'] == 0) ? ' selected="selected"' : '';
+			}
+			else
+			{
+				$selected = '';
+			}
+			$pruning_months_select .= '<option' . $selected . ' value="-1">' . $this->user->lang['INFINITE'] . '</option>';
+		}
+
+		if(!isset($highlight))
+		{
+			$highlight = isset($data['snippet_highlight']) ? $data['snippet_highlight'] : 'php';
+		}
+		$highlight_select = $pastebin->highlight_select($highlight);
 
 		add_form_key('pastebinform');
 
@@ -594,9 +618,9 @@ class main
 				'SNIPPET_DESC'		=> isset($data['snippet_desc']) ? $data['snippet_desc'] : '',
 				'AUTHOR_FULL'		=> isset($data['username']) ? get_username_string('full', $data['user_id'], $data['username'], $data['user_colour']) : '',
 				'SNIPPET_TEXT'		=> isset($data['snippet_text']) ? $data['snippet_text'] : '',
-				'SNIPPET_PRUNABLE'	=> isset($data['snippet_prunable']) ? $data['snippet_prunable'] : true,
+				//'SNIPPET_PRUNABLE'	=> isset($data['snippet_prunable']) ? $data['snippet_prunable'] : true,
 
-				'HIGHLIGHT_SELECT'	=> isset($data['snippet_highlight']) ? $pastebin->highlight_select($data['snippet_highlight']) : $pastebin->highlight_select('php'),
+				'HIGHLIGHT_SELECT'	=> $highlight_select,
 				'PRUNING_MONTHS_SELECT'	=> $pruning_months_select,
 
 				'FILESIZE'			=> $this->config['max_filesize'],
