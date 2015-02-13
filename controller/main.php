@@ -53,13 +53,13 @@ class main
 	protected $pastebin;
 
 	/** @var string */
-	protected $ext_path;
-
-	/** @var string */
 	protected $geshi_path;
 
 	/** @var string */
 	protected $geshi_lang;
+
+	/** @var string */
+	protected $pastebin_table;
 
 	/**
 	 * Construct
@@ -75,7 +75,7 @@ class main
 	 * @param string $root_path
 	 * @param string $php_ext
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\request\request $request, \phpbb\db\driver\driver_interface $db, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbbde\pastebin\functions\pastebin $pastebin, $root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\request\request $request, \phpbb\db\driver\driver_interface $db, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbbde\pastebin\functions\pastebin $pastebin, $root_path, $php_ext, $geshi_path, $geshi_lang, $pastebin_table)
 	{
 		$this->auth = $auth;
 		$this->cache = $cache;
@@ -89,10 +89,9 @@ class main
 		$this->php_ext = $php_ext;
 		$this->pastebin = $pastebin;
 
-		global $phpbb_container;
-		$this->geshi_path = $phpbb_container->getParameter('phpbbde.pastebin.geshi');
-		$this->ext_path   = $phpbb_container->getParameter('phpbbde.pastebin.path');
-		$this->geshi_lang = $phpbb_container->getParameter('phpbbde.pastebin.geshilangs');
+		$this->geshi_path = $geshi_path;
+		$this->pastebin_table = $pastebin_table;
+		$this->geshi_lang = $geshi_lang;
 	}
 
 	/**
@@ -121,8 +120,10 @@ class main
 	 */
 	private function table($name)
 	{
-		global $phpbb_container;
-		return $phpbb_container->getParameter('tables.phpbbde.pastebin.' . $name);
+		if($name == 'pastebin')
+		{
+			return $this->pastebin_table;
+		}
 	}
 
 	/**

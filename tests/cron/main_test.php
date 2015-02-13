@@ -24,14 +24,8 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 	{
 		parent::setUp();
 
-		global $phpbb_root_path, $phpEx, $user, $phpbb_dispatcher;
-
-
-		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
-		$user = new \phpbb_mock_user;
-		$auth = $this->getMock('\phpbb\auth\auth');
-
-
+		$this->cache = $this->getMockBuilder('\phpbb\cache\service')->disableOriginalConstructor()->getMock();
+		$this->log = $this->getMockBuilder('\phpbb\log\log')->disableOriginalConstructor()->getMock();
 	}
 
 	public function test_construct()
@@ -75,21 +69,16 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 
 	private function get_task($last_run = 0)
 	{
-		global $phpbb_root_path, $phpEx, $user, $phpbb_dispatcher, $cache, $config;
+		global $phpbb_root_path, $phpEx;
 		$pastebin_path = dirname(__FILE__) . '/../../';
 		$db = $this->new_dbal();
 		$this->db = $db;
 
-		$config = new \phpbb\config\config(array(
+		$this->config = new \phpbb\config\config(array(
 			'phpbbde_pastebin_prune_last_run' => $last_run,
 			'phpbbde_pastebin_version' => '0.2.2',
 		));
 
-		$cache = $this->getMockBuilder('\phpbb\cache\service')->disableOriginalConstructor()->getMock();
-
-		//$log = new \phpbb\log\log($db, $user, $auth, $phpbb_dispatcher, $phpbb_root_path, 'adm/', $phpEx, LOG_TABLE);
-		$log = $this->getMockBuilder('\phpbb\log\log')->disableOriginalConstructor()->getMock();
-
-		return new \phpbbde\pastebin\cron\main($cache, $config, $db, $log, $pastebin_path, $phpbb_root_path, $phpEx, 86400, 'phpbb_pastebin');
+		return new \phpbbde\pastebin\cron\main($this->cache, $this->config, $db, $this->log, $pastebin_path, $phpbb_root_path, $phpEx, 86400, 'phpbb_pastebin');
 	}
 }

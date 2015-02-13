@@ -23,6 +23,9 @@ services:
             - @phpbbde.pastebin.functions.pastebin
             - %core.root_path%
             - %core.php_ext%
+            - %phpbbde.pastebin.geshi%
+            - %phpbbde.pastebin.geshilangs%
+            - %tables.phpbbde.pastebin.pastebin%
     phpbbde.pastebin.header_listener:
         class: phpbbde\pastebin\event\header_events
         arguments:
