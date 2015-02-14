@@ -266,7 +266,6 @@ class main
 					$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
 					$captcha->init($this::CONFIRM_PASTEBIN);
 
-
 					if (!$captcha->is_solved())
 					{
 						$error[] = $user->lang['CONFIRM_CODE_WRONG'];
@@ -530,7 +529,7 @@ class main
 			{
 				$selected = ($data['snippet_prune_on'] - $data['snippet_time'] == $i * $this::SECONDS_MONTH) ? ' selected="selected"' : '';
 			}
-			elseif($prune_month)
+			else if($prune_month)
 			{
 				$selected = ($i == $prune_month) ? ' selected="selected"' : '';
 			}
