@@ -4,7 +4,7 @@
 
 Clone into ext/phpbbde/pastebin:
 
-    git clone https://github.com/phpbbde/phpbb-ext-pastebin ext/phpbbde/pastebin
+    git clone https://github.com/phpbb-de/phpbb-ext-pastebin ext/phpbbde/pastebin
 
 Go to ext/phpbbde/pastebin and install dependencies:
 
@@ -16,7 +16,7 @@ Go to "ACP" > "Customise" > "Extensions" and enable the "phpBB.de pastebin" exte
 
 ## Development
 
-If you find a bug, please report it on https://github.com/phpbbde/phpbb-ext-pastebin
+If you find a bug, please report it on https://github.com/phpbb-de/phpbb-ext-pastebin
 
 ## Automated Testing
 
