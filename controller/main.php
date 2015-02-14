@@ -127,7 +127,7 @@ class main
 		if($name == 'pastebin')
 		{
 			return $this->pastebin_table;
-	}
+		}
 	}
 
 	/**
@@ -270,6 +270,10 @@ class main
 					if (!$captcha->is_solved())
 					{
 						$error[] = $user->lang['CONFIRM_CODE_WRONG'];
+					}
+					else if (!empty($error))
+					{
+						$captcha->new_attempt();
 					}
 					else
 					{
