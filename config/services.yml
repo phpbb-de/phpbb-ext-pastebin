@@ -20,6 +20,7 @@ services:
             - @template
             - @user
             - @controller.helper
+            - @captcha.factory
             - @phpbbde.pastebin.functions.pastebin
             - %core.root_path%
             - %core.php_ext%

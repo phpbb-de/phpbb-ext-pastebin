@@ -52,6 +52,9 @@ class main
 	/** @var \phpbbde\pastebin\functions\pastebin */
 	protected $pastebin;
 
+	/** @var \phpbb\captcha\factory */
+	protected $captcha_factory;
+
 	/** @var string */
 	protected $ext_path;
 
@@ -75,7 +78,7 @@ class main
 	 * @param string $root_path
 	 * @param string $php_ext
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\request\request $request, \phpbb\db\driver\driver_interface $db, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbbde\pastebin\functions\pastebin $pastebin, $root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\request\request $request, \phpbb\db\driver\driver_interface $db, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbb\captcha\factory $captcha_factory, \phpbbde\pastebin\functions\pastebin $pastebin, $root_path, $php_ext)
 	{
 		$this->auth = $auth;
 		$this->cache = $cache;
@@ -88,6 +91,7 @@ class main
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
 		$this->pastebin = $pastebin;
+		$this->captcha_factory = $captcha_factory;
 
 		global $phpbb_container;
 		$this->geshi_path = $phpbb_container->getParameter('phpbbde.pastebin.geshi');
@@ -259,40 +263,16 @@ class main
 				{
 					$user->add_lang('ucp');
 
-					if (!$confirm_id)
+					$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
+					$captcha->init($this::CONFIRM_PASTEBIN);
+
+					if (!$captcha->is_solved())
 					{
 						$error[] = $user->lang['CONFIRM_CODE_WRONG'];
 					}
 					else
 					{
-						$sql = 'SELECT code
-							FROM ' . CONFIRM_TABLE . "
-							WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
-								AND session_id = '" . $db->sql_escape($user->session_id) . "'
-								AND confirm_type = " . $this::CONFIRM_PASTEBIN;
-						$result = $db->sql_query($sql);
-						$row = $db->sql_fetchrow($result);
-						$db->sql_freeresult($result);
-
-						if ($row)
-						{
-							if (strcasecmp($row['code'], $confirm_code) === 0)
-							{
-								$sql = 'DELETE FROM ' . CONFIRM_TABLE . "
-									WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
-										AND session_id = '" . $db->sql_escape($user->session_id) . "'
-										AND confirm_type = " . $this::CONFIRM_PASTEBIN;
-								$db->sql_query($sql);
-							}
-							else
-							{
-								$error[] = $user->lang['CONFIRM_CODE_WRONG'];
-							}
-						}
-						else
-						{
-							$error[] = $user->lang['CONFIRM_CODE_WRONG'];
-						}
+						$captcha->garbage_collect($this::CONFIRM_PASTEBIN);
 					}
 				}
 
@@ -533,56 +513,25 @@ class main
 		$confirm_image = '';
 		if (!$auth->acl_get('u_pastebin_post_novc'))
 		{
-			$str = '';
-			$sql = 'SELECT session_id
-				FROM ' . SESSIONS_TABLE;
-			$result = $db->sql_query($sql);
-
-			if ($row = $db->sql_fetchrow($result))
+			if(!isset($captcha))
 			{
-				$sql_in = array();
-				do
-				{
-					$sql_in[] = (string) $row['session_id'];
-				}
-				while ($row = $db->sql_fetchrow($result));
-
-				if (sizeof($sql_in))
-				{
-					$sql = 'DELETE FROM ' . CONFIRM_TABLE . '
-						WHERE ' . $db->sql_in_set('session_id', $sql_in, true) . '
-							AND confirm_type = ' . $this::CONFIRM_PASTEBIN;
-					$db->sql_query($sql);
-				}
+				$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
+				$captcha->init($this::CONFIRM_PASTEBIN);
 			}
-			$db->sql_freeresult($result);
-
-			$code = gen_rand_string(mt_rand(5, 8));
-			$confirm_id = md5(unique_id($user->ip));
-			$seed = hexdec(substr(unique_id(), 4, 10));
-
-			// compute $seed % 0x7fffffff
-			$seed -= 0x7fffffff * floor($seed / 0x7fffffff);
-
-			$sql = 'INSERT INTO ' . CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(
-					'confirm_id'	=> (string) $confirm_id,
-					'session_id'	=> (string) $user->session_id,
-					'confirm_type'	=> (int) $this::CONFIRM_PASTEBIN,
-					'code'			=> (string) $code,
-					'seed'			=> (int) $seed)
-			);
-			$db->sql_query($sql);
-
-			$confirm_image = '<img src="' . append_sid("{$this->root_path}ucp.{$this->php_ext}", 'mode=confirm&amp;id=' . $confirm_id . '&amp;type=' . $this::CONFIRM_PASTEBIN . $str) . '" alt="" title="" />';
-			$s_hidden_fields['confirm_id'] = $confirm_id;
+			$this->template->assign_var('CAPTCHA_TEMPLATE', $captcha->get_template());
 		}
 
 		$pruning_months_select = '';
+		$prune_month = $this->request->variable('pruning_months', 0);
 		for ($i = 1; $i < 7; $i++)
 		{
-			if(isset($data['snippet_prune_on']))
+			if(isset($data['snippet_prune_on']) && isset($data['snippet_time']))
 			{
 				$selected = ($data['snippet_prune_on'] - $data['snippet_time'] == $i * $this::SECONDS_MONTH) ? ' selected="selected"' : '';
+			}
+			else if($prune_month)
+			{
+				$selected = ($i == $prune_month) ? ' selected="selected"' : '';
 			}
 			else
 			{
@@ -596,7 +545,7 @@ class main
 		{
 			if(isset($data['snippet_prunable']))
 			{
-				$selected = ($data['snippet_prunable'] == 0) ? ' selected="selected"' : '';
+				$selected = ($data['snippet_prunable'] == 0 || $prune_month == -1) ? ' selected="selected"' : '';
 			}
 			else
 			{
