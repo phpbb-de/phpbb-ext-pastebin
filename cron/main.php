@@ -30,7 +30,10 @@ class main extends \phpbb\cron\task\base
 	/** @var \phpbb\log\log_interface */
 	protected $log;
 
-	public function __construct(\phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\log\log_interface $log, $pastebin_path, $root_path, $php_ext)
+	protected $prune_interval;
+	protected $pastebin_table;
+
+	public function __construct(\phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\log\log_interface $log, $pastebin_path, $root_path, $php_ext, $prune_interval, $pastebin_table)
 	{
 		$this->cache = $cache;
 		$this->config = $config;
@@ -39,6 +42,8 @@ class main extends \phpbb\cron\task\base
 		$this->pastebin_path = $pastebin_path;
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
+		$this->prune_interval = $prune_interval;
+		$this->pastebin_table = $pastebin_table;
 	}
 
 	/**
@@ -71,11 +76,9 @@ class main extends \phpbb\cron\task\base
 	 */
 	public function should_run()
 	{
-		global $phpbb_container;
-
 		$now = time();
 
-		return $now > $this->config['phpbbde_pastebin_prune_last_run'] + $phpbb_container->getParameter('phpbbde.pastebin.cron.prune_interval');
+		return $now > $this->config['phpbbde_pastebin_prune_last_run'] + $this->prune_interval;
 	}
 
 	/**
@@ -85,7 +88,6 @@ class main extends \phpbb\cron\task\base
 	 */
 	private function table($name)
 	{
-		global $phpbb_container;
-		return $phpbb_container->getParameter('tables.phpbbde.pastebin.' . $name);
+		return $this->pastebin_table;
 	}
 }
