@@ -232,8 +232,8 @@ class main
 				$filedata = $this->request->file('fileupload');
 				if (isset($_FILES['fileupload']) && $filedata['name'] != 'none' && trim($filedata['name']))
 				{
-					include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
-					$upload = new fileupload('PASTEBIN_');
+					include_once($this->root_path . 'includes/functions_upload.' . $this->php_ext);
+					$upload = new \fileupload('PASTEBIN_');
 
 					$upload->set_allowed_extensions(array('txt', 'mod', 'php', 'xml', 'html'));
 
