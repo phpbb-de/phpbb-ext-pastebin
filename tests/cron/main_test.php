@@ -37,18 +37,18 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 	public function test_is_runnable()
 	{
 		$task = $this->get_task();
-		$this->assertEquals($task->is_runnable(), true);
+		$this->assertTrue($task->is_runnable());
 	}
 
 	public function test_should_run()
 	{
 		// 1: Has not run ever
 		$task = $this->get_task();
-		$this->assertEquals($task->should_run(), true);
+		$this->assertTrue($task->should_run());
 
 		// 2: Has just run
 		$task = $this->get_task(time() - 1);
-		$this->assertEquals($task->should_run(), false);
+		$this->assertTrue(!$task->should_run());
 	}
 
 	public function test_run()
@@ -59,11 +59,13 @@ class phpbbde_cron_main_test extends phpbb_database_test_case
 
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
 		$this->assertEquals($row['cnt'], 2);
 
 		$sql = 'SELECT snippet_id FROM phpbb_pastebin';
 		$result = $this->db->sql_query($sql);
 		$rows = $this->db->sql_fetchrowset($result);
+		$this->db->sql_freeresult($result);
 		$this->assertEquals($rows, array(array('snippet_id' => 1), array('snippet_id' => 3)));
 	}
 
