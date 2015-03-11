@@ -61,7 +61,7 @@ class base_events implements EventSubscriberInterface
 	{
 		if ($event['on_page'][1] == 'app')
 		{
-			if(strrpos($event['row']['session_page'], 'app.' . $this->php_ext . '/rules') === 0)
+			if(strrpos($event['row']['session_page'], 'app.' . $this->php_ext . '/pastebin') === 0)
 			{
 				$event['location'] = $this->user->lang('PASTEBIN_VIEWONLINE');
 				$event['location_url'] = $this->helper->route('phpbbde_pastebin_main_controller');
