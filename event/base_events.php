@@ -17,12 +17,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Event listener
  */
-class header_events implements EventSubscriberInterface
+class base_events implements EventSubscriberInterface
 {
 	static public function getSubscribedEvents()
 	{
 		return array(
 			'core.page_header_after'	=> 'page_header_after',
+			'core.viewonline_overwrite_location' => 'viewonline_page',
 		);
 	}
 
@@ -54,5 +55,17 @@ class header_events implements EventSubscriberInterface
 				// Main Menu
 				'U_PASTEBIN' => $this->helper->route('phpbbde_pastebin_main_controller'),
 		));
+	}
+	
+	public function viewonline_page($event)
+	{
+		if ($event['on_page'][1] == 'app')
+		{
+			if(strrpos($event['row']['session_page'], 'app.' . $this->php_ext . '/rules') === 0)
+			{
+				$event['location'] = $this->user->lang('PASTEBIN_VIEWONLINE');
+				$event['location_url'] = $this->helper->route('phpbbde_pastebin_main_controller');
+			}
+		}
 	}
 }

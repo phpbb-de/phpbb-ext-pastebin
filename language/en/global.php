@@ -26,4 +26,5 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	// Globally used language variables (e.g. for the header)
 	'PASTEBIN'					=> 'Pastebin',
+	'PASTEBIN_VIEWONLINE'		=> 'In pastebin',
 ));

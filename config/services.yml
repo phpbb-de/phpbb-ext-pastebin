@@ -27,8 +27,8 @@ services:
             - %phpbbde.pastebin.geshi%
             - %phpbbde.pastebin.geshilangs%
             - %tables.phpbbde.pastebin.pastebin%
-    phpbbde.pastebin.header_listener:
-        class: phpbbde\pastebin\event\header_events
+    phpbbde.pastebin.base_listener:
+        class: phpbbde\pastebin\event\base_events
         arguments:
             - @auth
             - @template
