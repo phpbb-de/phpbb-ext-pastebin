@@ -56,7 +56,7 @@ class base_events implements EventSubscriberInterface
 				'U_PASTEBIN' => $this->helper->route('phpbbde_pastebin_main_controller'),
 		));
 	}
-	
+
 	public function viewonline_page($event)
 	{
 		if ($event['on_page'][1] == 'app')
