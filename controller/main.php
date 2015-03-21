@@ -10,6 +10,8 @@
 
 namespace phpbbde\pastebin\controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 class main
 {
 	const CONFIRM_PASTEBIN = 5;
@@ -112,7 +114,10 @@ class main
 				'U_VIEW_FORUM'	=> $this->helper->route('phpbbde_pastebin_main_controller'),
 		));
 
-		$this->display_pb();
+		if ($response = $this->display_pb())
+		{
+			return $response;
+		}
 
 		return $this->helper->render('pastebin_body.html', $this->user->lang['PASTEBIN']);
 	}
@@ -429,23 +434,20 @@ class main
 						$filename = "filename*=UTF-8''" . rawurlencode($filename);
 					}
 
-					header('Pragma: public');
-
-					// Send out the Headers. Do not set Content-Disposition to inline please, it is a security measure for users using the Internet Explorer.
-					header('Content-Type: text/plain');
-					header("Content-Disposition: attachment; $filename");
+					// Do not set Content-Disposition to inline please, it is a security measure for users using the Internet Explorer.
+					$response = new Response($snippet_text, Response::HTTP_OK);
+					$response->headers->set('Pragma', 'public');
+					$response->headers->set('Content-Type', 'text/plain');
+					$response->headers->set('Content-Disposition', "attachment; $filename");
 
 					if ($size = @strlen($snippet_text))
 					{
-						header("Content-Length: $size");
+						$response->headers->set('Content-Length', $size);
 					}
 
 					@set_time_limit(0);
 
-					echo $snippet_text;
-
-					flush();
-					exit;
+					return $response;
 				}
 				else if ($mode == 'moderate')
 				{
