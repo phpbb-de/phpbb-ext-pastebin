@@ -480,7 +480,7 @@ class main
 						{
 							$sql = 'DELETE FROM ' . $this->table('pastebin') . '
 								WHERE snippet_id = ' . $snippet_id;
-							$redirect_append = '';
+							$redirect_append = array();
 						}
 					}
 					else
@@ -490,7 +490,7 @@ class main
 								'snippet_highlight'	=> $highlight,
 								'snippet_prune_on'	=> $row['snippet_time'] + ($pruning_months * $this::SECONDS_MONTH),
 						)) . ' WHERE snippet_id = ' . $snippet_id;
-						$redirect_append = "mode=view&amp;s=$snippet_id";
+						$redirect_append = array("mode"=>"view","s"=>$snippet_id);
 					}
 					$db->sql_query($sql);
 
