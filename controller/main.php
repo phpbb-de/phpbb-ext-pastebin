@@ -420,9 +420,9 @@ class main
 					}
 
 					// Thanks download.php
-					$snippet_text = htmlspecialchars_decode(utf8_decode($row['snippet_text']));
+					$snippet_text = htmlspecialchars_decode(utf8_decode($data['snippet_text']));
 
-					$filename = htmlspecialchars_decode($row['snippet_title']) . '.txt';
+					$filename = htmlspecialchars_decode($data['snippet_title']) . '.txt';
 
 					$user_agent = $this->request->server('HTTP_USER_AGENT', '');
 					if (strpos($user_agent, 'MSIE') !== false || strpos($user_agent, 'Safari') !== false || strpos($user_agent, 'Konqueror') !== false)
@@ -435,10 +435,11 @@ class main
 					}
 
 					// Do not set Content-Disposition to inline please, it is a security measure for users using the Internet Explorer.
-					$response = new Response($snippet_text, Response::HTTP_OK);
+					$response = new Response($snippet_text, 200);
 					$response->headers->set('Pragma', 'public');
 					$response->headers->set('Content-Type', 'text/plain');
 					$response->headers->set('Content-Disposition', "attachment; $filename");
+					$response->setContent($snippet_text);
 
 					if ($size = @strlen($snippet_text))
 					{
@@ -464,7 +465,7 @@ class main
 					if (isset($_POST['cancel']))
 					{
 						//redirect(append_sid("{$root_path}support/pastebin.$phpEx", "mode=view&amp;s=$snippet_id"));
-						redirect($this->helper->route('phpbbde_pastebin_main_controller', "mode=view&amp;s=$snippet_id"));
+						redirect($this->helper->route('phpbbde_pastebin_main_controller', array("mode"=>"view","s"=>$snippet_id)));
 					}
 
 					if ($delete)
@@ -473,13 +474,13 @@ class main
 						if (!confirm_box(true))
 						{
 							$hidden = build_hidden_fields(array('mode' => 'moderate', 's' => $snippet_id, 'delete_snippet' => 1));
-							confirm_box(false, sprintf($user->lang['DELETE_SNIPPET_CONFIRM'], $row['snippet_title']), $hidden);
+							confirm_box(false, sprintf($user->lang['DELETE_SNIPPET_CONFIRM'], $data['snippet_title']), $hidden);
 						}
 						else
 						{
 							$sql = 'DELETE FROM ' . $this->table('pastebin') . '
 								WHERE snippet_id = ' . $snippet_id;
-							$redirect_append = '';
+							$redirect_append = array();
 						}
 					}
 					else
@@ -489,7 +490,7 @@ class main
 								'snippet_highlight'	=> $highlight,
 								'snippet_prune_on'	=> $row['snippet_time'] + ($pruning_months * $this::SECONDS_MONTH),
 						)) . ' WHERE snippet_id = ' . $snippet_id;
-						$redirect_append = "mode=view&amp;s=$snippet_id";
+						$redirect_append = array("mode"=>"view","s"=>$snippet_id);
 					}
 					$db->sql_query($sql);
 
