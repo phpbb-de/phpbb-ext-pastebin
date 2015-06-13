@@ -19,7 +19,7 @@
 	</div>
 	<!-- ENDIF -->
 
-	<!-- IF S_AUTH_EDIT && S_MODE eq 'view' -->
+	<!-- IF (S_AUTH_EDIT || S_AUTH_DELETE) && S_MODE eq 'view' -->
 	<div class="mini-panel navbar">
 		<span class="corners-top"><span></span></span>
 
@@ -27,6 +27,7 @@
 
 		<form method="post" action="{S_FORM_ACTION_MOD}">
 		<fieldset class="fields1">
+			<!-- IF S_AUTH_EDIT -->
 			<dl>
 				<dt><label for="pruning_months">{L_PRUNING_MONTHS}:</label></dt>
 				<dd><select name="pruning_months" id="pruning_months">{PRUNING_MONTHS_SELECT}</select> {L_PRUNING_MONTH_SHORT}</dd>
@@ -35,6 +36,7 @@
 				<dt><label for="snippet_highlight">{L_SNIPPET_HIGHLIGHT}:</label></dt>
 				<dd><select id="snippet_highlight" name="snippet_highlight">{HIGHLIGHT_SELECT_MOD}</select></dd>
 			</dl>
+			<!-- ENDIF -->
 			<!-- IF S_AUTH_DELETE -->
 			<dl>
 				<dt><label for="delete_snippet">{L_DELETE_SNIPPET}:</label></dt>

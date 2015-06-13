@@ -50,6 +50,8 @@ class acp_events implements EventSubscriberInterface
 			'u_pastebin_post'			=> array('lang' => 'ACL_U_PASTEBIN_POST', 'cat' => 'pastebin'),
 			'u_pastebin_post_novc'		=> array('lang' => 'ACL_U_PASTEBIN_POST_NOVC', 'cat' => 'pastebin'),
 			'u_pastebin_post_notlim'	=> array('lang' => 'ACL_U_PASTEBIN_POST_NOTLIM', 'cat' => 'pastebin'),
+			'u_pastebin_edit'			=> array('lang' => 'ACL_U_PASTEBIN_EDIT', 'cat' => 'pastebin'),
+			'u_pastebin_delete'			=> array('lang' => 'ACL_U_PASTEBIN_DELETE', 'cat' => 'pastebin'),
 
 			// Moderator perms
 			'm_pastebin_edit'			=> array('lang' => 'ACL_M_PASTEBIN_EDIT', 'cat' => 'pastebin'),

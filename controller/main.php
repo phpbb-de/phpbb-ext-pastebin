@@ -54,6 +54,9 @@ class main
 	/** @var \phpbbde\pastebin\functions\pastebin */
 	protected $pastebin;
 
+	/** @var \phpbbde\pastebin\functions\utility */
+	protected $util;
+
 	/** @var \phpbb\captcha\factory */
 	protected $captcha_factory;
 
@@ -77,10 +80,11 @@ class main
 	 * @param \phpbb\user $user
 	 * @param \phpbb\controller\helper $helper
 	 * @param \phpbbde\pastebin\functions\pastebin $pastebin
+	 * @param \phpbbde\pastebin\functions\utility $util
 	 * @param string $root_path
 	 * @param string $php_ext
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\request\request $request, \phpbb\db\driver\driver_interface $db, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbb\captcha\factory $captcha_factory, \phpbbde\pastebin\functions\pastebin $pastebin, $root_path, $php_ext, $geshi_path, $geshi_lang, $pastebin_table)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\request\request $request, \phpbb\db\driver\driver_interface $db, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbb\captcha\factory $captcha_factory, \phpbbde\pastebin\functions\utility $util, \phpbbde\pastebin\functions\pastebin $pastebin, $root_path, $php_ext, $geshi_path, $geshi_lang, $pastebin_table)
 	{
 		$this->auth = $auth;
 		$this->cache = $cache;
@@ -93,6 +97,7 @@ class main
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
 		$this->pastebin = $pastebin;
+		$this->util = $util;
 		$this->captcha_factory = $captcha_factory;
 
 		$this->geshi_path = $geshi_path;
@@ -140,7 +145,7 @@ class main
 	 */
 	private function display_pb()
 	{
-		$pastebin 	= $this->pastebin;
+		$util	 	= $this->util;
 		$template 	= $this->template;
 		$db 		= $this->db;
 		$auth 		= $this->auth;
@@ -150,7 +155,42 @@ class main
 		$mode			= $this->request->variable('mode', '');
 		$confirm_id		= $this->request->variable('confirm_id', '');
 		$confirm_code	= $this->request->variable('confirm_code', '');
+		$snippet_id		= $this->request->variable('s', 0);
 		$submit			= isset($_POST['submit']) ? true : false;
+
+		if(in_array($mode, array('view', 'download', 'moderate')))
+		{
+			// for all of these we have to check if the entry exists
+
+			$sql = $db->sql_build_query('SELECT', array(
+				'SELECT'	=> 'pb.*, u.user_id, u.username, u.user_colour',
+				'FROM'		=> array(
+					$this->table('pastebin')	=> 'pb',
+					USERS_TABLE		=> 'u',
+				),
+				'WHERE'		=> "pb.snippet_author = u.user_id AND pb.snippet_id = $snippet_id",
+			));
+			$result = $db->sql_query($sql);
+			$data   = $db->sql_fetchrow($result);
+			$db->sql_freeresult($result);
+
+			if (!$data)
+			{
+				$message = $user->lang['NO_VALID_SNIPPET'];
+				$message .= '<br /><br />';
+				$message .= sprintf($user->lang['RETURN_PASTEBIN'], '<a href="' . $this->helper->route('phpbbde_pastebin_main_controller') . '">', '</a>');
+
+				trigger_error($message);
+			}
+
+			$this->pastebin->load_from_array($data);
+			$snippet = $this->pastebin;
+
+			$this->template->assign_vars(array(
+				'S_AUTH_EDIT'	=> ($auth->acl_get('m_pastebin_edit') || ($auth->acl_get('u_pastebin_edit') && $snippet['snippet_author'] == $this->user->data['user_id'])) ? true : false,
+				'S_AUTH_DELETE'	=> ($auth->acl_get('m_pastebin_delete') || ($auth->acl_get('u_pastebin_delete') && $snippet['snippet_author'] == $this->user->data['user_id'])) ? true : false,
+			));
+		}
 
 		// Some default values
 		$error = $s_hidden_fields = array();
@@ -188,9 +228,8 @@ class main
 
 			'S_AUTH_VIEW'	=> ($auth->acl_get('u_pastebin_view')) ? true : false,
 			'S_AUTH_POST'	=> ($auth->acl_get('u_pastebin_post')) ? true : false,
-			'S_AUTH_EDIT'	=> ($auth->acl_get('m_pastebin_edit')) ? true : false,
-			'S_AUTH_DELETE'	=> ($auth->acl_get('m_pastebin_delete')) ? true : false,
 		));
+
 
 		// Now let's decide what to do
 		switch ($mode)
@@ -229,7 +268,7 @@ class main
 					$error[] = $user->lang['ERR_NO_TITLE'];
 				}
 
-				if (!$pastebin->geshi_check($data['snippet_highlight']))
+				if (!$util->geshi_check($data['snippet_highlight']))
 				{
 					$data['snippet_highlight'] = 'text';
 				}
@@ -325,30 +364,9 @@ class main
 			case 'download':
 			case 'moderate':
 
-				// for all of these we have to check if the entry exists
 
-				$snippet_id	= $this->request->variable('s', 0);
 
-				$sql = $db->sql_build_query('SELECT', array(
-						'SELECT'	=> 'pb.*, u.user_id, u.username, u.user_colour',
-						'FROM'		=> array(
-								$this->table('pastebin')	=> 'pb',
-								USERS_TABLE		=> 'u',
-						),
-						'WHERE'		=> "pb.snippet_author = u.user_id AND pb.snippet_id = $snippet_id",
-				));
-				$result = $db->sql_query($sql);
-				$data   = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
 
-				if (!$data)
-				{
-					$message = $user->lang['NO_VALID_SNIPPET'];
-					$message .= '<br /><br />';
-					$message .= sprintf($user->lang['RETURN_PASTEBIN'], '<a href="' . $this->helper->route('phpbbde_pastebin_main_controller') . '">', '</a>');
-
-					trigger_error($message);
-				}
 
 				if ($mode == 'view')
 				{
@@ -363,7 +381,7 @@ class main
 
 					$highlight = (isset($_REQUEST['highlight'])) ? $this->request->variable('highlight', '') : $data['snippet_highlight'];
 
-					if (!$pastebin->geshi_check($highlight))
+					if (!$util->geshi_check($highlight))
 					{
 						$highlight = 'php';
 					}
@@ -374,7 +392,7 @@ class main
 
 					$code = htmlspecialchars_decode($snippet_text);
 
-					$geshi = new \GeSHi($code, $highlight, $pastebin->geshi_dir);
+					$geshi = new \GeSHi($code, $highlight, $util->geshi_dir);
 					$geshi->set_header_type(GESHI_HEADER_NONE);
 					$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 100);
 
@@ -400,7 +418,7 @@ class main
 						'SNIPPET_AUTHOR_FULL'	=> get_username_string('full', $data['user_id'], $data['username'], $data['user_colour']),
 						'SNIPPET_DATE'			=> $user->format_date($data['snippet_time']),
 
-						'HIGHLIGHT_SELECT_MOD'	=> $pastebin->highlight_select($data['snippet_highlight']),
+						'HIGHLIGHT_SELECT_MOD'	=> $util->highlight_select($data['snippet_highlight']),
 						'DOWNLOAD_SNIPPET_EXPLAIN'	=> sprintf($user->lang['DOWNLOAD_SNIPPET_EXPLAIN'], '<a href="' . $snippet_download_url . '">', '</a>'),
 
 						'U_SNIPPET'				=> $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "view", "s" => $data['snippet_id'])),
@@ -453,11 +471,15 @@ class main
 				else if ($mode == 'moderate')
 				{
 					$delete			= (isset($_POST['delete_snippet'])) ? true : false;
-					$prunable		= (isset($_POST['snippet_prunable'])) ? true : false;
 					$highlight		= $this->request->variable('snippet_highlight', '');
-					$pruning_months	= max(1, min(6, $this->request->variable('pruning_months', 0)));
+					$pruning_months	= $this->request->variable('pruning_months', 0);
+					$prunable		= $pruning_months != -1;
 
-					if (!$auth->acl_get('m_pastebin_edit') || ($delete && !$auth->acl_get('m_pastebin_delete')))
+					$auth_edit = ($auth->acl_get('m_pastebin_edit') || ($auth->acl_get('u_pastebin_edit') && $this->user->data['user_id'] == $snippet['snippet_author']));
+					$auth_delete =  ($auth->acl_get('m_pastebin_delete') || ($auth->acl_get('u_pastebin_delete') && $this->user->data['user_id'] == $snippet['snippet_author']));
+
+					// Generic permissions check
+					if (!$auth_edit && !$auth_delete)
 					{
 						trigger_error('PASTEBIN_AUTH_NO_VIEW');
 					}
@@ -468,7 +490,7 @@ class main
 						redirect($this->helper->route('phpbbde_pastebin_main_controller', array("mode"=>"view","s"=>$snippet_id)));
 					}
 
-					if ($delete)
+					if ($delete && $auth_delete)
 					{
 						// Confirm box
 						if (!confirm_box(true))
@@ -478,21 +500,25 @@ class main
 						}
 						else
 						{
-							$sql = 'DELETE FROM ' . $this->table('pastebin') . '
-								WHERE snippet_id = ' . $snippet_id;
+							$snippet->delete();
 							$redirect_append = array();
 						}
 					}
-					else
+					else if($auth_edit)
 					{
-						$sql = 'UPDATE ' . $this->table('pastebin') . ' SET ' . $db->sql_build_array('UPDATE', array(
-								'snippet_prunable'	=> (int) $prunable,
-								'snippet_highlight'	=> $highlight,
-								'snippet_prune_on'	=> $row['snippet_time'] + ($pruning_months * $this::SECONDS_MONTH),
-						)) . ' WHERE snippet_id = ' . $snippet_id;
+						$snippet->load_from_array(array(
+							'snippet_prunable'	=> (int) $prunable,
+							'snippet_highlight'	=> $highlight,
+							'snippet_prune_on'	=> $data['snippet_time'] + ($pruning_months * $this::SECONDS_MONTH),
+						));
+						$snippet->submit();
+
 						$redirect_append = array("mode"=>"view","s"=>$snippet_id);
 					}
-					$db->sql_query($sql);
+					else
+					{
+						trigger_error('PASTEBIN_NOT_AUTH_EDIT');
+					}
 
 					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', $redirect_append);
 
@@ -566,7 +592,7 @@ class main
 		{
 			$highlight = isset($data['snippet_highlight']) ? $data['snippet_highlight'] : 'php';
 		}
-		$highlight_select = $pastebin->highlight_select($highlight);
+		$highlight_select = $util->highlight_select($highlight);
 
 		add_form_key('pastebinform');
 
