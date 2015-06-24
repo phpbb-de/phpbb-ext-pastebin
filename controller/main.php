@@ -134,7 +134,7 @@ class main
 	 */
 	private function table($name)
 	{
-		if($name == 'pastebin')
+		if ($name == 'pastebin')
 		{
 			return $this->pastebin_table;
 		}
@@ -158,7 +158,7 @@ class main
 		$snippet_id		= $this->request->variable('s', 0);
 		$submit			= isset($_POST['submit']) ? true : false;
 
-		if(in_array($mode, array('view', 'download', 'moderate')))
+		if (in_array($mode, array('view', 'download', 'moderate')))
 		{
 			// for all of these we have to check if the entry exists
 
@@ -230,7 +230,6 @@ class main
 			'S_AUTH_POST'	=> ($auth->acl_get('u_pastebin_post')) ? true : false,
 		));
 
-
 		// Now let's decide what to do
 		switch ($mode)
 		{
@@ -255,7 +254,7 @@ class main
 						'snippet_prune_on'	=> max(1, min(6, $this->request->variable('pruning_months', 0))),
 				);
 
-				if($this->auth->acl_get('u_pastebin_post_notlim') && $this->request->variable('pruning_months',0) == -1)
+				if ($this->auth->acl_get('u_pastebin_post_notlim') && $this->request->variable('pruning_months',0) == -1)
 				{
 					//Infinite Time...
 					$data['snippet_prunable'] = 0;
@@ -298,7 +297,7 @@ class main
 					$error[] = $user->lang['ERR_NO_BODY'];
 				}
 
-				if(!check_form_key('pastebinform'))
+				if (!check_form_key('pastebinform'))
 				{
 					$error[] = $user->lang['FORM_INVALID'];
 				}
@@ -363,11 +362,6 @@ class main
 			case 'view':
 			case 'download':
 			case 'moderate':
-
-
-
-
-
 				if ($mode == 'view')
 				{
 					if (!$auth->acl_get('u_pastebin_view'))
@@ -504,7 +498,7 @@ class main
 							$redirect_append = array();
 						}
 					}
-					else if($auth_edit)
+					else if ($auth_edit)
 					{
 						$snippet->load_from_array(array(
 							'snippet_prunable'	=> (int) $prunable,
@@ -547,7 +541,7 @@ class main
 		$confirm_image = '';
 		if (!$auth->acl_get('u_pastebin_post_novc'))
 		{
-			if(!isset($captcha))
+			if (!isset($captcha))
 			{
 				$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
 				$captcha->init($this::CONFIRM_PASTEBIN);
@@ -575,9 +569,9 @@ class main
 		}
 
 		//Allow infinite storage if it is already set and we are editing, or if the user is allowed to
-		if((isset($data['snippet_prunable']) && !$data['snippet_prunable']) || $this->auth->acl_get('u_pastebin_post_notlim'))
+		if ((isset($data['snippet_prunable']) && !$data['snippet_prunable']) || $this->auth->acl_get('u_pastebin_post_notlim'))
 		{
-			if(isset($data['snippet_prunable']))
+			if (isset($data['snippet_prunable']))
 			{
 				$selected = ($data['snippet_prunable'] == 0 || $prune_month == -1) ? ' selected="selected"' : '';
 			}
@@ -588,7 +582,7 @@ class main
 			$pruning_months_select .= '<option' . $selected . ' value="-1">' . $this->user->lang['INFINITE'] . '</option>';
 		}
 
-		if(!isset($highlight))
+		if (!isset($highlight))
 		{
 			$highlight = isset($data['snippet_highlight']) ? $data['snippet_highlight'] : 'php';
 		}

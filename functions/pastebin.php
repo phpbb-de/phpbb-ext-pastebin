@@ -64,7 +64,7 @@ class pastebin implements \ArrayAccess
 		$sql = 'SELECT * FROM ' . $this->pastebin_table . ' WHERE snippet_id = ' . (int) $id;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
-		if($row)
+		if ($row)
 		{
 			$this->data = $row;
 			return true;
@@ -80,9 +80,9 @@ class pastebin implements \ArrayAccess
 	 */
 	function load_from_array($data)
 	{
-		foreach($this->data as $key => $value)
+		foreach ($this->data as $key => $value)
 		{
-			if(isset($data[$key]))
+			if (isset($data[$key]))
 			{
 				$this->data[$key] = $data[$key];
 			}
@@ -94,7 +94,7 @@ class pastebin implements \ArrayAccess
 	 */
 	function submit()
 	{
-		if($this->data['snippet_id'])
+		if ($this->data['snippet_id'])
 		{
 			// Update
 			$sql = 'UPDATE ' . $this->pastebin_table . ' SET ' . $this->db->sql_build_array('UPDATE', $this->data) . ' WHERE snippet_id = ' . (int) $this->data['snippet_id'];
@@ -132,7 +132,7 @@ class pastebin implements \ArrayAccess
 
 	function offsetGet($offset)
 	{
-		if(!isset($this->data[$offset]))
+		if (!isset($this->data[$offset]))
 		{
 			throw new \Exception('Invalid offset');
 		}
@@ -141,7 +141,7 @@ class pastebin implements \ArrayAccess
 
 	function offsetSet($offset, $value)
 	{
-		if(!isset($this->data[$offset]))
+		if (!isset($this->data[$offset]))
 		{
 			throw new \Exception('Invalid offset');
 		}
