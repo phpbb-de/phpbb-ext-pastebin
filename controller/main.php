@@ -553,11 +553,11 @@ class main
 		$prune_month = $this->request->variable('pruning_months', 0);
 		for ($i = 1; $i < 7; $i++)
 		{
-			if(isset($data['snippet_prune_on']) && isset($data['snippet_time']))
+			if (isset($data['snippet_prune_on']) && isset($data['snippet_time']))
 			{
 				$selected = ($data['snippet_prune_on'] - $data['snippet_time'] == $i * $this::SECONDS_MONTH) ? ' selected="selected"' : '';
 			}
-			else if($prune_month)
+			else if ($prune_month)
 			{
 				$selected = ($i == $prune_month) ? ' selected="selected"' : '';
 			}
