@@ -53,28 +53,6 @@
 		<span class="corners-bottom"><span></span></span>
 	</div>
 	<!-- ENDIF -->
-
-	<!-- IF S_AUTH_VIEW -->
-	<div class="mini-panel navbar">
-		<span class="corners-top"><span></span></span>
-
-		<h3>{L_LATEST_SNIPPETS}</h3>
-
-		<!-- IF .latest_snippets -->
-		<ul>
-			<!-- BEGIN latest_snippets -->
-				<li><a href="{latest_snippets.URL}" title="{latest_snippets.TITLE}<!-- IF latest_snippets.DESC -->: {latest_snippets.DESC}<!-- ENDIF -->">{latest_snippets.TITLE_SHORT}</a> ({latest_snippets.AUTHOR_FULL})</li>
-			<!-- END latest_snippets -->
-		</ul>
-		<!-- ELSE -->
-		<ul>
-			<li>{L_NO_SNIPPETS}</li>
-		</ul>
-		<!-- ENDIF -->
-
-		<span class="corners-bottom"><span></span></span>
-	</div>
-	<!-- ENDIF -->
 </div>
 
 
@@ -87,6 +65,28 @@
     <!-- ENDIF -->
 </div>
 
+
+<!-- IF S_AUTH_VIEW -->
+<div class="mini-panel navbar">
+	<span class="corners-top"><span></span></span>
+
+	<h3>{L_LATEST_SNIPPETS}</h3>
+
+	<!-- IF .latest_snippets -->
+	<ul>
+		<!-- BEGIN latest_snippets -->
+			<li><a href="{latest_snippets.URL}" title="{latest_snippets.TITLE}<!-- IF latest_snippets.DESC -->: {latest_snippets.DESC}<!-- ENDIF -->">{latest_snippets.TITLE_SHORT}</a> ({latest_snippets.AUTHOR_FULL})</li>
+		<!-- END latest_snippets -->
+	</ul>
+	<!-- ELSE -->
+	<ul>
+		<li>{L_NO_SNIPPETS}</li>
+	</ul>
+	<!-- ENDIF -->
+
+	<span class="corners-bottom"><span></span></span>
+</div>
+<!-- ENDIF -->
 
 
 <!-- INCLUDE overall_footer.html -->

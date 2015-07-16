@@ -25,21 +25,27 @@
 .mini-panel {
 	display: block;
 	padding: 1em ;
-	margin: 1em;
-	
-	
+	margin-top: 1em;
+	margin-bottom: 1em;	
 }
+
 #content {
-	width: 70%;
+	width: 100%;
 }
+
 #extras {
-	float: right;
-	width: 30%;
+	width: 100%;
 }
 
 .mini-panel h3 {
 	margin-top: 0px;
 }
+
 .mini-panel ul {
 	padding-left: 1em;
+}
+
+#copy_paste.inputbox{
+	width: 99%;
+	max-width: 99%;
 }
