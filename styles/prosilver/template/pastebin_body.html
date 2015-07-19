@@ -7,22 +7,16 @@
 
 	<!-- IF S_AUTH_POST or S_MODE eq 'view' -->
 	<div class="mini-panel navbar">
-		<span class="corners-top"><span></span></span>
-
 		<h3>{L_PASTEBIN}</h3>
-
 		<ul>
 			<!-- IF S_AUTH_POST --><li><a href="{U_PASTEBIN}">{L_SNIPPET_NEW}</a></li><!-- ENDIF -->
 			<!-- IF S_MODE eq 'view' --><li><a href="{U_SNIPPET_DOWNLOAD}">{L_SNIPPET_DOWNLOAD}</a></li><!-- ENDIF -->
 		</ul>
-		<span class="corners-bottom"><span></span></span>
 	</div>
 	<!-- ENDIF -->
 
 	<!-- IF S_AUTH_EDIT && S_MODE eq 'view' -->
 	<div class="mini-panel navbar">
-		<span class="corners-top"><span></span></span>
-
 		<h3>{L_MODERATE_SNIPPET}</h3>
 
 		<form method="post" action="{S_FORM_ACTION_MOD}">
@@ -49,8 +43,6 @@
 			<input class="button1" name="submit" type="submit" value="{L_SUBMIT}" />
 		</fieldset>
 		</form>
-
-		<span class="corners-bottom"><span></span></span>
 	</div>
 	<!-- ENDIF -->
 </div>
@@ -68,8 +60,6 @@
 
 <!-- IF S_AUTH_VIEW -->
 <div class="mini-panel navbar">
-	<span class="corners-top"><span></span></span>
-
 	<h3>{L_LATEST_SNIPPETS}</h3>
 
 	<!-- IF .latest_snippets -->
@@ -83,8 +73,6 @@
 		<li>{L_NO_SNIPPETS}</li>
 	</ul>
 	<!-- ENDIF -->
-
-	<span class="corners-bottom"><span></span></span>
 </div>
 <!-- ENDIF -->
 
