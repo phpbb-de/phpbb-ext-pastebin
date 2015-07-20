@@ -5,10 +5,16 @@ parameters:
     phpbbde.pastebin.cron.prune_interval: 86400
     tables.phpbbde.pastebin.pastebin: %core.table_prefix%pastebin
 services:
+    phpbbde.pastebin.functions.utility:
+        class: phpbbde\pastebin\functions\utility
+        arguments:
+            - %phpbbde.pastebin.geshilangs%
     phpbbde.pastebin.functions.pastebin:
         class: phpbbde\pastebin\functions\pastebin
         arguments:
-            - %phpbbde.pastebin.geshilangs%
+            - @dbal.conn
+            - @user
+            - %tables.phpbbde.pastebin.pastebin%
     phpbbde.pastebin.controller.main:
         class: phpbbde\pastebin\controller\main
         arguments:
@@ -21,6 +27,7 @@ services:
             - @user
             - @controller.helper
             - @captcha.factory
+            - @phpbbde.pastebin.functions.utility
             - @phpbbde.pastebin.functions.pastebin
             - %core.root_path%
             - %core.php_ext%

@@ -42,6 +42,8 @@ $lang = array_merge($lang, array(
 	'ACL_U_PASTEBIN_POST'			=> 'Kann Snippets posten',
 	'ACL_U_PASTEBIN_POST_NOVC'		=> 'Kann Snippets posten ohne visuelle Bestätigung',
 	'ACL_U_PASTEBIN_POST_NOTLIM'	=> 'Kann Snippets dauerhaft in den Pastebin einstellen',
+	'ACL_U_PASTEBIN_EDIT'			=> 'Kann eigene Snippets bearbeiten',
+	'ACL_U_PASTEBIN_DELETE'			=> 'Kann eigene Snippets löschen',
 
 	// Moderator perms,
 	'ACL_M_PASTEBIN_EDIT'			=> 'Kann Snippets editieren',

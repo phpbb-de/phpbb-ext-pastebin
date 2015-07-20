@@ -1,101 +1,259 @@
 <?php
 /**
-* @package phpBB3
-* @version 0.2.0
-* @copyright (c) 2009 3Di (2007 eviL3), 2015 gn#36
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*/
+ * @package pastebin
+ * @copyright (c) 2015 gn#36
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
 
 namespace phpbbde\pastebin\functions;
 
-class pastebin
+/**
+ * Class for database interaction with pastebin entries
+ *
+ * @author gn#36
+ *
+ */
+class pastebin implements \ArrayAccess
 {
-	/**
-	 * Version of the pastebin mod
-	 *
-	 * @var int
-	 */
-	var $version	= '0.2.2';
+	/** @var array */
+	protected $data;
 
-	/**
-	 * Geshi directory
-	 *
-	 * @var string
-	 */
-	var $geshi_dir	= '';
+	/** @var array */
+	protected $file_ext;
 
-	/**
-	 * List of geshi installed langs
-	 *
-	 * @var array
-	 */
-	var $geshi_list	= array();
+	/** @var \phpbb\db\driver\driver_interface */
+	protected $db;
 
-	/**
-	 * Constructor
-	 */
-	function __construct($geshi_dir)
+	/** @var \phpbb\user */
+	protected $user;
+
+	/** @var string */
+	protected $pastebin_table;
+
+	function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\user $user, $pastebin_table)
 	{
-		$this->geshi_dir	= $geshi_dir;
-		$this->geshi_list	= $this->geshi_list();
+		$this->db = $db;
+		$this->user = $user;
+		$this->pastebin_table = $pastebin_table;
+		$this->empty_data();
+
+		$this->file_ext = array(
+			'text'				=> 'txt',
+			'php'				=> 'php',
+			'sql'				=> 'sql',
+			'html4strict'		=> 'htm',
+			'css'				=> 'css',
+			'javascript'		=> 'js',
+			'java'				=> 'java',
+			'xml'				=> 'xml',
+			'asp'				=> 'asp',
+			'c'					=> 'c',
+			'cpp'				=> 'cpp',
+			'csharp'			=> 'cs',
+			'perl'				=> 'pl',
+			'vb'				=> 'vbs',
+			'diff'				=> 'diff',
+			'robots'			=> 'txt',
+			'smarty'			=> 'html',
+
+			'actionscript'		=> 'as',
+			'ada'				=> 'ada',
+			'apache'			=> 'txt',
+			'applescript'		=> 'scrpt',
+			'asm'				=> 'asm',
+			'autoit'			=> 'txt',
+			'bash'				=> 'sh',
+			'blitzbasic'		=> 'bas',
+			'bnf'				=> 'bnf',
+			'c_mac'				=> 'c',
+			'caddcl'			=> 'dcl',
+			'cadlisp'			=> 'lisp',
+			'cfdg'				=> 'cfd',
+			'cfm'				=> 'cfm',
+			'cpp-qt'			=> 'cpp',
+			'css-gen.cfg'		=> 'cfg',
+			'c_mac'				=> 'c',
+			'd'					=> 'd',
+			'delphi'			=> 'dpr',
+			'div'				=> 'div',
+			'dos'				=> 'bat',
+			'eiffel'			=> 'E',
+			'fortran'			=> 'F',
+			'freebasic'			=> 'bas',
+			'gml'				=> 'gml',
+			'groovy'			=> 'groovy',
+			'idl'				=> 'idl',
+			'ini'				=> 'ini',
+			'inno'				=> 'ino',
+			'io'				=> 'io',
+			'java5'				=> 'java',
+			'latex'				=> 'tex',
+			'lisp'				=> 'lsp',
+			'lua'				=> 'lua',
+			'matlab'			=> 'm',
+			'mirc'				=> 'mrc',
+			'mpasm'				=> 'asm',
+			'mysql'				=> 'sql',
+			'nsis'				=> 'nsh',
+			'objc'				=> 'C',
+			'ocaml-brief'		=> 'ml',
+			'ocaml'				=> 'ml',
+			'oobas'				=> 'bas',
+			'oracle8'			=> 'sql',
+			'pascal'			=> 'p',
+			'php-brief'			=> 'php',
+			'ruby'				=> 'rb',
+			'sas'				=> 'sas',
+			'scheme'			=> 's',
+			'sdlbasic'			=> 'bas',
+			'smalltalk'			=> 'st',
+			'tcl'				=> 'tcl',
+			'thinbasic'			=> 'bas',
+			'tsql'				=> 'sql',
+			'plsql'				=> 'sql',
+			'python'			=> 'py',
+			'qbasic'			=> 'bas',
+			'rails'				=> 'rb',
+			'reg'				=> 'reg',
+			'vbnet'				=> 'vbs',
+			'vhdl'				=> 'vhdl',
+			'visualfoxpro'		=> 'fky',
+			'winbatch'			=> 'bat',
+			'xpp'				=> 'xpp',
+			'z80'				=> 'z80',
+		);
+
 	}
 
-
 	/**
-	 * Check if $needle is in one of geshis supported languages
+	 * Removes all pastebin data and replaces them by the default.
 	 */
-	function geshi_check($needle)
+	function empty_data()
 	{
-		return in_array($needle, $this->geshi_list);
+		$this->data = array(
+			'snippet_id' => 0,
+			'snippet_author' => $this->user->data['user_id'],
+			'snippet_time' => time(),
+			'snippet_prune_on' => 0,
+			'snippet_title' => '',
+			'snippet_desc' => '',
+			'snippet_text' => '',
+			'snippet_prunable' => false,
+			'snippet_highlight' => 'text',
+		);
 	}
 
 	/**
-	 * List of all geshi langs
+	 * Load pastebin from DB. Returns true if entry was found, false otherwise
+	 * @param int $id
+	 * @return boolean
 	 */
-	function geshi_list()
+	function load($id)
 	{
-		global $phpEx;
-
-		$geshi_list = array();
-
-		$d = dir($this->geshi_dir);
-		while (false !== ($file = $d->read()))
+		$sql = 'SELECT * FROM ' . $this->pastebin_table . ' WHERE snippet_id = ' . (int) $id;
+		$result = $this->db->sql_query($sql);
+		$row = $this->db->sql_fetchrow($result);
+		if ($row)
 		{
-			if (in_array($file, array('.', '..')))
-			{
-				continue;
-			}
-
-			if (($substr_end = strpos($file, ".$phpEx")) !== false)
-			{
-				@sort($geshi_list[] = substr($file, 0, $substr_end));
-			}
+			$this->data = $row;
+			return true;
 		}
-		$d->close();
 
-		return $geshi_list;
+		return false;
 	}
 
 	/**
-	 * Highlight select box for geshi languages
+	 * Load changes from array. Unknown entries are ignored.
+	 *
+	 * @param array $data
 	 */
-	function highlight_select($default = 'text')
+	function load_from_array($data)
 	{
-		global $user;
-		if (!in_array($default, $this->geshi_list))
+		foreach ($this->data as $key => $value)
 		{
-			$default = 'text';
-		}
-
-		$output = '';
-		foreach ($user->lang['PASTEBIN_LANGUAGES'] as $code => $name)
-		{
-			if (in_array($code, $this->geshi_list))
+			if (isset($data[$key]))
 			{
-				$output .= '<option' . (($default == $code) ? ' selected="selected"' : '') . ' value="' . htmlentities($code, ENT_QUOTES) . '">' . $name . '</option>';
+				$this->data[$key] = $data[$key];
 			}
 		}
+	}
 
-		return $output;
+	/**
+	 * Store changes in the database
+	 */
+	function submit()
+	{
+		if ($this->data['snippet_id'])
+		{
+			// Update
+			$sql = 'UPDATE ' . $this->pastebin_table . ' SET ' . $this->db->sql_build_array('UPDATE', $this->data) . ' WHERE snippet_id = ' . (int) $this->data['snippet_id'];
+			$this->db->sql_query($sql);
+		}
+		else
+		{
+			// Insert
+			$row = $this->data;
+			unset($row['snippet_id']);
+			$sql = 'INSERT INTO ' . $this->pastebin_table . ' ' . $this->db->sql_build_array('INSERT', $row);
+			$this->db->sql_query($sql);
+			$this->data['snippet_id'] = $this->db->sql_nextid();
+		}
+	}
+
+	/**
+	 * Deletes the current snippet from the database
+	 */
+	function delete()
+	{
+		$sql = 'DELETE FROM ' . $this->pastebin_table . '
+			WHERE snippet_id = ' . $this->data['snippet_id'];
+		$this->db->sql_query($sql);
+		$this->empty_data();
+	}
+
+	/**
+	 * Returns file extension for this entry depending on syntax highlighting.
+	 *
+	 * This will probably not always be correct, but more often than always using "txt".
+	 */
+	function file_ext()
+	{
+		if (isset($this->file_ext[$this->data['snippet_highlight']]))
+		{
+			return $this->file_ext[$this->data['snippet_highlight']];
+		}
+		return 'txt';
+	}
+
+	// ArrayAccess
+	//
+
+	function offsetExists($offset)
+	{
+		return isset($this->data[$offset]);
+	}
+
+	function offsetGet($offset)
+	{
+		if (!isset($this->data[$offset]))
+		{
+			throw new \Exception('Invalid offset');
+		}
+		return $this->data[$offset];
+	}
+
+	function offsetSet($offset, $value)
+	{
+		if (!isset($this->data[$offset]))
+		{
+			throw new \Exception('Invalid offset');
+		}
+
+		$this->data[$offset] = $value;
+	}
+
+	function offsetUnset($offset)
+	{
+
 	}
 }
