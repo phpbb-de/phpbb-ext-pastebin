@@ -218,7 +218,7 @@ class pastebin implements \ArrayAccess
 	 */
 	function file_ext()
 	{
-		if(isset($this->file_ext[$this->data['snippet_highlight']]))
+		if (isset($this->file_ext[$this->data['snippet_highlight']]))
 		{
 			return $this->file_ext[$this->data['snippet_highlight']];
 		}
