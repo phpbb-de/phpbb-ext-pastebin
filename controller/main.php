@@ -174,7 +174,6 @@ class main
 				'DESC'			=> $row['snippet_desc'],
 				'TITLE'			=> $row['snippet_title'],
 				'TITLE_SHORT'	=> (utf8_strlen($row['snippet_title']) > 50) ? utf8_substr($row['snippet_title'], 0, 50) . '...' : $row['snippet_title'],
-				'TITLE_SHORT'	=> (utf8_strlen($row['snippet_title']) > 50) ? utf8_substr($row['snippet_title'], 0, 50) . '...' : $row['snippet_title'],
 				'AUTHOR_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 			));
 		}
