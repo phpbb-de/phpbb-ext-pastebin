@@ -18,6 +18,9 @@ class pastebin implements \ArrayAccess
 	/** @var array */
 	protected $data;
 
+	/** @var array */
+	protected $file_ext;
+
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
@@ -33,6 +36,92 @@ class pastebin implements \ArrayAccess
 		$this->user = $user;
 		$this->pastebin_table = $pastebin_table;
 		$this->empty_data();
+
+		$this->file_ext = array(
+			'text'				=> 'txt',
+			'php'				=> 'php',
+			'sql'				=> 'sql',
+			'html4strict'		=> 'htm',
+			'css'				=> 'css',
+			'javascript'		=> 'js',
+			'java'				=> 'java',
+			'xml'				=> 'xml',
+			'asp'				=> 'asp',
+			'c'					=> 'c',
+			'cpp'				=> 'cpp',
+			'csharp'			=> 'cs',
+			'perl'				=> 'pl',
+			'vb'				=> 'vbs',
+			'diff'				=> 'diff',
+			'robots'			=> 'txt',
+			'smarty'			=> 'html',
+
+			'actionscript'		=> 'as',
+			'ada'				=> 'ada',
+			'apache'			=> 'txt',
+			'applescript'		=> 'scrpt',
+			'asm'				=> 'asm',
+			'autoit'			=> 'txt',
+			'bash'				=> 'sh',
+			'blitzbasic'		=> 'bas',
+			'bnf'				=> 'bnf',
+			'c_mac'				=> 'c',
+			'caddcl'			=> 'dcl',
+			'cadlisp'			=> 'lisp',
+			'cfdg'				=> 'cfd',
+			'cfm'				=> 'cfm',
+			'cpp-qt'			=> 'cpp',
+			'css-gen.cfg'		=> 'cfg',
+			'c_mac'				=> 'c',
+			'd'					=> 'd',
+			'delphi'			=> 'dpr',
+			'div'				=> 'div',
+			'dos'				=> 'bat',
+			'eiffel'			=> 'E',
+			'fortran'			=> 'F',
+			'freebasic'			=> 'bas',
+			'gml'				=> 'gml',
+			'groovy'			=> 'groovy',
+			'idl'				=> 'idl',
+			'ini'				=> 'ini',
+			'inno'				=> 'ino',
+			'io'				=> 'io',
+			'java5'				=> 'java',
+			'latex'				=> 'tex',
+			'lisp'				=> 'lsp',
+			'lua'				=> 'lua',
+			'matlab'			=> 'm',
+			'mirc'				=> 'mrc',
+			'mpasm'				=> 'asm',
+			'mysql'				=> 'sql',
+			'nsis'				=> 'nsh',
+			'objc'				=> 'C',
+			'ocaml-brief'		=> 'ml',
+			'ocaml'				=> 'ml',
+			'oobas'				=> 'bas',
+			'oracle8'			=> 'sql',
+			'pascal'			=> 'p',
+			'php-brief'			=> 'php',
+			'ruby'				=> 'rb',
+			'sas'				=> 'sas',
+			'scheme'			=> 's',
+			'sdlbasic'			=> 'bas',
+			'smalltalk'			=> 'st',
+			'tcl'				=> 'tcl',
+			'thinbasic'			=> 'bas',
+			'tsql'				=> 'sql',
+			'plsql'				=> 'sql',
+			'python'			=> 'py',
+			'qbasic'			=> 'bas',
+			'rails'				=> 'rb',
+			'reg'				=> 'reg',
+			'vbnet'				=> 'vbs',
+			'vhdl'				=> 'vhdl',
+			'visualfoxpro'		=> 'fky',
+			'winbatch'			=> 'bat',
+			'xpp'				=> 'xpp',
+			'z80'				=> 'z80',
+		);
 
 	}
 
@@ -120,6 +209,20 @@ class pastebin implements \ArrayAccess
 			WHERE snippet_id = ' . $this->data['snippet_id'];
 		$this->db->sql_query($sql);
 		$this->empty_data();
+	}
+
+	/**
+	 * Returns file extension for this entry depending on syntax highlighting.
+	 *
+	 * This will probably not always be correct, but more often than always using "txt".
+	 */
+	function file_ext()
+	{
+		if(isset($this->file_ext[$this->data['snippet_highlight']]))
+		{
+			return $this->file_ext[$this->data['snippet_highlight']];
+		}
+		return 'txt';
 	}
 
 	// ArrayAccess

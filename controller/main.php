@@ -434,7 +434,7 @@ class main
 					// Thanks download.php
 					$snippet_text = htmlspecialchars_decode(utf8_decode($data['snippet_text']));
 
-					$filename = htmlspecialchars_decode($data['snippet_title']) . '.txt';
+					$filename = htmlspecialchars_decode($data['snippet_title']) . '.' . $this->pastebin->file_ext();
 
 					$user_agent = $this->request->server('HTTP_USER_AGENT', '');
 					if (strpos($user_agent, 'MSIE') !== false || strpos($user_agent, 'Safari') !== false || strpos($user_agent, 'Konqueror') !== false)
