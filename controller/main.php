@@ -173,7 +173,7 @@ class main
 				'URL'			=> $this->helper->route('phpbbde_pastebin_main_controller', array('mode'=>'view', 's' => $row['snippet_id'])),
 				'DESC'			=> $row['snippet_desc'],
 				'TITLE'			=> $row['snippet_title'],
-				'TITLE_SHORT'	=> (utf8_strlen($row['snippet_title']) > 12) ? utf8_substr($row['snippet_title'], 0, 12) . '...' : $row['snippet_title'],
+				'TITLE_SHORT'	=> (utf8_strlen($row['snippet_title']) > 50) ? utf8_substr($row['snippet_title'], 0, 50) . '...' : $row['snippet_title'],
 				'AUTHOR_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 			));
 		}
