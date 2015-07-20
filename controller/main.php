@@ -404,6 +404,8 @@ class main
 						'SNIPPET_TEXT_ORIG'		=> $snippet_text,
 						'SNIPPET_TEXT_DISPLAY'	=> $snippet_text_display,
 
+						'SNIPPET_TIME'			=> $this->user->format_date($data['snippet_time']),
+						'SNIPPET_PRUNE_ON'		=> $data['snippet_prunable'] ? $this->user->format_date($data['snippet_prune_on']) : $this->user->lang['NEVER'],
 						'SNIPPET_DESC_V'		=> $data['snippet_desc'],
 						'SNIPPET_TITLE_V'		=> $data['snippet_title'],
 						'SNIPPET_AUTHOR'		=> $data['username'],
