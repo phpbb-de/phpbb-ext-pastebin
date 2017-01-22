@@ -1,19 +1,19 @@
 .icon-pastebin {
-    background-image: url("./images/icon_pastebin.gif");
-    background-position: 0 50%;
-    background-repeat: no-repeat;
+	background-image: url("./images/icon_pastebin.gif");
+	background-position: 0 50%;
+	background-repeat: no-repeat;
 }
 
-#pastebin-codebox {
+.pastebin #pastebin-codebox {
 	font-size: 1.2em;
 }
 
-#pastebin-codebox dd {
+.pastebin #pastebin-codebox dd {
 	margin: 0px 0px 0px 4em;
 	padding: 0.5em 0px 0px 0.5px;
 }
 
-#pastebin-codebox dt {
+.pastebin #pastebin-codebox dt {
 	text-transform: uppercase;
 	border-bottom: 1px solid #ccc;
 	font-size: 0.8em;
@@ -22,36 +22,36 @@
 	padding: 0.2em 0px 0.2px 0.1em;
 }
 
-.mini-panel {
+.pastebin .mini-panel {
 	display: block;
 	padding: 1em ;
 	margin-top: 1em;
 	margin-bottom: 1em;	
 }
 
-#content {
+.pastebin #content {
 	width: 100%;
 }
 
-#extras {
+.pastebin #extras {
 	width: 100%;
 }
 
-.mini-panel h3 {
+.pastebin .mini-panel h3 {
 	margin-top: 0px;
 }
 
-.mini-panel ul {
+.pastebin .mini-panel ul {
 	padding-left: 1em;
 }
 
-#copy_paste.inputbox{
+.pastebin #copy_paste.inputbox{
 	min-width: 100%;
 	max-width: 100%;
 	border:none;
 }
 
-.textwrapper{
+.pastebin .textwrapper{
 	border: 1px solid;
 	border-color: #B4BAC0;
 	padding: 5px;
