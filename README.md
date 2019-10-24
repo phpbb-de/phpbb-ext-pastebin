@@ -1,4 +1,4 @@
-# phpBB 3.1 Extension - phpBB.de Pastebin
+# phpBB 3.2 Extension - phpBB.de Pastebin
 
 ## Installation
 
