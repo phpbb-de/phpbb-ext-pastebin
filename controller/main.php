@@ -22,9 +22,6 @@ class main
 	const SECONDS_MONTH = 2592000;
 	const SECONDS_YEAR  = 31536000;
 
-	/* @var Container */
-	protected $phpbb_container;
-
 	/** @var \phpbb\auth\auth */
 	protected $auth;
 
@@ -48,6 +45,9 @@ class main
 
 	/* @var \phpbb\language\language */
 	protected $language;
+
+	/** @var \phpbb\files\factory */
+	protected $factory;
 
 	/** @var \phpbb\controller\helper */
 	protected $helper;
@@ -82,7 +82,6 @@ class main
 	/**
 	 * Construct
 	 *
-	 * @param Container 	$phpbb_container
 	 * @param \phpbb\auth\auth $auth
 	 * @param \phpbb\cache\service $cache
 	 * @param \phpbb\request\request $request
@@ -90,6 +89,7 @@ class main
 	 * @param \phpbb\template\template $template
 	 * @param \phpbb\user $user
 	 * @param \phpbb\language\language	$language
+	 * @param \phpbb\files\factory $factory
 	 * @param \phpbb\controller\helper $helper
 	 * @param \phpbbde\pastebin\functions\pastebin $pastebin
 	 * @param \phpbbde\pastebin\functions\utility $util
@@ -97,7 +97,6 @@ class main
 	 * @param string $php_ext
 	 */
 	public function __construct(
-		Container $phpbb_container,
 		\phpbb\auth\auth $auth,
 		\phpbb\cache\service $cache,
 		\phpbb\config\config $config,
@@ -106,6 +105,7 @@ class main
 		\phpbb\template\template $template,
 		\phpbb\user $user,
 		\phpbb\language\language $language,
+		\phpbb\files\factory $factory,
 		\phpbb\controller\helper $helper,
 		\phpbb\captcha\factory $captcha_factory,
 		\phpbbde\pastebin\functions\utility $util,
@@ -116,7 +116,6 @@ class main
 		$geshi_lang,
 		$pastebin_table)
 	{
-		$this->phpbb_container = $phpbb_container;
 		$this->auth = $auth;
 		$this->cache = $cache;
 		$this->config = $config;
@@ -125,6 +124,7 @@ class main
 		$this->template = $template;
 		$this->user = $user;
 		$this->language = $language;
+		$this->factory = $factory;
 		$this->helper = $helper;
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
@@ -302,10 +302,11 @@ class main
 				$filedata = $this->request->file('fileupload');
 				if (isset($_FILES['fileupload']) && $filedata['name'] != 'none' && trim($filedata['name']))
 				{
-					$upload = $this->phpbb_container->get('files.factory')->get('upload')
-						->set_allowed_extensions($this->allowed_extensions);
+					$upload = $this->factory->get('files.upload');
 
-					$file = $upload->handle_upload('files.types.form', 'fileupload');
+					$file = $upload
+						->set_allowed_extensions($this->allowed_extensions)
+						->handle_upload('files.types.form', 'fileupload');
 
 					if (!sizeof($file->error))
 					{
