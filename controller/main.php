@@ -11,6 +11,7 @@
 namespace phpbbde\pastebin\controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DependencyInjection\Container;
 
 class main
 {
@@ -20,6 +21,9 @@ class main
 	const SECONDS_WEEK  = 604800;
 	const SECONDS_MONTH = 2592000;
 	const SECONDS_YEAR  = 31536000;
+
+	/* @var Container */
+	protected $phpbb_container;
 
 	/** @var \phpbb\auth\auth */
 	protected $auth;
@@ -72,9 +76,13 @@ class main
 	/** @var string */
 	protected $pastebin_table;
 
+	/** @var string */
+	protected $allowed_extensions = array('txt', 'php', 'html', 'xml', 'md', 'json', 'yml');
+
 	/**
 	 * Construct
 	 *
+	 * @param Container 	$phpbb_container
 	 * @param \phpbb\auth\auth $auth
 	 * @param \phpbb\cache\service $cache
 	 * @param \phpbb\request\request $request
@@ -89,6 +97,7 @@ class main
 	 * @param string $php_ext
 	 */
 	public function __construct(
+		Container $phpbb_container,
 		\phpbb\auth\auth $auth,
 		\phpbb\cache\service $cache,
 		\phpbb\config\config $config,
@@ -107,6 +116,7 @@ class main
 		$geshi_lang,
 		$pastebin_table)
 	{
+		$this->phpbb_container = $phpbb_container;
 		$this->auth = $auth;
 		$this->cache = $cache;
 		$this->config = $config;
@@ -114,7 +124,7 @@ class main
 		$this->db = $db;
 		$this->template = $template;
 		$this->user = $user;
-		$this->user = $language;
+		$this->language = $language;
 		$this->helper = $helper;
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
@@ -292,16 +302,14 @@ class main
 				$filedata = $this->request->file('fileupload');
 				if (isset($_FILES['fileupload']) && $filedata['name'] != 'none' && trim($filedata['name']))
 				{
-					include_once($this->root_path . 'includes/functions_upload.' . $this->php_ext);
-					$upload = new \fileupload('PASTEBIN_');
+					$upload = $this->phpbb_container->get('files.factory')->get('upload')
+						->set_allowed_extensions($this->allowed_extensions);
 
-					$upload->set_allowed_extensions(array('txt', 'mod', 'php', 'xml', 'html'));
-
-					$file = $upload->form_upload('fileupload');
+					$file = $upload->handle_upload('files.types.form', 'fileupload');
 
 					if (!sizeof($file->error))
 					{
-						$snippet_contents = utf8_normalize_nfc(utf8_convert_message(@file_get_contents($file->filename)));
+						$snippet_contents = utf8_normalize_nfc(utf8_convert_message(@file_get_contents($file->get('uploadname'))));
 					}
 
 					$file->remove();

@@ -18,6 +18,7 @@ services:
     phpbbde.pastebin.controller.main:
         class: phpbbde\pastebin\controller\main
         arguments:
+            - '@service_container'
             - '@auth'
             - '@cache'
             - '@config'
