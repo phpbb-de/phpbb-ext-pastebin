@@ -25,6 +25,7 @@ services:
             - '@dbal.conn'
             - '@template'
             - '@user'
+            - '@language'
             - '@controller.helper'
             - '@captcha.factory'
             - '@phpbbde.pastebin.functions.utility'
