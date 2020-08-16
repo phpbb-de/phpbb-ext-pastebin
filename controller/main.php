@@ -399,7 +399,7 @@ class main
 
 					$snippet_text = $data['snippet_text'];
 
-					$highlight = (isset($_REQUEST['highlight'])) ? $this->request->variable('highlight', '') : $data['snippet_highlight'];
+					$highlight = ($this->request->variable('highlight')) ? $this->request->variable('highlight', '') : $data['snippet_highlight'];
 
 					if (!$this->util->geshi_check($highlight))
 					{
