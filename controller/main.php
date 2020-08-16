@@ -75,7 +75,7 @@ class main
 
 	/** @var string */
 	protected $pastebin_table;
-	
+
 	/**
 	 * Construct
 	 *
@@ -301,7 +301,9 @@ class main
 				if ($this->request->file('fileupload') && $filedata['name'] != 'none' && trim($filedata['name']))
 				{
 					$upload = $this->factory->get('files.upload');
+
 					$allowed_extensions = array('txt', 'php', 'html', 'xml', 'md', 'json', 'yml', 'js', 'diff', 'sql', 'pl');
+
 					$file = $upload
 						->set_allowed_extensions($allowed_extensions)
 						->handle_upload('files.types.form', 'fileupload');
@@ -310,7 +312,7 @@ class main
 
 					if (!$file->error)
 					{
-						$snippet_contents = utf8_normalize_nfc(utf8_convert_message(@file_get_contents($file->get('uploadname'))));
+						$snippet_contents = utf8_normalize_nfc(utf8_convert_message(@file_get_contents($file->get('filename'))));
 					}
 
 					$file->remove();
@@ -399,7 +401,7 @@ class main
 
 					$snippet_text = $data['snippet_text'];
 
-					$highlight = ($this->request->variable('highlight')) ? $this->request->variable('highlight', '') : $data['snippet_highlight'];
+					$highlight = ($this->request->is_set('highlight')) ? $this->request->variable('highlight', '') : $data['snippet_highlight'];
 
 					if (!$this->util->geshi_check($highlight))
 					{
