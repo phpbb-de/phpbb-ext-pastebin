@@ -182,7 +182,7 @@ class main
 		$confirm_id		= $this->request->variable('confirm_id', '');
 		$confirm_code	= $this->request->variable('confirm_code', '');
 		$snippet_id		= $this->request->variable('s', 0);
-		$submit			= isset($_POST['submit']) ? true : false;
+		$submit			= $this->request->is_set_post('submit');
 
 		if (in_array($mode, array('view', 'download', 'moderate')))
 		{
@@ -492,7 +492,7 @@ class main
 				}
 				else if ($mode == 'moderate')
 				{
-					$delete			= (isset($_POST['delete_snippet'])) ? true : false;
+					$delete			= $this->request->is_set_post('delete_snippet');
 					$highlight		= $this->request->variable('snippet_highlight', '');
 					$pruning_months	= $this->request->variable('pruning_months', 0);
 					$prunable		= $pruning_months != -1;
@@ -506,7 +506,7 @@ class main
 						trigger_error('PASTEBIN_AUTH_NO_VIEW');
 					}
 
-					if (isset($_POST['cancel']))
+					if ($this->request->is_set_post('cancel'))
 					{
 						//redirect(append_sid("{$root_path}support/pastebin.$phpEx", "mode=view&amp;s=$snippet_id"));
 						redirect($this->helper->route('phpbbde_pastebin_main_controller', array("mode"=>"view","s"=>$snippet_id)));
