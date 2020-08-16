@@ -298,7 +298,7 @@ class main
 
 				$filedata = $this->request->file('fileupload');
 
-				if (isset($_FILES['fileupload']) && $filedata['name'] != 'none' && trim($filedata['name']))
+				if ($this->request->file('fileupload') && $filedata['name'] != 'none' && trim($filedata['name']))
 				{
 					$upload = $this->factory->get('files.upload');
 					$allowed_extensions = array('txt', 'php', 'html', 'xml', 'md', 'json', 'yml', 'js', 'diff', 'sql', 'pl');
@@ -306,9 +306,11 @@ class main
 						->set_allowed_extensions($allowed_extensions)
 						->handle_upload('files.types.form', 'fileupload');
 
+					$upload->common_checks($file);
+
 					if (!$file->error)
 					{
-						$snippet_contents = utf8_normalize_nfc(utf8_convert_message($file->get('uploadname')));
+						$snippet_contents = utf8_normalize_nfc(utf8_convert_message(@file_get_contents($file->get('uploadname'))));
 					}
 
 					$file->remove();
