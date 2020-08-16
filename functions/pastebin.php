@@ -206,7 +206,7 @@ class pastebin implements \ArrayAccess
 	function delete()
 	{
 		$sql = 'DELETE FROM ' . $this->pastebin_table . '
-			WHERE snippet_id = ' . $this->data['snippet_id'];
+			WHERE snippet_id = ' . (int) $this->data['snippet_id'];
 		$this->db->sql_query($sql);
 		$this->empty_data();
 	}

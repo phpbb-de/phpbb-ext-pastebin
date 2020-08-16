@@ -11,7 +11,6 @@
 namespace phpbbde\pastebin\controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\DependencyInjection\Container;
 
 class main
 {
