@@ -77,7 +77,7 @@ class main
 	protected $pastebin_table;
 
 	/** @var string */
-	protected $allowed_extensions = array('txt', 'php', 'html', 'xml', 'md', 'json', 'yml');
+	protected $allowed_extensions = array('txt', 'php', 'html', 'xml', 'md', 'json', 'yml', 'js', 'diff', 'sql', 'pl');
 
 	/**
 	 * Construct
