@@ -34,7 +34,9 @@ $lang = array_merge($lang, array(
 	'DOWNLOAD_SNIPPET'			=> 'Eintrag herunterladen',
 	'DOWNLOAD_SNIPPET_EXPLAIN'	=> 'Alternativ kannst du den gesamten Eintrag auch als Datei %sherunterladen%s.',
 
-	'ERR_NO_BODY'				=> 'Du hast kein Code eingefügt oder keine gültige Datei zum Upload ausgewählt.',
+	'DISALLOWED_EXTENSION'	=> 'Die Dateierweiterung %s ist nicht erlaubt',
+
+	'ERR_NO_BODY'				=> 'Du hast keinen Code eingefügt oder keine gültige Datei zum Upload ausgewählt.',
 	'ERR_NO_TITLE'				=> 'Du hast keinen Titel für den Eintrag eingegeben.',
 	'ERR_NO_DESC'				=> 'Du hast keine Beschreibung für den Eintrag eingegeben.',
 
@@ -53,7 +55,6 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_AUTH_NO_POST'		=> 'Du hast keine Berechtigung, einen Eintrag zu erstellen.',
 	'PASTEBIN_CONFIRM'			=> 'Visuelle Bestätigung',
 	'PASTEBIN_CONFIRM_EXPLAIN'	=> 'Gib den Code genau so ein, wie du ihn siehst; Groß- und Kleinschreibung wird nicht unterschieden, Null wird nicht verwendet.',
-	'PASTEBIN_DISALLOWED_EXTENSION'	=> 'Die Dateierweiterung %s ist nicht erlaubt',
 	'PASTEBIN_EMPTY_FILEUPLOAD'	=> 'Die hochgeladene Datei ist leer.',
 	'PASTEBIN_EXPLAIN'			=> 'Im Pastebin kannst du Codeabschnitte oder auch ganze Dateien ablegen, um sie zum Beispiel später in einem Supportthema zu verlinken.',
 	'PASTEBIN_HELLO'			=> 'Hat dich jemand hierher geschickt?',

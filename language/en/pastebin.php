@@ -33,7 +33,9 @@ $lang = array_merge($lang, array(
 	'DOWNLOAD_SNIPPET'			=> 'Download as file',
 	'DOWNLOAD_SNIPPET_EXPLAIN'	=> 'Alternatively, you can %sdownload%s the whole entry as a file.',
 
-	'ERR_NO_BODY'				=> 'You did not enter any code or upload a valid file.',
+	'DISALLOWED_EXTENSION'	=> 'The file extension %s is not allowed.',
+
+	'ERR_NO_BODY'				=> 'You did not enter any code or a valid file for upload.',
 	'ERR_NO_TITLE'				=> 'You did not enter a title for your entry.',
 	'ERR_NO_DESC'				=> 'You did not enter a description for your entry.',
 
@@ -52,7 +54,6 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_AUTH_NO_POST'		=> 'You are not authorized to enter a new entry.',
 	'PASTEBIN_CONFIRM'			=> 'Visual confirmation',
 	'PASTEBIN_CONFIRM_EXPLAIN'	=> 'Enter the code exactly as you see it; capitalization will be ignored, zero is not used.',
-	'PASTEBIN_DISALLOWED_EXTENSION'	=> 'The file extension %s is not allowed.',
 	'PASTEBIN_EMPTY_FILEUPLOAD'	=> 'The uploaded file is empty.',
 	'PASTEBIN_EXPLAIN'			=> 'In the pastebin, you can paste code snippets or whole files, for example to add a link to them to a support topic.',
 	'PASTEBIN_HELLO'			=> 'Did someone direct you here?',
