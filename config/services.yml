@@ -25,6 +25,8 @@ services:
             - '@dbal.conn'
             - '@template'
             - '@user'
+            - '@language'
+            - '@files.factory'
             - '@controller.helper'
             - '@captcha.factory'
             - '@phpbbde.pastebin.functions.utility'
@@ -37,10 +39,10 @@ services:
     phpbbde.pastebin.base_listener:
         class: phpbbde\pastebin\event\base_events
         arguments:
-            - '@auth'
             - '@template'
             - '@controller.helper'
             - '@user'
+            - '@language'
             - '%core.root_path%'
             - '%core.php_ext%'
         tags:

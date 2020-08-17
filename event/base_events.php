@@ -27,29 +27,55 @@ class base_events implements EventSubscriberInterface
 		);
 	}
 
+	/** @var \phpbb\template\template */
+	protected $template;
+
+	/** @var \phpbb\user */
+	protected $user;
+
+	/* @var \phpbb\language\language */
+	protected $language;
+
+	/** @var \phpbb\controller\helper */
+	protected $helper;
+
+	/** @var string */
+	protected $root_path;
+
+	/** @var string */
+	protected $php_ext;
+
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\auth\auth			$auth		Auth object
 	 * @param \phpbb\template\template	$template	Template object
 	 * @param \phpbb\controller\helper	$helper 	Helper
+	 * @param \phpbb\user $user
+	 * @param \phpbb\language\language	$language
 	 * @param string			$phpbb_root_path		phpBB root path (community/)
 	 * @param string			$php_ext				php file extension (php)
 	 * @param string			$root_path				php file extension (...phpbb.de/)
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\controller\helper $helper, \phpbb\user $user, $phpbb_root_path, $php_ext)
+	public function __construct(
+		\phpbb\template\template $template,
+		\phpbb\controller\helper $helper,
+		\phpbb\user $user,
+		\phpbb\language\language $language,
+		$root_path,
+		$php_ext
+	)
 	{
-		$this->auth = $auth;
 		$this->template = $template;
-		$this->phpbb_root_path = $phpbb_root_path;
+		$this->root_path = $root_path;
 		$this->helper = $helper;
 		$this->php_ext = $php_ext;
 		$this->user = $user;
+		$this->language = $language;
 	}
 
 	public function page_header_after($event)
 	{
-		$this->user->add_lang_ext('phpbbde/pastebin', 'global');
+		$this->language->add_lang('global', 'phpbbde/pastebin');
 
 		$this->template->assign_vars(array(
 				// Main Menu
@@ -63,7 +89,7 @@ class base_events implements EventSubscriberInterface
 		{
 			if (strrpos($event['row']['session_page'], 'app.' . $this->php_ext . '/pastebin') === 0)
 			{
-				$event['location'] = $this->user->lang('PASTEBIN_VIEWONLINE');
+				$event['location'] = $this->language->lang('PASTEBIN_VIEWONLINE');
 				$event['location_url'] = $this->helper->route('phpbbde_pastebin_main_controller');
 			}
 		}
