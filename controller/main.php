@@ -353,6 +353,8 @@ class main
 
 				if (!empty($error))
 				{
+					// Remove duplicate entries of the error array
+					$error = array_unique($error);
 					// We have errors, we don't insert here, but instead go back to the posting page and tell the user what he did wrong
 					$s_error = implode('<br />', $error);
 				}
@@ -376,9 +378,6 @@ class main
 					$snippet_id = $this->db->sql_nextid();
 
 					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', array('mode' => "view", 's' => $snippet_id));
-
-					// Uncomment for instant redirect :)
-					//redirect($redirect_url);
 
 					meta_refresh(3, $redirect_url);
 					trigger_error($this->language->lang('SNIPPET_SUBMITTED') . '<br /><br />' . sprintf($this->language->lang('RETURN_SNIPPET'), '<a href="' . $redirect_url . '">', '</a>'));
@@ -408,7 +407,6 @@ class main
 					}
 
 					// highlight using geshi (http://qbnz.com/highlighter/)
-					//require($this->ext_path . 'vendor/autoload.' . $this->php_ext);
 					require($this->geshi_path . 'geshi.' . $this->php_ext);
 
 					$code = htmlspecialchars_decode($snippet_text);
@@ -545,9 +543,6 @@ class main
 
 					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', $redirect_append);
 
-					// Uncomment for instant redirect :)
-					//redirect($redirect_url);
-
 					$message = $this->language->lang('SNIPPET_MODERATED');
 					$message .= '<br /><br />';
 					$message .= sprintf($this->language->lang('RETURN_' . ((!$delete) ? 'SNIPPET' : 'PASTEBIN')), '<a href="' . $redirect_url . '">', '</a>');
@@ -624,7 +619,6 @@ class main
 				'SNIPPET_DESC'		=> isset($data['snippet_desc']) ? $data['snippet_desc'] : '',
 				'AUTHOR_FULL'		=> isset($data['username']) ? get_username_string('full', $data['user_id'], $data['username'], $data['user_colour']) : '',
 				'SNIPPET_TEXT'		=> isset($data['snippet_text']) ? $data['snippet_text'] : '',
-				//'SNIPPET_PRUNABLE'	=> isset($data['snippet_prunable']) ? $data['snippet_prunable'] : true,
 
 				'HIGHLIGHT_SELECT'	=> $highlight_select,
 				'PRUNING_MONTHS_SELECT'	=> $pruning_months_select,
