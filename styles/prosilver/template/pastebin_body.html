@@ -5,10 +5,8 @@
 	<h2>{{ lang('PASTEBIN') }}</h2>
 
 	<div id="extras">
-
-
 		{% if S_AUTH_POST or S_MODE eq 'view' %}
-		<div class="mini-panel navbar">
+		<div class="newentry mini-panel navbar">
 			<h3>{{ lang('PASTEBIN') }}</h3>
 			<ul>
 				{% if S_AUTH_POST %}<li><a href="{{ U_PASTEBIN }}">{{ lang('SNIPPET_NEW') }}</a></li>{% endif %}
@@ -18,7 +16,7 @@
 		{% endif %}
 
 		{% if (S_AUTH_EDIT || S_AUTH_DELETE) && S_MODE eq 'view' %}
-		<div class="mini-panel navbar">
+		<div class="mod-panel mini-panel navbar">
 			<h3>{{ lang('MODERATE_SNIPPET') }}</h3>
 
 			<form method="post" action="{{ S_FORM_ACTION_MOD }}">
@@ -51,8 +49,6 @@
 		{% endif %}
 	</div>
 
-
-
 	<div id="content">
 		{% if S_MODE eq 'view' %}
 			{% INCLUDE 'pastebin_view.html' %}
@@ -61,9 +57,8 @@
 		{% endif %}
 	</div>
 
-
 	{% if S_AUTH_VIEW %}
-	<div class="mini-panel navbar">
+	<div class="lastsnippets mini-panel navbar">
 		<h3>{{ lang('LATEST_SNIPPETS') }}</h3>
 
 		{% if loops.latest_snippets|length %}
