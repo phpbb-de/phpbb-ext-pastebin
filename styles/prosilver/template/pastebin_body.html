@@ -6,7 +6,7 @@
 
 	<div id="extras">
 		{% if S_AUTH_POST or S_MODE eq 'view' %}
-		<div class="newentry mini-panel navbar">
+		<div class="new-entry mini-panel navbar">
 			<h3>{{ lang('PASTEBIN') }}</h3>
 			<ul>
 				{% if S_AUTH_POST %}<li><a href="{{ U_PASTEBIN }}">{{ lang('SNIPPET_NEW') }}</a></li>{% endif %}
@@ -58,7 +58,7 @@
 	</div>
 
 	{% if S_AUTH_VIEW %}
-	<div class="lastsnippets mini-panel navbar">
+	<div class="last-snippets mini-panel navbar">
 		<h3>{{ lang('LATEST_SNIPPETS') }}</h3>
 
 		{% if loops.latest_snippets|length %}
