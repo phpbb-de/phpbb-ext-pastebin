@@ -311,7 +311,18 @@ class main
 
 					if (!$file->error)
 					{
-						$snippet_contents = utf8_normalize_nfc(utf8_convert_message(@file_get_contents($file->get('filename'))));
+						// Well, ugly solutions work, too
+						$snippet_contents = @file_get_contents($file->get('filename'));
+						// Check for UTF-8 encoding; because utf8_convert_message() will destroy utf8-characters in UTF-8 documents
+						if (mb_detect_encoding($snippet_contents, 'UTF-8', true))
+						{
+							$snippet_contents = utf8_normalize_nfc($snippet_contents);
+						}
+						// e.g. ISO 8859-1 encoded files need the utf8_convert_message()
+						else
+						{
+							$snippet_contents = utf8_normalize_nfc(utf8_convert_message($snippet_contents));
+						}
 					}
 
 					$file->remove();
