@@ -148,7 +148,7 @@ class main
 			return $response;
 		}
 
-		return $this->helper->render('@phpbbde/pastebin_pastebin_body.html', $this->language->lang('PASTEBIN'));
+		return $this->helper->render('@phpbbde_pastebin/pastebin_body.html', $this->language->lang('PASTEBIN'));
 	}
 
 	/**
@@ -168,7 +168,7 @@ class main
 			$sql = $this->db->sql_build_query('SELECT', array(
 				'SELECT'	=> 'pb.*, u.user_id, u.username, u.user_colour',
 				'FROM'		=> array(
-					$this->table('pastebin')	=> 'pb',
+					$this->pastebin_table	=> 'pb',
 					USERS_TABLE		=> 'u',
 				),
 				'WHERE'		=> "pb.snippet_author = u.user_id AND pb.snippet_id = $snippet_id",
@@ -202,7 +202,7 @@ class main
 		$sql = $this->db->sql_build_query('SELECT', array(
 				'SELECT'	=> 'pb.snippet_id, pb.snippet_time, pb.snippet_title, pb.snippet_desc, u.user_id, u.username, u.user_colour',
 				'FROM'		=> array(
-						$this->table('pastebin')	=> 'pb',
+						$this->pastebin_table	=> 'pb',
 						USERS_TABLE		=> 'u',
 				),
 				'WHERE'		=> 'pb.snippet_author = u.user_id',
@@ -364,7 +364,7 @@ class main
 							'snippet_prune_on'	=> time() + $this::SECONDS_MONTH * $data['snippet_prune_on'],
 					);
 
-					$sql = 'INSERT INTO ' . $this->table('pastebin') . ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
+					$sql = 'INSERT INTO ' . $this->pastebin_table . ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
 					$this->db->sql_query($sql);
 
 					$snippet_id = $this->db->sql_nextid();
