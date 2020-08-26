@@ -67,9 +67,6 @@ class main
 	protected $captcha_factory;
 
 	/** @var string */
-	protected $geshi_path;
-
-	/** @var string */
 	protected $geshi_lang;
 
 	/** @var string */
@@ -108,7 +105,6 @@ class main
 		\phpbbde\pastebin\functions\pastebin $pastebin,
 		$root_path,
 		$php_ext,
-		$geshi_path,
 		$geshi_lang,
 		$pastebin_table)
 	{
@@ -128,7 +124,6 @@ class main
 		$this->util = $util;
 		$this->captcha_factory = $captcha_factory;
 
-		$this->geshi_path = $geshi_path;
 		$this->pastebin_table = $pastebin_table;
 		$this->geshi_lang = $geshi_lang;
 	}
@@ -217,7 +212,7 @@ class main
 				'DESC'			=> $row['snippet_desc'],
 				'TITLE'			=> $row['snippet_title'],
 				'SNIPPET_TIME'	=> $this->user->format_date($row['snippet_time']),
-				'TITLE_SHORT'	=> (utf8_strlen($row['snippet_title']) > 50) ? utf8_substr($row['snippet_title'], 0, 50) . '...' : $row['snippet_title'],
+				'TITLE_SHORT'	=> (utf8_strlen($row['snippet_title']) > 25) ? utf8_substr($row['snippet_title'], 0, 25) . $this->language->lang('ELLIPSIS') : $row['snippet_title'],
 				'AUTHOR_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 			));
 		}
@@ -397,9 +392,6 @@ class main
 					{
 						$highlight = 'php';
 					}
-
-					// highlight using geshi (http://qbnz.com/highlighter/)
-					require($this->geshi_path . 'geshi.' . $this->php_ext);
 
 					$code = htmlspecialchars_decode($snippet_text);
 

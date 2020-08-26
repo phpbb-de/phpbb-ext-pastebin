@@ -29,6 +29,7 @@ $lang = array_merge($lang, array(
 	'SELECT_CODE'				=> 'Quellcode markieren',
 
 	'COLON'						=> ':',
+	'ELLIPSIS'					=> '…',
 
 	'DELETE_SNIPPET'			=> 'Eintrag löschen',
 	'DELETE_SNIPPET_CONFIRM'	=> 'Soll der Eintrag mit dem Titel “%s” wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden.',

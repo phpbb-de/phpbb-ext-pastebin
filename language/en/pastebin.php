@@ -28,6 +28,7 @@ $lang = array_merge($lang, array(
 	'SELECT_CODE'				=> 'Mark all source code',
 
 	'COLON'						=> ':',
+	'ELLIPSIS'					=> '…',
 
 	'DELETE_SNIPPET'			=> 'Delete entry',
 	'DELETE_SNIPPET_CONFIRM'	=> 'Do you really want to delete the entry entitled “%s”? This cannot be undone.',
