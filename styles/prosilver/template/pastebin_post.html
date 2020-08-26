@@ -17,20 +17,20 @@
 		<p class="error">{{ S_ERROR }}</p>
 		{% endif %}
 		<dl>
-			<dt><label for="snippet_title">{{ lang('SNIPPET_TITLE') }}:</label></dt>
+			<dt><label for="snippet_title">{{ lang('SNIPPET_TITLE') }}{{ lang('COLON') }}</label></dt>
 			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_title" id="snippet_title" value="{{ SNIPPET_TITLE }}" tabindex="1" /></dd>
 		</dl>
 		<dl>
-			<dt><label for="snippet_desc">{{ lang('SNIPPET_DESC') }}:</label></dt>
+			<dt><label for="snippet_desc">{{ lang('SNIPPET_DESC') }}{{ lang('COLON') }}</label></dt>
 			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_desc" id="snippet_desc" value="{{ SNIPPET_DESC }}" tabindex="2" /></dd>
 		</dl>
 		<dl>
-			<dt><label for="snippet_highlight">{{ lang('SNIPPET_HIGHLIGHT') }}:</label></dt>
+			<dt><label for="snippet_highlight">{{ lang('SNIPPET_HIGHLIGHT') }}{{ lang('COLON') }}</label></dt>
 			<dd><select name="snippet_highlight" id="snippet_highlight">{{ HIGHLIGHT_SELECT }}</select></dd>
 		</dl>
 		
 		<dl>
-			<dt><label for="pruning_months">{{ lang('PRUNING_MONTHS') }}:</label></dt>
+			<dt><label for="pruning_months">{{ lang('PRUNING_MONTHS') }}{{ lang('COLON') }}</label></dt>
 			<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PRUNING_MONTH_SHORT') }}</dd>
 		</dl>
 		
@@ -40,7 +40,7 @@
 
 		<fieldset class="fields1">
 		<dl>
-			<dt><label for="fileupload">{{ lang('FILENAME') }}:</label></dt>
+			<dt><label for="fileupload">{{ lang('FILENAME') }}{{ lang('COLON') }}</label></dt>
 			<dd>
 				<input type="file" name="fileupload" id="fileupload" maxlength="{{ FILESIZE }}" value="" class="inputbox autowidth" />
 			</dd>

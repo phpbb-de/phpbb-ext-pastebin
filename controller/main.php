@@ -133,11 +133,7 @@ class main
 		$this->geshi_lang = $geshi_lang;
 	}
 
-	/**
-	 * Handle all calls
-	 * @param string $name
-	 */
-	public function handle($name = '')
+	public function handle()
 	{
 		$this->language->add_lang('pastebin', 'phpbbde/pastebin');
 
@@ -152,20 +148,7 @@ class main
 			return $response;
 		}
 
-		return $this->helper->render('pastebin_body.html', $this->language->lang('PASTEBIN'));
-	}
-
-	/**
-	 * Adjust table naming correctly
-	 * @param string $name
-	 * @return string
-	 */
-	private function table($name)
-	{
-		if ($name == 'pastebin')
-		{
-			return $this->pastebin_table;
-		}
+		return $this->helper->render('@phpbbde/pastebin_pastebin_body.html', $this->language->lang('PASTEBIN'));
 	}
 
 	/**
@@ -175,8 +158,6 @@ class main
 	{
 		// Request variables
 		$mode			= $this->request->variable('mode', '');
-		$confirm_id		= $this->request->variable('confirm_id', '');
-		$confirm_code	= $this->request->variable('confirm_code', '');
 		$snippet_id		= $this->request->variable('s', 0);
 		$submit			= $this->request->is_set_post('submit');
 
@@ -269,9 +250,9 @@ class main
 				}
 
 				$data = array(
-						'snippet_title'		=> utf8_normalize_nfc(str_replace("\n", '', $this->request->variable('snippet_title', '', true))),
-						'snippet_desc'		=> utf8_normalize_nfc(str_replace("\n", '', $this->request->variable('snippet_desc', '', true))),
-						'snippet_text'		=> utf8_normalize_nfc($this->request->variable('snippet_text', '', true)),
+						'snippet_title'		=> str_replace("\n", '', $this->request->variable('snippet_title', '', true)),
+						'snippet_desc'		=> str_replace("\n", '', $this->request->variable('snippet_desc', '', true)),
+						'snippet_text'		=> $this->request->variable('snippet_text', '', true),
 						'snippet_prunable'	=> 1,
 						'snippet_highlight'	=> $this->request->variable('snippet_highlight', ''),
 						'snippet_prune_on'	=> max(1, min(6, $this->request->variable('pruning_months', 0))),
@@ -518,7 +499,6 @@ class main
 
 					if ($this->request->is_set_post('cancel'))
 					{
-						//redirect(append_sid("{$root_path}support/pastebin.$phpEx", "mode=view&amp;s=$snippet_id"));
 						redirect($this->helper->route('phpbbde_pastebin_main_controller', array("mode"=>"view","s"=>$snippet_id)));
 					}
 

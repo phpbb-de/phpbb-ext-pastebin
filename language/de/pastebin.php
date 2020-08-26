@@ -28,6 +28,8 @@ $lang = array_merge($lang, array(
 	'COPY_PASTE_EXPLAIN'		=> 'Hier kannst du den Code kopieren und ihn in deinen bevorzugten Editor einfügen.',
 	'SELECT_CODE'				=> 'Quellcode markieren',
 
+	'COLON'						=> ':',
+
 	'DELETE_SNIPPET'			=> 'Eintrag löschen',
 	'DELETE_SNIPPET_CONFIRM'	=> 'Soll der Eintrag mit dem Titel “%s” wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden.',
 	'DELETE_SNIPPET_EXPLAIN'	=> 'Löscht den Eintrag aus der Datenbank. Diese Aktion kann nicht rückgängig gemacht werden.',

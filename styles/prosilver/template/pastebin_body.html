@@ -23,17 +23,17 @@
 			<fieldset class="fields1">
 				{% if S_AUTH_EDIT %}
 				<dl>
-					<dt><label for="pruning_months">{{ lang('PRUNING_MONTHS') }}:</label></dt>
+					<dt><label for="pruning_months">{{ lang('PRUNING_MONTHS') }}{{ lang('COLON') }}</label></dt>
 					<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PRUNING_MONTH_SHORT') }}</dd>
 				</dl>
 				<dl>
-					<dt><label for="snippet_highlight">{{ lang('SNIPPET_HIGHLIGHT') }}:</label></dt>
+					<dt><label for="snippet_highlight">{{ lang('SNIPPET_HIGHLIGHT') }}{{ lang('COLON') }}</label></dt>
 					<dd><select id="snippet_highlight" name="snippet_highlight">{{ HIGHLIGHT_SELECT_MOD }}</select></dd>
 				</dl>
 				{% endif %}
 				{% if S_AUTH_DELETE %}
 				<dl>
-					<dt><label for="delete_snippet">{{ lang('DELETE_SNIPPET') }}:</label></dt>
+					<dt><label for="delete_snippet">{{ lang('DELETE_SNIPPET') }}{{ lang('COLON') }}</label></dt>
 					<dd><label for="delete_snippet"><input type="checkbox" name="delete_snippet" id="delete_snippet" /> {{ lang('DELETE') }}</label></dd>
 				</dl>
 				{% endif %}
@@ -51,9 +51,9 @@
 
 	<div id="content">
 		{% if S_MODE eq 'view' %}
-			{% INCLUDE 'pastebin_view.html' %}
+			{% INCLUDE '@phpbbde/pastebin_pastebin_view.html' %}
 		{% else %}
-			{% INCLUDE 'pastebin_post.html' %}
+			{% INCLUDE '@phpbbde/pastebin_pastebin_post.html' %}
 		{% endif %}
 	</div>
 
@@ -64,7 +64,7 @@
 		{% if loops.latest_snippets|length %}
 		<ul>
 			{% for latest_snippets in loops.latest_snippets %}
-				<li><a href="{{ latest_snippets.URL }}" title="{{ latest_snippets.TITLE }}{% if latest_snippets.DESC %}: {{ latest_snippets.DESC }}{% endif %}">{{ latest_snippets.TITLE_SHORT }}</a> ({{ latest_snippets.SNIPPET_TIME }}, {{ latest_snippets.AUTHOR_FULL }})</li>
+				<li><a href="{{ latest_snippets.URL }}" title="{{ latest_snippets.TITLE }}{% if latest_snippets.DESC %}{{ lang('COLON') }} {{ latest_snippets.DESC }}{% endif %}">{{ latest_snippets.TITLE_SHORT }}</a> ({{ latest_snippets.SNIPPET_TIME }}, {{ latest_snippets.AUTHOR_FULL }})</li>
 			{% endfor %}
 		</ul>
 		{% else %}

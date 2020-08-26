@@ -77,9 +77,4 @@ class pastebin extends \phpbb\db\migration\migration
 				array('config.remove', array('pastebin_version')),
 		);
 	}
-
-	private function table($name)
-	{
-		return $this->table_prefix . $name;
-	}
 }

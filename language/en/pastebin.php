@@ -27,6 +27,8 @@ $lang = array_merge($lang, array(
 	'COPY_PASTE_EXPLAIN'		=> 'Here, you can copy the source and paste it into your preferred editor.',
 	'SELECT_CODE'				=> 'Mark all source code',
 
+	'COLON'						=> ':',
+
 	'DELETE_SNIPPET'			=> 'Delete entry',
 	'DELETE_SNIPPET_CONFIRM'	=> 'Do you really want to delete the entry entitled “%s”? This cannot be undone.',
 	'DELETE_SNIPPET_EXPLAIN'	=> 'Deletes the entry from the database. This cannot be undone.',
