@@ -9,6 +9,7 @@ services:
         class: phpbbde\pastebin\functions\utility
         arguments:
             - '%phpbbde.pastebin.geshilangs%'
+            - '%core.php_ext%'
     phpbbde.pastebin.functions.pastebin:
         class: phpbbde\pastebin\functions\pastebin
         arguments:

@@ -31,13 +31,18 @@ class utility
 	 */
 	var $geshi_list	= array();
 
+	/** @var string */
+	protected $php_ext;
+
 	/**
 	 * Constructor
+	 * @param string $php_ext
 	 */
-	function __construct($geshi_dir)
+	function __construct($geshi_dir, $php_ext)
 	{
 		$this->geshi_dir	= $geshi_dir;
 		$this->geshi_list	= $this->geshi_list();
+		$this->php_ext 		= $php_ext;
 	}
 
 
@@ -54,8 +59,6 @@ class utility
 	 */
 	function geshi_list()
 	{
-		global $phpEx;
-
 		$geshi_list = array();
 
 		$d = dir($this->geshi_dir);
@@ -66,12 +69,14 @@ class utility
 				continue;
 			}
 
-			if (($substr_end = strpos($file, ".$phpEx")) !== false)
+			if (($substr_end = strpos($file, ".$this->php_ext")) !== false)
 			{
-				@sort($geshi_list[] = substr($file, 0, $substr_end));
+				$geshi_list[] = substr($file, 0, $substr_end);
 			}
 		}
 		$d->close();
+
+		sort($geshi_list);
 
 		return $geshi_list;
 	}
