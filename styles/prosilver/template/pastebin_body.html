@@ -9,31 +9,31 @@
 		<div class="new-entry mini-panel navbar">
 			<h3>{{ lang('PASTEBIN') }}</h3>
 			<ul>
-				{% if S_AUTH_POST %}<li><a href="{{ U_PASTEBIN }}">{{ lang('SNIPPET_NEW') }}</a></li>{% endif %}
-				{% if S_MODE eq 'view' %}<li><a href="{{ U_SNIPPET_DOWNLOAD }}">{{ lang('SNIPPET_DOWNLOAD') }}</a></li>{% endif %}
+				{% if S_AUTH_POST %}<li><a href="{{ U_PASTEBIN }}">{{ lang('PASTEBIN_SNIPPET_NEW') }}</a></li>{% endif %}
+				{% if S_MODE eq 'view' %}<li><a href="{{ U_SNIPPET_DOWNLOAD }}">{{ lang('PASTEBIN_SNIPPET_DOWNLOAD') }}</a></li>{% endif %}
 			</ul>
 		</div>
 		{% endif %}
 
 		{% if (S_AUTH_EDIT || S_AUTH_DELETE) && S_MODE eq 'view' %}
 		<div class="mod-panel mini-panel navbar">
-			<h3>{{ lang('MODERATE_SNIPPET') }}</h3>
+			<h3>{{ lang('PASTEBIN_MODERATE_SNIPPET') }}</h3>
 
 			<form method="post" action="{{ S_FORM_ACTION_MOD }}">
 			<fieldset class="fields1">
 				{% if S_AUTH_EDIT %}
 				<dl>
-					<dt><label for="pruning_months">{{ lang('PRUNING_MONTHS') }}{{ lang('COLON') }}</label></dt>
-					<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PRUNING_MONTH_SHORT') }}</dd>
+					<dt><label for="pruning_months">{{ lang('PASTEBIN_PRUNING_MONTHS') }}{{ lang('COLON') }}</label></dt>
+					<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PASTEBIN_PRUNING_MONTH_SHORT') }}</dd>
 				</dl>
 				<dl>
-					<dt><label for="snippet_highlight">{{ lang('SNIPPET_HIGHLIGHT') }}{{ lang('COLON') }}</label></dt>
+					<dt><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') }}{{ lang('COLON') }}</label></dt>
 					<dd><select id="snippet_highlight" name="snippet_highlight">{{ HIGHLIGHT_SELECT_MOD }}</select></dd>
 				</dl>
 				{% endif %}
 				{% if S_AUTH_DELETE %}
 				<dl>
-					<dt><label for="delete_snippet">{{ lang('DELETE_SNIPPET') }}{{ lang('COLON') }}</label></dt>
+					<dt><label for="delete_snippet">{{ lang('PASTEBIN_DELETE_SNIPPET') }}{{ lang('COLON') }}</label></dt>
 					<dd><label for="delete_snippet"><input type="checkbox" name="delete_snippet" id="delete_snippet" /> {{ lang('DELETE') }}</label></dd>
 				</dl>
 				{% endif %}
@@ -59,7 +59,7 @@
 
 	{% if S_AUTH_VIEW %}
 	<div class="last-snippets mini-panel navbar">
-		<h3>{{ lang('LATEST_SNIPPETS') }}</h3>
+		<h3>{{ lang('PASTEBIN_LATEST_SNIPPETS') }}</h3>
 
 		{% if loops.latest_snippets|length %}
 		<ul>
@@ -69,7 +69,7 @@
 		</ul>
 		{% else %}
 		<ul>
-			<li>{{ lang('NO_SNIPPETS') }}</li>
+			<li>{{ lang('PASTEBIN_NO_SNIPPETS') }}</li>
 		</ul>
 		{% endif %}
 	</div>

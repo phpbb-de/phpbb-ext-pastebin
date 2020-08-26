@@ -24,34 +24,33 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'COPY_PASTE'				=> 'Quellcode',
-	'COPY_PASTE_EXPLAIN'		=> 'Hier kannst du den Code kopieren und ihn in deinen bevorzugten Editor einfügen.',
-	'SELECT_CODE'				=> 'Quellcode markieren',
+	'PASTEBIN_COPY_PASTE'				=> 'Quellcode',
+	'PASTEBIN_COPY_PASTE_EXPLAIN'		=> 'Hier kannst du den Code kopieren und ihn in deinen bevorzugten Editor einfügen.',
+	'PASTEBIN_SELECT_CODE'				=> 'Quellcode markieren',
 
-	'COLON'						=> ':',
-	'ELLIPSIS'					=> '…',
+	'PASTEBIN_ELLIPSIS'					=> '…',
 
-	'DELETE_SNIPPET'			=> 'Eintrag löschen',
-	'DELETE_SNIPPET_CONFIRM'	=> 'Soll der Eintrag mit dem Titel “%s” wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden.',
-	'DELETE_SNIPPET_EXPLAIN'	=> 'Löscht den Eintrag aus der Datenbank. Diese Aktion kann nicht rückgängig gemacht werden.',
-	'DOWNLOAD_SNIPPET'			=> 'Eintrag herunterladen',
-	'DOWNLOAD_SNIPPET_EXPLAIN'	=> 'Alternativ kannst du den gesamten Eintrag auch als Datei %sherunterladen%s.',
+	'PASTEBIN_DELETE_SNIPPET'			=> 'Eintrag löschen',
+	'PASTEBIN_DELETE_SNIPPET_CONFIRM'	=> 'Soll der Eintrag mit dem Titel “%s” wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden.',
+	'PASTEBIN_DELETE_SNIPPET_EXPLAIN'	=> 'Löscht den Eintrag aus der Datenbank. Diese Aktion kann nicht rückgängig gemacht werden.',
+	'PASTEBIN_DOWNLOAD_SNIPPET'			=> 'Eintrag herunterladen',
+	'PASTEBIN_DOWNLOAD_SNIPPET_EXPLAIN'	=> 'Alternativ kannst du den gesamten Eintrag auch als Datei %sherunterladen%s.',
 
-	'DISALLOWED_EXTENSION'	=> 'Die Dateierweiterung %s ist nicht erlaubt',
+	'PASTEBIN_DISALLOWED_EXTENSION'	=> 'Die Dateierweiterung %s ist nicht erlaubt',
 
-	'ERR_NO_BODY'				=> 'Du hast keinen Code eingefügt oder keine gültige Datei zum Upload ausgewählt.',
-	'ERR_NO_TITLE'				=> 'Du hast keinen Titel für den Eintrag eingegeben.',
-	'ERR_NO_DESC'				=> 'Du hast keine Beschreibung für den Eintrag eingegeben.',
+	'PASTEBIN_ERR_NO_BODY'				=> 'Du hast keinen Code eingefügt oder keine gültige Datei zum Upload ausgewählt.',
+	'PASTEBIN_ERR_NO_TITLE'				=> 'Du hast keinen Titel für den Eintrag eingegeben.',
+	'PASTEBIN_ERR_NO_DESC'				=> 'Du hast keine Beschreibung für den Eintrag eingegeben.',
 
-	'HIGHLIGHT_LANG'			=> 'Syntaxhervorhebung',
+	'PASTEBIN_HIGHLIGHT_LANG'			=> 'Syntaxhervorhebung',
 
-	'LATEST_SNIPPETS'			=> 'Letzte Einträge',
+	'PASTEBIN_LATEST_SNIPPETS'			=> 'Letzte Einträge',
 
-	'MODERATE_SNIPPET'			=> 'Eintrag bearbeiten',
-	'MODERATE_SNIPPET_EXPLAIN'	=> 'Eintrag bearbeiten oder löschen.',
+	'PASTEBIN_MODERATE_SNIPPET'			=> 'Eintrag bearbeiten',
+	'PASTEBIN_MODERATE_SNIPPET_EXPLAIN'	=> 'Eintrag bearbeiten oder löschen.',
 
-	'NO_VALID_SNIPPET'			=> 'Du hast keinen Eintrag ausgewählt.',
-	'NO_SNIPPETS'				=> 'Es gibt derzeit keine Einträge im Pastebin.',
+	'PASTEBIN_NO_VALID_SNIPPET'			=> 'Du hast keinen Eintrag ausgewählt.',
+	'PASTEBIN_NO_SNIPPETS'				=> 'Es gibt derzeit keine Einträge im Pastebin.',
 
 	'PASTEBIN'					=> 'Pastebin',
 	'PASTEBIN_AUTH_NO_VIEW'		=> 'Du hast keine Berechtigung, die Seite anzuzeigen.',
@@ -80,28 +79,28 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_VIEW'				=> 'Eintrag ansehen - %s',
 	'PASTEBIN_WRONG_FILESIZE'	=> 'Die Datei ist zu groß. (Maximale Dateigröße ist %1d %2s)',
 
-	'PRUNING_MONTHS'			=> 'Speicherdauer',
-	'PRUNING_MONTH_SHORT'		=> 'Monate',
+	'PASTEBIN_PRUNING_MONTHS'			=> 'Speicherdauer',
+	'PASTEBIN_PRUNING_MONTH_SHORT'		=> 'Monate',
 
-	'RETURN_PASTEBIN'			=> '%sZurück zum Pastebin%s',
-	'RETURN_SNIPPET'			=> '%sEintrag anzeigen%s',
+	'PASTEBIN_RETURN_PASTEBIN'			=> '%sZurück zum Pastebin%s',
+	'PASTEBIN_RETURN_SNIPPET'			=> '%sEintrag anzeigen%s',
 
-	'SHORT_PRUNABLE'			=> 'Prunable - automatisch löschbar',
-	'INFINITE'					=> 'Unendlich',
-	'SNIPPET_NEW'				=> 'Neuer Eintrag',
-	'SNIPPET_DESC'				=> 'Beschreibung',
-	'SNIPPET_DOWNLOAD'			=> 'Eintrag herunterladen',
-	'SNIPPET_HILIT'				=> 'zeige hervorgehobenen Eintrag',
-	'SNIPPET_HIGHLIGHT'			=> 'Syntaxhervorhebung',
-	'SNIPPET_MODERATED'			=> 'Das Snippet wurde erfolgreich bearbeitet.',
-	'SNIPPET_TEXT'				=> 'Dein Code',
-	'SNIPPET_TITLE'				=> 'Titel',
-	'SNIPPET_CREATION_TIME'		=> 'Snippet erstellt',
-	'SNIPPET_PRUNE_TIME'		=> 'Snippet wird automatisch gelöscht',
-	'SNIPPET_PLAIN'				=> 'zeige einfaches Snippet',
-	'SNIPPET_PRUNABLE'			=> 'Eintrag prunable - automatisch löschbar',
-	'SNIPPET_PRUNABLE_EXPLAIN'	=> 'Wenn diese Option deaktiviert ist, wird der Eintrag nicht in die monatlich automatisch zu löschenden Einträge aufgenommen.',
-	'SNIPPET_SUBMITTED'			=> 'Dein Eintrag wurde erfolgreich erstellt.',
+	'PASTEBIN_SHORT_PRUNABLE'			=> 'Prunable - automatisch löschbar',
+	'PASTEBIN_INFINITE'					=> 'Unendlich',
+	'PASTEBIN_SNIPPET_NEW'				=> 'Neuer Eintrag',
+	'PASTEBIN_SNIPPET_DESC'				=> 'Beschreibung',
+	'PASTEBIN_SNIPPET_DOWNLOAD'			=> 'Eintrag herunterladen',
+	'PASTEBIN_SNIPPET_HILIT'				=> 'zeige hervorgehobenen Eintrag',
+	'PASTEBIN_SNIPPET_HIGHLIGHT'			=> 'Syntaxhervorhebung',
+	'PASTEBIN_SNIPPET_MODERATED'			=> 'Das Snippet wurde erfolgreich bearbeitet.',
+	'PASTEBIN_SNIPPET_TEXT'				=> 'Dein Code',
+	'PASTEBIN_SNIPPET_TITLE'				=> 'Titel',
+	'PASTEBIN_SNIPPET_CREATION_TIME'		=> 'Snippet erstellt',
+	'PASTEBIN_SNIPPET_PRUNE_TIME'		=> 'Snippet wird automatisch gelöscht',
+	'PASTEBIN_SNIPPET_PLAIN'				=> 'zeige einfaches Snippet',
+	'PASTEBIN_SNIPPET_PRUNABLE'			=> 'Eintrag prunable - automatisch löschbar',
+	'PASTEBIN_SNIPPET_PRUNABLE_EXPLAIN'	=> 'Wenn diese Option deaktiviert ist, wird der Eintrag nicht in die monatlich automatisch zu löschenden Einträge aufgenommen.',
+	'PASTEBIN_SNIPPET_SUBMITTED'			=> 'Dein Eintrag wurde erfolgreich erstellt.',
 ));
 
 // these are used by geshi
@@ -112,17 +111,9 @@ $lang['PASTEBIN_LANGUAGES'] = array(
 	'html4strict'		=> 'HTML',
 	'css'				=> 'CSS',
 	'javascript'		=> 'Javascript',
-//	'java'				=> 'Java',
 	'xml'				=> 'XML',
-//	'asp'				=> 'ASP',
-//	'c'					=> 'C',
-//	'cpp'				=> 'C++',
-//	'csharp'			=> 'C#',
-	'perl'				=> 'Perl',
-//	'vb'				=> 'Visual Basic',
 	'diff'				=> 'Diff',
 	'robots'			=> 'robots.txt',
-	'smarty'			=> 'Smarty',
 
 /**
 * Wenn eine weitere Sprache aktiviert werden soll, muss die Datei in den includes/geshi/ Ordner

@@ -17,26 +17,26 @@
 		<p class="error">{{ S_ERROR }}</p>
 		{% endif %}
 		<dl>
-			<dt><label for="snippet_title">{{ lang('SNIPPET_TITLE') }}{{ lang('COLON') }}</label></dt>
+			<dt><label for="snippet_title">{{ lang('PASTEBIN_SNIPPET_TITLE') }}{{ lang('COLON') }}</label></dt>
 			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_title" id="snippet_title" value="{{ SNIPPET_TITLE }}" tabindex="1" /></dd>
 		</dl>
 		<dl>
-			<dt><label for="snippet_desc">{{ lang('SNIPPET_DESC') }}{{ lang('COLON') }}</label></dt>
+			<dt><label for="snippet_desc">{{ lang('PASTEBIN_SNIPPET_DESC') }}{{ lang('COLON') }}</label></dt>
 			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_desc" id="snippet_desc" value="{{ SNIPPET_DESC }}" tabindex="2" /></dd>
 		</dl>
 		<dl>
-			<dt><label for="snippet_highlight">{{ lang('SNIPPET_HIGHLIGHT') }}{{ lang('COLON') }}</label></dt>
+			<dt><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') }}{{ lang('COLON') }}</label></dt>
 			<dd><select name="snippet_highlight" id="snippet_highlight">{{ HIGHLIGHT_SELECT }}</select></dd>
 		</dl>
 		
 		<dl>
-			<dt><label for="pruning_months">{{ lang('PRUNING_MONTHS') }}{{ lang('COLON') }}</label></dt>
-			<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PRUNING_MONTH_SHORT') }}</dd>
+			<dt><label for="pruning_months">{{ lang('PASTEBIN_PRUNING_MONTHS') }}{{ lang('COLON') }}</label></dt>
+			<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PASTEBIN_PRUNING_MONTH_SHORT') }}</dd>
 		</dl>
 		
 		</fieldset>
 
-		<h3>{{ lang('SNIPPET_TEXT') }}</h3>
+		<h3>{{ lang('PASTEBIN_SNIPPET_TEXT') }}</h3>
 
 		<fieldset class="fields1">
 		<dl>
