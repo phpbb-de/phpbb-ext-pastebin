@@ -176,7 +176,7 @@ class main
 			{
 				$message = $this->language->lang('PASTEBIN_NO_VALID_SNIPPET');
 				$message .= '<br /><br />';
-				$message .= sprintf($this->language->lang('PASTEBIN_RETURN_PASTEBIN'), '<a href="' . $this->helper->route('phpbbde_pastebin_main_controller') . '">', '</a>');
+				$message .= $this->language->lang('PASTEBIN_RETURN_PASTEBIN', '<a href="' . $this->helper->route('phpbbde_pastebin_main_controller') . '">', '</a>');
 
 				trigger_error($message);
 			}
@@ -367,7 +367,7 @@ class main
 					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', array('mode' => "view", 's' => $snippet_id));
 
 					meta_refresh(3, $redirect_url);
-					trigger_error($this->language->lang('PASTEBIN_SNIPPET_SUBMITTED') . '<br /><br />' . sprintf($this->language->lang('PASTEBIN_RETURN_SNIPPET'), '<a href="' . $redirect_url . '">', '</a>'));
+					trigger_error($this->language->lang('PASTEBIN_SNIPPET_SUBMITTED') . '<br /><br />' . $this->language->lang('PASTEBIN_RETURN_SNIPPET', '<a href="' . $redirect_url . '">', '</a>'));
 				}
 
 				break;
@@ -382,7 +382,7 @@ class main
 						trigger_error('PASTEBIN_AUTH_NO_VIEW');
 					}
 
-					page_header(sprintf($this->language->lang('PASTEBIN_VIEW'), $data['snippet_title']));
+					page_header($this->language->lang('PASTEBIN_VIEW', $data['snippet_title']));
 
 					$snippet_text = $data['snippet_text'];
 
@@ -424,7 +424,7 @@ class main
 						'SNIPPET_DATE'			=> $this->user->format_date($data['snippet_time']),
 
 						'HIGHLIGHT_SELECT_MOD'	=> $this->util->highlight_select($data['snippet_highlight']),
-						'DOWNLOAD_SNIPPET_EXPLAIN'	=> sprintf($this->language->lang('PASTEBIN_DOWNLOAD_SNIPPET_EXPLAIN'), '<a href="' . $snippet_download_url . '">', '</a>'),
+						'DOWNLOAD_SNIPPET_EXPLAIN'	=> $this->language->lang('PASTEBIN_DOWNLOAD_SNIPPET_EXPLAIN', '<a href="' . $snippet_download_url . '">', '</a>'),
 
 						'U_SNIPPET'				=> $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "view", "s" => $data['snippet_id'])),
 						'U_SNIPPET_DOWNLOAD'	=> $snippet_download_url,
@@ -500,7 +500,7 @@ class main
 						if (!confirm_box(true))
 						{
 							$hidden = build_hidden_fields(array('mode' => 'moderate', 's' => $snippet_id, 'delete_snippet' => 1));
-							confirm_box(false, sprintf($this->language->lang('PASTEBIN_DELETE_SNIPPET_CONFIRM'), $data['snippet_title']), $hidden);
+							confirm_box(false, $this->language->lang('PASTEBIN_DELETE_SNIPPET_CONFIRM', $data['snippet_title']), $hidden);
 						}
 						else
 						{
@@ -528,7 +528,7 @@ class main
 
 					$message = $this->language->lang('PASTEBIN_SNIPPET_MODERATED');
 					$message .= '<br /><br />';
-					$message .= sprintf($this->language->lang('PASTEBIN_RETURN_' . ((!$delete) ? 'SNIPPET' : 'PASTEBIN')), '<a href="' . $redirect_url . '">', '</a>');
+					$message .= $this->language->lang('PASTEBIN_RETURN_' . ((!$delete) ? 'SNIPPET' : 'PASTEBIN'), '<a href="' . $redirect_url . '">', '</a>');
 
 					meta_refresh(3, $redirect_url);
 					trigger_error($message);
