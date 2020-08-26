@@ -29,7 +29,7 @@ class main extends \phpbb\cron\task\base
 
 	/** @var \phpbb\log\log_interface */
 	protected $log;
-
+	protected $pastebin_path;
 	protected $prune_interval;
 	protected $pastebin_table;
 
@@ -79,15 +79,5 @@ class main extends \phpbb\cron\task\base
 		$now = time();
 
 		return $now > $this->config['phpbbde_pastebin_prune_last_run'] + $this->prune_interval;
-	}
-
-	/**
-	 * Adjust table naming correctly
-	 * @param string $name
-	 * @return string
-	 */
-	private function table($name)
-	{
-		return $this->pastebin_table;
 	}
 }

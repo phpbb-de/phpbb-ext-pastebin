@@ -72,7 +72,6 @@ class pastebin implements \ArrayAccess
 			'cfm'				=> 'cfm',
 			'cpp-qt'			=> 'cpp',
 			'css-gen.cfg'		=> 'cfg',
-			'c_mac'				=> 'c',
 			'd'					=> 'd',
 			'delphi'			=> 'dpr',
 			'div'				=> 'div',
