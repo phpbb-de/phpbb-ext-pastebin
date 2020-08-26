@@ -36,7 +36,7 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_DOWNLOAD_SNIPPET'			=> 'Eintrag herunterladen',
 	'PASTEBIN_DOWNLOAD_SNIPPET_EXPLAIN'	=> 'Alternativ kannst du den gesamten Eintrag auch als Datei %sherunterladen%s.',
 
-	'PASTEBIN_DISALLOWED_EXTENSION'	=> 'Die Dateierweiterung %s ist nicht erlaubt',
+	'DISALLOWED_EXTENSION'	=> 'Die Dateierweiterung %s ist nicht erlaubt',
 
 	'PASTEBIN_ERR_NO_BODY'				=> 'Du hast keinen Code eingefügt oder keine gültige Datei zum Upload ausgewählt.',
 	'PASTEBIN_ERR_NO_TITLE'				=> 'Du hast keinen Titel für den Eintrag eingegeben.',
