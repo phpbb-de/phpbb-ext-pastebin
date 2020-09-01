@@ -53,7 +53,7 @@ class main extends \phpbb\cron\task\base
 	public function run()
 	{
 		$now = time();
-		$sql = 'DELETE FROM ' . $this->table('pastebin') . '
+		$sql = 'DELETE FROM ' . $this->pastebin_table . '
 			WHERE snippet_prunable = 1 and snippet_prune_on < ' . $now;
 		$this->db->sql_query($sql);
 		$this->config->set('phpbbde_pastebin_prune_last_run', $now, true);
