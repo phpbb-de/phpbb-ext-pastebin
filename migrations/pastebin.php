@@ -26,7 +26,7 @@ class pastebin extends \phpbb\db\migration\migration
 	{
 		return array(
 			'add_tables' => array(
-				$this->table('pastebin') => array(
+				$this->table_prefix . 'pb' => array(
 					'COLUMNS' => array(
 						'snippet_id' 		=> array('UINT:8', null, 'auto_increment'),
 						'snippet_author' 	=> array('UINT:8', 0),
@@ -50,7 +50,7 @@ class pastebin extends \phpbb\db\migration\migration
 	public function revert_schema()
 	{
 		return array(
-			'drop_tables' => array($this->table('pastebin')),
+			'drop_tables' => array($this->table_prefix . 'pb'),
 		);
 	}
 
