@@ -1,9 +1,9 @@
 <?php
 	/**
 	 *
-	 * IP anonymised extension for the phpBB Forum Software package.
+	 * Pastebin extension for the phpBB Forum Software package.
 	 *
-	 * @copyright (c) 2020 Crizzo <https://www.crizzo.de>
+	 * @copyright (c) 2020 Crizzo <https://www.phpBB.de>
 	 * @license GNU General Public License, version 2 (GPL-2.0)
 	 *
 	 */
@@ -21,6 +21,10 @@
 
 		public function update_data()
 		{
+			$data = array(
+				array('config.update', array('pastebin_version', '2.0.4')),
+			);
+
 			// Check if user role exists and assign permission to user standard role
 			if ($this->role_exists('ROLE_USER_STANDARD'))
 			{
