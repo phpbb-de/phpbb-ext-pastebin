@@ -2,19 +2,38 @@
 
 ## Installation
 
-Clone into ext/phpbbde/pastebin:
+Copy the content of this repository via git clone:
 
     git clone https://github.com/phpbb-de/phpbb-ext-pastebin ext/phpbbde/pastebin
 
-Go to ext/phpbbde/pastebin and install dependencies:
+or create the following directory structure in your phpBB-root directory:
 
-	php composer.phar install --no-dev
+	ext/phpbbde/pastebin
 
-If you wish to contribute to development, you should also consider installing the development dependencies by leaving out --no-dev.
-	
-Go to "ACP" > "Customise" > "Extensions" and enable the "phpBB.de pastebin" extension.
+and copy the repository content to it.
 
-## Development
+Go to "ACP" > "Customise" > "Extensions" and enable the "Pastebin" extension.
+
+## Added permissions
+The extension adds on the first install group permissions to "user standard" role and "Standard Moderator" 
+and "Full Moderator" roles. You will find them in the user or moderator roles tab "Pastebin".
+
+**New user permissions:**
+
+- Can delete own pastebin entries
+- Can edit own pastebin entries (Storage duration, Syntax highlighting)
+- Can post pastebin entries
+- Can post non-pruned pastebin entries
+- Can post pastebin entries without visual confirmation
+- Can view pastebin entries
+
+**New moderator permissions:**
+
+- Can delete pastebin entries
+- Can edit pastebin entries (Storage duration, Syntax highlighting)
+- Can deactivate pruning of selected pastebin entries
+
+## Development and bug reports
 
 If you find a bug, please report it on https://github.com/phpbb-de/phpbb-ext-pastebin
 
@@ -22,7 +41,7 @@ If you find a bug, please report it on https://github.com/phpbb-de/phpbb-ext-pas
 
 We use automated unit tests including functional tests to prevent regressions. Check out our travis build below:
 
-master: [![Build Status](https://travis-ci.org/phpbb-de/phpbb-ext-pastebin.png?branch=master)](http://travis-ci.org/phpbb-de/phpbb-ext-pastebin)
+3.2.x: [![Build Status](https://travis-ci.org/phpbb-de/phpbb-ext-pastebin.png?branch=3.2.x)](http://travis-ci.org/phpbb-de/phpbb-ext-pastebin)
 
 ## License
 
