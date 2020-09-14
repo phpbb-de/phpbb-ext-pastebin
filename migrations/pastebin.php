@@ -12,11 +12,6 @@ namespace phpbbde\pastebin\migrations;
 
 class pastebin extends \phpbb\db\migration\migration
 {
-	static public function depends_on()
-	{
-		return array();
-	}
-
 	public function effectively_installed()
 	{
 		return !empty($this->config['pastebin_version']) && version_compare($this->config['pastebin_version'], '0.2.2', '>=');
@@ -63,18 +58,6 @@ class pastebin extends \phpbb\db\migration\migration
 				array('permission.add', array('m_pastebin_edit', true, 'm_edit')),
 				array('permission.add', array('m_pastebin_delete', true, 'm_delete')),
 				array('config.add', array('pastebin_version', '0.2.2')),
-		);
-	}
-
-	public function revert_data()
-	{
-		return array(
-				array('permission.remove', array('u_pastebin_view')),
-				array('permission.remove', array('u_pastebin_post')),
-				array('permission.remove', array('u_pastebin_post_novc')),
-				array('permission.remove', array('m_pastebin_edit')),
-				array('permission.remove', array('m_pastebin_delete')),
-				array('config.remove', array('pastebin_version')),
 		);
 	}
 }

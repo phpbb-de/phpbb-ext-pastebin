@@ -54,13 +54,8 @@ services:
     phpbbde.pastebin.cron.main:
         class: phpbbde\pastebin\cron\main
         arguments:
-            - '@cache'
             - '@config'
             - '@dbal.conn'
-            - '@log'
-            - '%phpbbde.pastebin.path%'
-            - '%core.root_path%'
-            - '%core.php_ext%'
             - '%phpbbde.pastebin.cron.prune_interval%'
             - '%tables.phpbbde.pastebin.pastebin%'
         calls:
