@@ -53,13 +53,13 @@
 		</dl>
 		</fieldset>
 
-		{% if CAPTCHA_TEMPLATE %}
+		{% if PASTEBIN_CAPTCHA_TEMPLATE %}
 		<h3>{{ lang('PASTEBIN_CONFIRM') }}</h3>
 		<p>{{ lang('PASTEBIN_CONFIRM_EXPLAIN') }}</p>
 
 			
 				{% DEFINE CAPTCHA_TAB_INDEX = 8 %}
-				{% INCLUDE ''~ CAPTCHA_TEMPLATE ~'' %}
+				{% INCLUDE ''~ PASTEBIN_CAPTCHA_TEMPLATE ~'' %}
 			
 		{% endif %}
 	</div>

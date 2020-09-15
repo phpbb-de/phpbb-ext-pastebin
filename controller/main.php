@@ -553,7 +553,7 @@ class main
 				$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
 				$captcha->init($this::CONFIRM_PASTEBIN);
 			}
-			$this->template->assign_var('CAPTCHA_TEMPLATE', $captcha->get_template());
+			$this->template->assign_var('PASTEBIN_CAPTCHA_TEMPLATE', $captcha->get_template());
 		}
 
 		$pruning_months_select = '';
