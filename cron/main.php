@@ -21,7 +21,11 @@ class main extends \phpbb\cron\task\base
 	protected $prune_interval;
 	protected $pastebin_table;
 
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, $prune_interval, $pastebin_table)
+	public function __construct(
+		\phpbb\config\config $config,
+		\phpbb\db\driver\driver_interface $db,
+		$prune_interval,
+		$pastebin_table)
 	{
 		$this->config = $config;
 		$this->db = $db;
