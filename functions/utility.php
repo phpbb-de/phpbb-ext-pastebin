@@ -34,15 +34,23 @@ class utility
 	/** @var string */
 	protected $php_ext;
 
+	/* @var \phpbb\language\language */
+	public $language;
+
 	/**
 	 * Constructor
 	 * @param string $php_ext
+	 * @param \phpbb\language\language	$language
 	 */
-	function __construct($geshi_dir, $php_ext)
+	function __construct(
+		$geshi_dir,
+		$php_ext,
+		\phpbb\language\language $language)
 	{
 		$this->geshi_dir	= $geshi_dir;
 		$this->geshi_list	= $this->geshi_list();
 		$this->php_ext 		= $php_ext;
+		$this->language		= $language;
 	}
 
 
@@ -86,14 +94,13 @@ class utility
 	 */
 	function highlight_select($default = 'text')
 	{
-		global $user;
 		if (!in_array($default, $this->geshi_list))
 		{
 			$default = 'text';
 		}
 
 		$output = '';
-		foreach ($user->lang['PASTEBIN_LANGUAGES'] as $code => $name)
+		foreach ($this->language->lang['PASTEBIN_LANGUAGES'] as $code => $name)
 		{
 			if (in_array($code, $this->geshi_list))
 			{
