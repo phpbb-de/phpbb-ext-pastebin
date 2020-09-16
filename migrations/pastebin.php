@@ -17,6 +17,13 @@ class pastebin extends \phpbb\db\migration\migration
 		return !empty($this->config['pastebin_version']) && version_compare($this->config['pastebin_version'], '0.2.2', '>=');
 	}
 
+	static public function depends_on()
+	{
+		 return array(
+			'\phpbb\db\migration\data\v32x\v324',
+		);
+	}
+
 	public function update_schema()
 	{
 		return array(
