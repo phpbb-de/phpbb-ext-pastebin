@@ -11,13 +11,6 @@ namespace phpbbde\pastebin\functions;
 class utility
 {
 	/**
-	 * Version of the pastebin mod
-	 *
-	 * @var int
-	 */
-	var $version	= '0.2.2';
-
-	/**
 	 * Geshi directory
 	 *
 	 * @var string
