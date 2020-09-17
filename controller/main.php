@@ -273,7 +273,7 @@ class main
 
 				$filedata = $this->request->file('fileupload');
 
-				if (!empty($this->request->file('fileupload')) && $filedata['name'] != 'none' && trim($filedata['name']))
+				if (!empty($filedata) && $filedata['name'] != 'none' && trim($filedata['name']))
 				{
 					$upload = $this->factory->get('files.upload');
 
