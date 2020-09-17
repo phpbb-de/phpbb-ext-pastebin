@@ -250,4 +250,9 @@ class pastebin implements \ArrayAccess
 
 		$this->data[$offset] = $value;
 	}
+
+	function offsetUnset($offset)
+	{
+
+	}
 }
