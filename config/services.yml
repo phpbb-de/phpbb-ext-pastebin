@@ -10,7 +10,6 @@ services:
         arguments:
             - '%phpbbde.pastebin.geshilangs%'
             - '%core.php_ext%'
-            - '@language'
     phpbbde.pastebin.functions.pastebin:
         class: phpbbde\pastebin\functions\pastebin
         arguments:

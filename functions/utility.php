@@ -27,23 +27,17 @@ class utility
 	/** @var string */
 	protected $php_ext;
 
-	/* @var \phpbb\language\language */
-	protected $language;
-
 	/**
 	 * Constructor
 	 * @param string $php_ext
-	 * @param \phpbb\language\language	$language
 	 */
 	function __construct(
 		$geshi_dir,
-		$php_ext,
-		\phpbb\language\language $language)
+		$php_ext)
 	{
 		$this->geshi_dir	= $geshi_dir;
 		$this->geshi_list	= $this->geshi_list();
 		$this->php_ext 		= $php_ext;
-		$this->language		= $language;
 	}
 
 
