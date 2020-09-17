@@ -22,7 +22,7 @@ class v205 extends \phpbb\db\migration\migration
 	public function update_data()
 	{
 		$data = array(
-			// Update to version 1.1.1
+			// Update to version 2.0.5
 			array('config.update', array('pastebin_version', '2.0.5')),
 		);
 		return $data;
