@@ -253,6 +253,6 @@ class pastebin implements \ArrayAccess
 
 	function offsetUnset($offset)
 	{
-
+		// still needed, even if empty
 	}
 }

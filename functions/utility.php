@@ -27,23 +27,17 @@ class utility
 	/** @var string */
 	protected $php_ext;
 
-	/* @var \phpbb\language\language */
-	public $language;
-
 	/**
 	 * Constructor
 	 * @param string $php_ext
-	 * @param \phpbb\language\language	$language
 	 */
 	function __construct(
 		$geshi_dir,
-		$php_ext,
-		\phpbb\language\language $language)
+		$php_ext)
 	{
 		$this->geshi_dir	= $geshi_dir;
 		$this->geshi_list	= $this->geshi_list();
 		$this->php_ext 		= $php_ext;
-		$this->language		= $language;
 	}
 
 
@@ -87,13 +81,100 @@ class utility
 	 */
 	function highlight_select($default = 'text')
 	{
+		// Programming languages
+		// these are used by geshi
+		$programming_langs = array(
+			'text'				=> 'Text',
+			'php'				=> 'PHP',
+			'sql'				=> 'SQL',
+			'html4strict'		=> 'HTML',
+			'css'				=> 'CSS',
+			'javascript'		=> 'Javascript',
+			'xml'				=> 'XML',
+			'diff'				=> 'Diff',
+			'robots'			=> 'robots.txt',
+
+			/**
+			 * Wenn eine weitere Sprache aktiviert werden soll, muss die Datei in den includes/geshi/ Ordner
+			 * kopiert werden, und der Eintrag der Sprachdatei wieder nach aktiviert werden.
+			 */
+
+			/*
+				'actionscript'		=> 'ActionScript',
+				'ada'				=> 'Ada',
+				'apache'			=> 'Apache',
+				'applescript'		=> 'AppleScript',
+				'asm'				=> 'x86 Assembler',
+				'autoit'			=> 'AutoIt',
+				'bash'				=> 'Bash',
+				'blitzbasic'		=> 'BlitzBasic',
+				'bnf'				=> 'BNF',
+				'c_mac'				=> 'C (Mac)',
+				'caddcl'			=> 'CAD DCL',
+				'cadlisp'			=> 'CAD Lisp',
+				'cfdg'				=> 'CFDG',
+				'cfm'				=> 'ColdFusion',
+				'cpp-qt'			=> 'C++ (QT)',
+				'css-gen.cfg'		=> 'C#',
+				'c_mac'				=> 'C (Mac)',
+				'd'					=> 'D',
+				'delphi'			=> 'Delphi',
+				'div'				=> 'DIV',
+				'dos'				=> 'DOS',
+				'eiffel'			=> 'Eiffel',
+				'fortran'			=> 'Fortran',
+				'freebasic'			=> 'FreeBasic',
+				'gml'				=> 'GML',
+				'groovy'			=> 'Groovy',
+				'idl'				=> 'Uno Idl',
+				'ini'				=> 'INI',
+				'inno'				=> 'Inno',
+				'io'				=> 'Io',
+				'java5'				=> 'Java(TM) 2 Platform Standard Edition 5.0',
+				'latex'				=> 'LaTeX',
+				'lisp'				=> 'Lisp',
+				'lua'				=> 'Lua',
+				'matlab'			=> 'Matlab M',
+				'mirc'				=> 'mIRC Scripting',
+				'mpasm'				=> 'Microchip Assembler',
+				'mysql'				=> 'MySQL',
+				'nsis'				=> 'NSIS',
+				'objc'				=> 'Objective C',
+				'ocaml-brief'		=> 'OCaml',
+				'ocaml'				=> 'OCaml',
+				'oobas'				=> 'OpenOffice.org Basic',
+				'oracle8'			=> 'Oracle 8 SQL',
+				'pascal'			=> 'Pascal',
+				'php-brief'			=> 'PHP (brief)',
+				'ruby'				=> 'Ruby',
+				'sas'				=> 'SAS',
+				'scheme'			=> 'Scheme',
+				'sdlbasic'			=> 'sdlBasic',
+				'smalltalk'			=> 'Smalltalk',
+				'tcl'				=> 'TCL',
+				'thinbasic'			=> 'thinBasic',
+				'tsql'				=> 'T-SQL',
+				'plsql'				=> 'PL/SQL',
+				'python'			=> 'Python',
+				'qbasic'			=> 'QBasic/QuickBASIC',
+				'rails'				=> 'Rails',
+				'reg'				=> 'Microsoft Registry',
+				'vbnet'				=> 'vb.net',
+				'vhdl'				=> 'VHDL',
+				'visualfoxpro'		=> 'Visual Fox Pro',
+				'winbatch'			=> 'Winbatch',
+				'xpp'				=> 'X++',
+				'z80'				=> 'ZiLOG Z80 Assembler',
+			*/
+		);
+
 		if (!in_array($default, $this->geshi_list))
 		{
 			$default = 'text';
 		}
 
 		$output = '';
-		foreach ($this->language->lang['PASTEBIN_LANGUAGES'] as $code => $name)
+		foreach ($programming_langs as $code => $name)
 		{
 			if (in_array($code, $this->geshi_list))
 			{
