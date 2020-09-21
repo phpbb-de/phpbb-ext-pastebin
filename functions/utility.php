@@ -87,8 +87,11 @@ class utility
 	 */
 	function highlight_select($default = 'text')
 	{
-		// Programming languages
-		// these are used by geshi
+		/** Programming languages used by geshi
+		 * Check \phpbbde\pastebin\vendor\easybook\geshi\geshi for more languages
+		 * Add them to the array $programming_langs
+		 * Don't forget to add fitting language variables to \phpbbde\pastebin\language\<iso>\pastebin.php as well
+		 */
 		$programming_langs = array(
 			'text',
 			'php',
