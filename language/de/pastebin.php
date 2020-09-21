@@ -101,4 +101,15 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_SNIPPET_PRUNABLE'			=> 'Eintrag prunable - automatisch löschbar',
 	'PASTEBIN_SNIPPET_PRUNABLE_EXPLAIN'	=> 'Wenn diese Option deaktiviert ist, wird der Eintrag nicht in die monatlich automatisch zu löschenden Einträge aufgenommen.',
 	'PASTEBIN_SNIPPET_SUBMITTED'			=> 'Dein Eintrag wurde erfolgreich erstellt.',
+
+	// Language keys for Syntax highlighting dropdown
+	'PASTEBIN_LANGS_TEXT' => 'TEXT',
+	'PASTEBIN_LANGS_PHP' => 'PHP',
+	'PASTEBIN_LANGS_SQL' => 'SQL',
+	'PASTEBIN_LANGS_HTML5' => 'HTML',
+	'PASTEBIN_LANGS_CSS' => 'CSS',
+	'PASTEBIN_LANGS_JAVASCRIPT' => 'JavaScript',
+	'PASTEBIN_LANGS_XML' => 'XML',
+	'PASTEBIN_LANGS_DIFF' => 'diff',
+	'PASTEBIN_LANGS_ROBOTS' => 'Robots.txt',
 ));
