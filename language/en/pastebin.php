@@ -29,6 +29,8 @@ $lang = array_merge($lang, array(
 
 	'PASTEBIN_ELLIPSIS'					=> '…',
 
+	'PASTEBIN_CONFIRM_CODE_WRONG'		=> 'The confirmation code you entered was incorrect.',
+
 	'PASTEBIN_DELETE_SNIPPET'			=> 'Delete entry',
 	'PASTEBIN_DELETE_SNIPPET_CONFIRM'	=> 'Do you really want to delete the entry entitled “%s”? This cannot be undone.',
 	'PASTEBIN_DELETE_SNIPPET_EXPLAIN'	=> 'Deletes the entry from the database. This cannot be undone.',

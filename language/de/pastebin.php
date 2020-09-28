@@ -30,6 +30,8 @@ $lang = array_merge($lang, array(
 
 	'PASTEBIN_ELLIPSIS'					=> '…',
 
+	'PASTEBIN_CONFIRM_CODE_WRONG'		=> 'Der eingegebene Bestätigungscode ist falsch.',
+
 	'PASTEBIN_DELETE_SNIPPET'			=> 'Eintrag löschen',
 	'PASTEBIN_DELETE_SNIPPET_CONFIRM'	=> 'Soll der Eintrag mit dem Titel “%s” wirklich gelöscht werden? Diese Aktion kann nicht rückgängig gemacht werden.',
 	'PASTEBIN_DELETE_SNIPPET_EXPLAIN'	=> 'Löscht den Eintrag aus der Datenbank. Diese Aktion kann nicht rückgängig gemacht werden.',
