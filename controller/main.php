@@ -542,7 +542,6 @@ class main
 		}
 
 		$s_hidden_fields['mode'] = 'post';
-
 		// Visual Confirmation - Show images (borrowed from includes/ucp/ucp_register.php)
 		if (!$this->auth->acl_get('u_pastebin_post_novc'))
 		{
@@ -595,6 +594,9 @@ class main
 		}
 		$highlight_select = $this->util->highlight_select($highlight);
 
+		$captcha_in_use = $this->config['captcha_plugin'];
+		$is_recaptcha = strpos($captcha_in_use, 'recaptcha');
+
 		add_form_key('pastebinform');
 
 		$this->template->assign_vars(array(
@@ -608,10 +610,12 @@ class main
 
 				'FILESIZE'			=> $this->config['max_filesize'],
 
+				'IS_RECAPTCHA'		=> $is_recaptcha,
+
 				'S_FORM_ENCTYPE'	=> ' enctype="multipart/form-data"',
 				'S_ERROR'			=> (isset($s_error)) ? $s_error : '',
-				'S_HIDDEN_FIELDS'	=> (sizeof($s_hidden_fields)) ? build_hidden_fields($s_hidden_fields) : '',
-				'S_CONFIRM_CODE'	=> (!$this->auth->acl_get('u_pastebin_post_novc')) ? true : false,
+				'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
+				'S_CONFIRM_CODE'	=> !$this->auth->acl_get('u_pastebin_post_novc'),
 		));
 	}
 }
