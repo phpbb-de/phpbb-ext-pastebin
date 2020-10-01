@@ -324,22 +324,21 @@ class main
 					$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
 					$captcha->init($this::CONFIRM_PASTEBIN);
 
-					if (!$captcha->is_solved())
+					$vc_response = $captcha->validate($data);
+					if ($vc_response !== false)
 					{
-						$error[] = $this->language->lang('PASTEBIN_CONFIRM_CODE_WRONG');
-					}
-					else if (!empty($error))
-					{
-						$captcha->new_attempt();
-					}
-					else
-					{
-						$captcha->garbage_collect($this::CONFIRM_PASTEBIN);
+						$error[] = $vc_response;
 					}
 				}
 
 				if (!empty($error))
 				{
+					// Okay, captcha, your job is done.
+					if (isset($captcha))
+					{
+						$captcha->reset();
+					}
+
 					// Remove duplicate entries of the error array
 					$error = array_unique($error);
 					// We have errors, we don't insert here, but instead go back to the posting page and tell the user what he did wrong
@@ -545,7 +544,6 @@ class main
 		$s_hidden_fields['mode'] = 'post';
 
 		// Visual Confirmation - Show images (borrowed from includes/ucp/ucp_register.php)
-		$confirm_image = '';
 		if (!$this->auth->acl_get('u_pastebin_post_novc'))
 		{
 			if (!isset($captcha))
@@ -553,6 +551,8 @@ class main
 				$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
 				$captcha->init($this::CONFIRM_PASTEBIN);
 			}
+			$s_hidden_fields = array_merge($s_hidden_fields, $captcha->get_hidden_fields());
+
 			$this->template->assign_var('PASTEBIN_CAPTCHA_TEMPLATE', $captcha->get_template());
 		}
 
@@ -607,8 +607,6 @@ class main
 				'PRUNING_MONTHS_SELECT'	=> $pruning_months_select,
 
 				'FILESIZE'			=> $this->config['max_filesize'],
-
-				'CONFIRM_IMG'		=> $confirm_image,
 
 				'S_FORM_ENCTYPE'	=> ' enctype="multipart/form-data"',
 				'S_ERROR'			=> (isset($s_error)) ? $s_error : '',
