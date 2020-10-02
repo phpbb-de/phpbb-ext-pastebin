@@ -333,15 +333,9 @@ class main
 
 				if (!empty($error))
 				{
-					// Okay, captcha, your job is done.
-					if (isset($captcha))
-					{
-						$captcha->reset();
-					}
-
 					// Remove duplicate entries of the error array
 					$error = array_unique($error);
-					// We have errors, we don't insert here, but instead go back to the posting page and tell the user what he did wrong
+					// We have errors, we don't insert here, but instead go back to the submit page and tell the user what he did wrong
 					$s_error = implode('<br />', $error);
 				}
 				else
@@ -357,6 +351,12 @@ class main
 							'snippet_highlight'	=> $data['snippet_highlight'],
 							'snippet_prune_on'	=> time() + $this::SECONDS_MONTH * $data['snippet_prune_on'],
 					);
+
+					// Okay, captcha, your job is done.
+					if (!$this->auth->acl_get('u_pastebin_post_novc') && isset($captcha) && $captcha->is_solved() === true)
+					{
+						$captcha->reset();
+					}
 
 					$sql = 'INSERT INTO ' . $this->pastebin_table . ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
 					$this->db->sql_query($sql);
