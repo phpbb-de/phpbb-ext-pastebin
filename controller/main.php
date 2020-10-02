@@ -610,7 +610,7 @@ class main
 
 				'FILESIZE'			=> $this->config['max_filesize'],
 
-				'IS_RECAPTCHA'		=> $is_recaptcha,
+				'PASTEBIN_IS_RECAPTCHA'		=> $is_recaptcha,
 
 				'S_FORM_ENCTYPE'	=> ' enctype="multipart/form-data"',
 				'S_ERROR'			=> (isset($s_error)) ? $s_error : '',

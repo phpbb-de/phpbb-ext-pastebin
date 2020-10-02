@@ -54,7 +54,7 @@
 		</fieldset>
 
 		{% if PASTEBIN_CAPTCHA_TEMPLATE %}
-			{% if not IS_RECAPTCHA %}
+			{% if not PASTEBIN_IS_RECAPTCHA %}
 			<h3>{{ lang('PASTEBIN_CONFIRM') }}</h3>
 			<p>{{ lang('PASTEBIN_CONFIRM_EXPLAIN') }}</p>
 			{% endif %}
