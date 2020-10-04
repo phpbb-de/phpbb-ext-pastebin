@@ -324,17 +324,10 @@ class main
 					$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
 					$captcha->init($this::CONFIRM_PASTEBIN);
 
-					if (!$captcha->is_solved())
+					$vc_response = $captcha->validate($data);
+					if ($vc_response !== false)
 					{
-						$error[] = $this->language->lang('PASTEBIN_CONFIRM_CODE_WRONG');
-					}
-					else if (!empty($error))
-					{
-						$captcha->new_attempt();
-					}
-					else
-					{
-						$captcha->garbage_collect($this::CONFIRM_PASTEBIN);
+						$error[] = $vc_response;
 					}
 				}
 
@@ -342,7 +335,7 @@ class main
 				{
 					// Remove duplicate entries of the error array
 					$error = array_unique($error);
-					// We have errors, we don't insert here, but instead go back to the posting page and tell the user what he did wrong
+					// We have errors, we don't insert here, but instead go back to the submit page and tell the user what he did wrong
 					$s_error = implode('<br />', $error);
 				}
 				else
@@ -358,6 +351,12 @@ class main
 							'snippet_highlight'	=> $data['snippet_highlight'],
 							'snippet_prune_on'	=> time() + $this::SECONDS_MONTH * $data['snippet_prune_on'],
 					);
+
+					// Okay, captcha, your job is done.
+					if (!$this->auth->acl_get('u_pastebin_post_novc') && isset($captcha) && $captcha->is_solved() === true)
+					{
+						$captcha->reset();
+					}
 
 					$sql = 'INSERT INTO ' . $this->pastebin_table . ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
 					$this->db->sql_query($sql);
@@ -543,9 +542,7 @@ class main
 		}
 
 		$s_hidden_fields['mode'] = 'post';
-
 		// Visual Confirmation - Show images (borrowed from includes/ucp/ucp_register.php)
-		$confirm_image = '';
 		if (!$this->auth->acl_get('u_pastebin_post_novc'))
 		{
 			if (!isset($captcha))
@@ -553,6 +550,8 @@ class main
 				$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
 				$captcha->init($this::CONFIRM_PASTEBIN);
 			}
+			$s_hidden_fields = array_merge($s_hidden_fields, $captcha->get_hidden_fields());
+
 			$this->template->assign_var('PASTEBIN_CAPTCHA_TEMPLATE', $captcha->get_template());
 		}
 
@@ -595,6 +594,9 @@ class main
 		}
 		$highlight_select = $this->util->highlight_select($highlight);
 
+		$captcha_in_use = $this->config['captcha_plugin'];
+		$is_recaptcha = strpos($captcha_in_use, 'recaptcha');
+
 		add_form_key('pastebinform');
 
 		$this->template->assign_vars(array(
@@ -608,12 +610,12 @@ class main
 
 				'FILESIZE'			=> $this->config['max_filesize'],
 
-				'CONFIRM_IMG'		=> $confirm_image,
+				'PASTEBIN_IS_RECAPTCHA'		=> $is_recaptcha,
 
 				'S_FORM_ENCTYPE'	=> ' enctype="multipart/form-data"',
 				'S_ERROR'			=> (isset($s_error)) ? $s_error : '',
-				'S_HIDDEN_FIELDS'	=> (sizeof($s_hidden_fields)) ? build_hidden_fields($s_hidden_fields) : '',
-				'S_CONFIRM_CODE'	=> (!$this->auth->acl_get('u_pastebin_post_novc')) ? true : false,
+				'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
+				'S_CONFIRM_CODE'	=> !$this->auth->acl_get('u_pastebin_post_novc'),
 		));
 	}
 }

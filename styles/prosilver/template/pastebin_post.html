@@ -54,10 +54,11 @@
 		</fieldset>
 
 		{% if PASTEBIN_CAPTCHA_TEMPLATE %}
-		<h3>{{ lang('PASTEBIN_CONFIRM') }}</h3>
-		<p>{{ lang('PASTEBIN_CONFIRM_EXPLAIN') }}</p>
+			{% if not PASTEBIN_IS_RECAPTCHA %}
+			<h3>{{ lang('PASTEBIN_CONFIRM') }}</h3>
+			<p>{{ lang('PASTEBIN_CONFIRM_EXPLAIN') }}</p>
+			{% endif %}
 
-			
 				{% DEFINE CAPTCHA_TAB_INDEX = 8 %}
 				{% INCLUDE ''~ PASTEBIN_CAPTCHA_TEMPLATE ~'' %}
 			
