@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47d141cf93533c44c0a3adfbcdffd5bc",
+    "content-hash": "3af2af766067404bc736bc81d0118ca0",
     "packages": [
         {
             "name": "easybook/geshi",
@@ -1684,7 +1684,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.4.7,<=7.4"
+        "php": ">=5.4.7"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"
