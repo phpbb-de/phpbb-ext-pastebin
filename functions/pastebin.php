@@ -72,7 +72,6 @@ class pastebin implements \ArrayAccess
 			'cfm'				=> 'cfm',
 			'cpp-qt'			=> 'cpp',
 			'css-gen.cfg'		=> 'cfg',
-			'c_mac'				=> 'c',
 			'd'					=> 'd',
 			'delphi'			=> 'dpr',
 			'div'				=> 'div',
@@ -206,7 +205,7 @@ class pastebin implements \ArrayAccess
 	function delete()
 	{
 		$sql = 'DELETE FROM ' . $this->pastebin_table . '
-			WHERE snippet_id = ' . $this->data['snippet_id'];
+			WHERE snippet_id = ' . (int) $this->data['snippet_id'];
 		$this->db->sql_query($sql);
 		$this->empty_data();
 	}
@@ -254,6 +253,6 @@ class pastebin implements \ArrayAccess
 
 	function offsetUnset($offset)
 	{
-
+		// still needed, even if empty
 	}
 }

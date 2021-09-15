@@ -1,88 +1,89 @@
 	<p>
-		{L_PASTEBIN_EXPLAIN}
+		{{ lang('PASTEBIN_EXPLAIN') }}
 	</p>
 
-	<!-- IF S_AUTH_POST -->
+	{% if S_AUTH_POST %}
 	<p>
-		{L_PASTEBIN_POST_EXPLAIN}
+		{{ lang('PASTEBIN_POST_EXPLAIN') }}
 	</p>
 
-	<form id="pastebinform" method="post" action="{S_FORM_ACTION}"{S_FORM_ENCTYPE}>
+	<form id="pastebinform" method="post" action="{{ S_FORM_ACTION }}"{{ S_FORM_ENCTYPE }}>
 	<div class="panel" id="postingbox">
 
-		<h3>{L_PASTEBIN_POST}</h3>
+		<h3>{{ lang('PASTEBIN_POST') }}</h3>
 
 		<fieldset class="fields1">
-		<!-- IF S_ERROR -->
-		<p class="error">{S_ERROR}</p>
-		<!-- ENDIF -->
+		{% if S_ERROR %}
+		<p class="error">{{ S_ERROR }}</p>
+		{% endif %}
 		<dl>
-			<dt><label for="snippet_title">{L_SNIPPET_TITLE}:</label></dt>
-			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_title" id="snippet_title" value="{SNIPPET_TITLE}" tabindex="1" /></dd>
+			<dt><label for="snippet_title">{{ lang('PASTEBIN_SNIPPET_TITLE') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_title" id="snippet_title" value="{{ SNIPPET_TITLE }}" tabindex="1" /></dd>
 		</dl>
 		<dl>
-			<dt><label for="snippet_desc">{L_SNIPPET_DESC}:</label></dt>
-			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_desc" id="snippet_desc" value="{SNIPPET_DESC}" tabindex="2" /></dd>
+			<dt><label for="snippet_desc">{{ lang('PASTEBIN_SNIPPET_DESC') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_desc" id="snippet_desc" value="{{ SNIPPET_DESC }}" tabindex="2" /></dd>
 		</dl>
 		<dl>
-			<dt><label for="snippet_highlight">{L_SNIPPET_HIGHLIGHT}:</label></dt>
-			<dd><select name="snippet_highlight" id="snippet_highlight">{HIGHLIGHT_SELECT}</select></dd>
+			<dt><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') }}{{ lang('COLON') }}</label></dt>
+			<dd><select name="snippet_highlight" id="snippet_highlight">{{ HIGHLIGHT_SELECT }}</select></dd>
 		</dl>
 		
 		<dl>
-			<dt><label for="pruning_months">{L_PRUNING_MONTHS}:</label></dt>
-			<dd><select name="pruning_months" id="pruning_months">{PRUNING_MONTHS_SELECT}</select> {L_PRUNING_MONTH_SHORT}</dd>
+			<dt><label for="pruning_months">{{ lang('PASTEBIN_PRUNING_MONTHS') }}{{ lang('COLON') }}</label></dt>
+			<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PASTEBIN_PRUNING_MONTH_SHORT') }}</dd>
 		</dl>
 		
 		</fieldset>
 
-		<h3>{L_SNIPPET_TEXT}</h3>
+		<h3>{{ lang('PASTEBIN_SNIPPET_TEXT') }}</h3>
 
 		<fieldset class="fields1">
 		<dl>
-			<dt><label for="fileupload">{L_FILENAME}:</label></dt>
+			<dt><label for="fileupload">{{ lang('FILENAME') }}{{ lang('COLON') }}</label></dt>
 			<dd>
-				<input type="file" name="fileupload" id="fileupload" maxlength="{FILESIZE}" value="" class="inputbox autowidth" />
+				<input type="file" name="fileupload" id="fileupload" maxlength="{{ FILESIZE }}" value="" class="inputbox autowidth" />
 			</dd>
 		</dl>
 
-		<p class="importantnotice">{L_PASTEBIN_UPLOAD_EXPLAIN}</p>
+		<p class="importantnotice">{{ lang('PASTEBIN_UPLOAD_EXPLAIN') }}</p>
 
 		<dl>
-			<dd><textarea name="snippet_text" id="snippet_text" class="inputbox" rows="15" cols="76" tabindex="3">{SNIPPET_TEXT}</textarea></dd>
+			<dd><textarea name="snippet_text" id="snippet_text" class="inputbox" rows="15" cols="76" tabindex="3">{{ SNIPPET_TEXT }}</textarea></dd>
 		</dl>
 		</fieldset>
 
-		<!-- IF CAPTCHA_TEMPLATE -->
-		<h3>{L_PASTEBIN_CONFIRM}</h3>
-		<p>{L_PASTEBIN_CONFIRM_EXPLAIN}</p>
+		{% if PASTEBIN_CAPTCHA_TEMPLATE %}
+			{% if not PASTEBIN_IS_RECAPTCHA %}
+			<h3>{{ lang('PASTEBIN_CONFIRM') }}</h3>
+			<p>{{ lang('PASTEBIN_CONFIRM_EXPLAIN') }}</p>
+			{% endif %}
 
+				{% DEFINE CAPTCHA_TAB_INDEX = 8 %}
+				{% INCLUDE ''~ PASTEBIN_CAPTCHA_TEMPLATE ~'' %}
 			
-				<!-- DEFINE $CAPTCHA_TAB_INDEX = 8 -->
-				<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
-			
-		<!-- ENDIF -->
+		{% endif %}
 	</div>
 
 	<div class="panel bg2">
 
 		<fieldset class="submit-buttons">
-			{S_HIDDEN_FIELDS}
-			{S_FORM_TOKEN}
-			<input class="button2" type="reset" value="{L_RESET}" accesskey="r" />&nbsp;
-			<input class="button1" name="submit" type="submit" value="{L_SUBMIT}" accesskey="s" tabindex="5" />&nbsp;
+			{{ S_HIDDEN_FIELDS }}
+			{{ S_FORM_TOKEN }}
+			<input class="button2" type="reset" value="{{ lang('RESET') }}" accesskey="r" />&nbsp;
+			<input class="button1" name="submit" type="submit" value="{{ lang('SUBMIT') }}" accesskey="s" tabindex="5" />&nbsp;
 		</fieldset>
 		
 	</div>
 	</form>
 
-	<!-- ELSE -->
-		<h2>{L_PASTEBIN_NO_AUTH}</h2>
+	{% else %}
+		<h2>{{ lang('PASTEBIN_NO_AUTH') }}</h2>
 		<p>
-			<!-- IF not S_USER_LOGGED_IN -->
-			{L_PASTEBIN_NO_AUTH_GUEST_EXPLAIN}
-			<!-- ELSE -->
-			{L_PASTEBIN_NO_AUTH_EXPLAIN}
-			<!-- ENDIF -->
+			{% if not S_USER_LOGGED_IN %}
+			{{ lang('PASTEBIN_NO_AUTH_GUEST_EXPLAIN') }}
+			{% else %}
+			{{ lang('PASTEBIN_NO_AUTH_EXPLAIN') }}
+			{% endif %}
 		</p>
-	<!-- ENDIF -->
+	{% endif %}

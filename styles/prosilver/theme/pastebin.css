@@ -1,16 +1,10 @@
-.icon-pastebin {
-	background-image: url("./images/icon_pastebin.gif");
-	background-position: 0 50%;
-	background-repeat: no-repeat;
-}
-
 .pastebin #pastebin-codebox {
 	font-size: 1.2em;
 }
 
 .pastebin #pastebin-codebox dd {
-	margin: 0px 0px 0px 4em;
-	padding: 0.5em 0px 0px 0.5px;
+	margin: 0 0 0 4em;
+	padding: 5px 0 0 1px;
 }
 
 .pastebin #pastebin-codebox dt {
@@ -19,18 +13,40 @@
 	font-size: 0.8em;
 	font-weight: bold;
 	display:block;
-	padding: 0.2em 0px 0.2px 0.1em;
+	padding: 3px 0 0.5% 2px;
 }
 
 .pastebin .mini-panel {
 	display: block;
-	padding: 1em ;
-	margin-top: 1em;
-	margin-bottom: 1em;	
+	font-size: 110%;
+	padding: 1% ;
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+
+.pastebin .new-entry {
+	float: right;
+	line-height: 1.5;
+	margin-right: 10px;
+	width: 30%
+}
+
+.pastebin .last-snippets {
+	float: right;
+	line-height: 1.5;
+	margin: 20px 10px 0 0;
+	width: 30%;
+}
+
+.pastebin .mod-panel {
+	float: left;
+	width: 63%;
 }
 
 .pastebin #content {
-	width: 100%;
+	font-size: 105%;
+	float: left;
+	width: 65%;
 }
 
 .pastebin #extras {
@@ -38,11 +54,11 @@
 }
 
 .pastebin .mini-panel h3 {
-	margin-top: 0px;
+	margin-top: 0;
 }
 
 .pastebin .mini-panel ul {
-	padding-left: 1em;
+	padding-left: 12px;
 }
 
 .pastebin #copy_paste.inputbox{
@@ -52,9 +68,20 @@
 }
 
 .pastebin .textwrapper{
-	border: 1px solid;
-	border-color: #B4BAC0;
+	border: 1px solid #B4BAC0;
 	padding: 5px;
 	margin-bottom: 10px;
 	margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+	.pastebin .last-snippets,
+	.pastebin .mod-panel,
+	.pastebin .new-entry,
+	.pastebin #content {
+		float: none;
+		margin: 10px 0;
+		width: auto;
+	}
 }

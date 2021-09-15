@@ -1,85 +1,80 @@
-<!-- INCLUDE overall_header.html -->
+{% INCLUDE 'overall_header.html' %}
 
 <div class="pastebin">
 
-	<h2>{L_PASTEBIN}</h2>
+	<h2>{{ lang('PASTEBIN') }}</h2>
 
 	<div id="extras">
-
-
-		<!-- IF S_AUTH_POST or S_MODE eq 'view' -->
-		<div class="mini-panel navbar">
-			<h3>{L_PASTEBIN}</h3>
+		{% if S_AUTH_POST or S_MODE eq 'view' %}
+		<div class="new-entry mini-panel navbar">
+			<h3>{{ lang('PASTEBIN') }}</h3>
 			<ul>
-				<!-- IF S_AUTH_POST --><li><a href="{U_PASTEBIN}">{L_SNIPPET_NEW}</a></li><!-- ENDIF -->
-				<!-- IF S_MODE eq 'view' --><li><a href="{U_SNIPPET_DOWNLOAD}">{L_SNIPPET_DOWNLOAD}</a></li><!-- ENDIF -->
+				{% if S_AUTH_POST %}<li><a href="{{ U_PASTEBIN }}">{{ lang('PASTEBIN_SNIPPET_NEW') }}</a></li>{% endif %}
+				{% if S_MODE eq 'view' %}<li><a href="{{ U_SNIPPET_DOWNLOAD }}">{{ lang('PASTEBIN_SNIPPET_DOWNLOAD') }}</a></li>{% endif %}
 			</ul>
 		</div>
-		<!-- ENDIF -->
+		{% endif %}
 
-		<!-- IF (S_AUTH_EDIT || S_AUTH_DELETE) && S_MODE eq 'view' -->
-		<div class="mini-panel navbar">
-			<h3>{L_MODERATE_SNIPPET}</h3>
+		{% if (S_AUTH_EDIT || S_AUTH_DELETE) && S_MODE eq 'view' %}
+		<div class="mod-panel mini-panel navbar">
+			<h3>{{ lang('PASTEBIN_MODERATE_SNIPPET') }}</h3>
 
-			<form method="post" action="{S_FORM_ACTION_MOD}">
+			<form method="post" action="{{ S_FORM_ACTION_MOD }}">
 			<fieldset class="fields1">
-				<!-- IF S_AUTH_EDIT -->
+				{% if S_AUTH_EDIT %}
 				<dl>
-					<dt><label for="pruning_months">{L_PRUNING_MONTHS}:</label></dt>
-					<dd><select name="pruning_months" id="pruning_months">{PRUNING_MONTHS_SELECT}</select> {L_PRUNING_MONTH_SHORT}</dd>
+					<dt><label for="pruning_months">{{ lang('PASTEBIN_PRUNING_MONTHS') }}{{ lang('COLON') }}</label></dt>
+					<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PASTEBIN_PRUNING_MONTH_SHORT') }}</dd>
 				</dl>
 				<dl>
-					<dt><label for="snippet_highlight">{L_SNIPPET_HIGHLIGHT}:</label></dt>
-					<dd><select id="snippet_highlight" name="snippet_highlight">{HIGHLIGHT_SELECT_MOD}</select></dd>
+					<dt><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') }}{{ lang('COLON') }}</label></dt>
+					<dd><select id="snippet_highlight" name="snippet_highlight">{{ HIGHLIGHT_SELECT_MOD }}</select></dd>
 				</dl>
-				<!-- ENDIF -->
-				<!-- IF S_AUTH_DELETE -->
+				{% endif %}
+				{% if S_AUTH_DELETE %}
 				<dl>
-					<dt><label for="delete_snippet">{L_DELETE_SNIPPET}:</label></dt>
-					<dd><label for="delete_snippet"><input type="checkbox" name="delete_snippet" id="delete_snippet" /> {L_DELETE}</label></dd>
+					<dt><label for="delete_snippet">{{ lang('PASTEBIN_DELETE_SNIPPET') }}{{ lang('COLON') }}</label></dt>
+					<dd><label for="delete_snippet"><input type="checkbox" name="delete_snippet" id="delete_snippet" /> {{ lang('DELETE') }}</label></dd>
 				</dl>
-				<!-- ENDIF -->
+				{% endif %}
 			</fieldset>
 
 			<fieldset class="submit-buttons">
-				{S_HIDDEN_FIELDS}
+				{{ S_HIDDEN_FIELDS }}
 				<input type="hidden" name="mode" value="moderate" />
-				<input class="button1" name="submit" type="submit" value="{L_SUBMIT}" />
+				<input class="button1" name="submit" type="submit" value="{{ lang('SUBMIT') }}" />
 			</fieldset>
 			</form>
 		</div>
-		<!-- ENDIF -->
+		{% endif %}
 	</div>
-
-
 
 	<div id="content">
-		<!-- IF S_MODE eq 'view' -->
-			<!-- INCLUDE pastebin_view.html -->
-		<!-- ELSE -->
-			<!-- INCLUDE pastebin_post.html -->
-		<!-- ENDIF -->
+		{% if S_MODE eq 'view' %}
+			{% INCLUDE '@phpbbde_pastebin/pastebin_view.html' %}
+		{% else %}
+			{% INCLUDE '@phpbbde_pastebin/pastebin_post.html' %}
+		{% endif %}
 	</div>
 
+	{% if S_AUTH_VIEW %}
+	<div class="last-snippets mini-panel navbar">
+		<h3>{{ lang('PASTEBIN_LATEST_SNIPPETS') }}</h3>
 
-	<!-- IF S_AUTH_VIEW -->
-	<div class="mini-panel navbar">
-		<h3>{L_LATEST_SNIPPETS}</h3>
-
-		<!-- IF .latest_snippets -->
+		{% if loops.latest_snippets|length %}
 		<ul>
-			<!-- BEGIN latest_snippets -->
-				<li><a href="{latest_snippets.URL}" title="{latest_snippets.TITLE}<!-- IF latest_snippets.DESC -->: {latest_snippets.DESC}<!-- ENDIF -->">{latest_snippets.TITLE_SHORT}</a> ({latest_snippets.SNIPPET_TIME}, {latest_snippets.AUTHOR_FULL})</li>
-			<!-- END latest_snippets -->
+			{% for latest_snippets in loops.latest_snippets %}
+				<li><a href="{{ latest_snippets.URL }}" title="{{ latest_snippets.TITLE }}{% if latest_snippets.DESC %}{{ lang('COLON') }} {{ latest_snippets.DESC }}{% endif %}">{{ latest_snippets.TITLE_SHORT }}</a> ({{ latest_snippets.SNIPPET_TIME }}, {{ latest_snippets.AUTHOR_FULL }})</li>
+			{% endfor %}
 		</ul>
-		<!-- ELSE -->
+		{% else %}
 		<ul>
-			<li>{L_NO_SNIPPETS}</li>
+			<li>{{ lang('PASTEBIN_NO_SNIPPETS') }}</li>
 		</ul>
-		<!-- ENDIF -->
+		{% endif %}
 	</div>
-	<!-- ENDIF -->
+	{% endif %}
 
 </div>
 
-<!-- INCLUDE overall_footer.html -->
+{% INCLUDE 'overall_footer.html' %}

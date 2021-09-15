@@ -11,13 +11,6 @@ namespace phpbbde\pastebin\functions;
 class utility
 {
 	/**
-	 * Version of the pastebin mod
-	 *
-	 * @var int
-	 */
-	var $version	= '0.2.2';
-
-	/**
 	 * Geshi directory
 	 *
 	 * @var string
@@ -31,13 +24,26 @@ class utility
 	 */
 	var $geshi_list	= array();
 
+	/** @var string */
+	protected $php_ext;
+
+	/* @var \phpbb\language\language */
+	protected $language;
+
 	/**
 	 * Constructor
+	 * @param string $php_ext
+	 * @param \phpbb\language\language	$language
 	 */
-	function __construct($geshi_dir)
+	function __construct(
+		$geshi_dir,
+		$php_ext,
+		\phpbb\language\language $language)
 	{
 		$this->geshi_dir	= $geshi_dir;
 		$this->geshi_list	= $this->geshi_list();
+		$this->php_ext 		= $php_ext;
+		$this->language		= $language;
 	}
 
 
@@ -54,8 +60,6 @@ class utility
 	 */
 	function geshi_list()
 	{
-		global $phpEx;
-
 		$geshi_list = array();
 
 		$d = dir($this->geshi_dir);
@@ -66,12 +70,14 @@ class utility
 				continue;
 			}
 
-			if (($substr_end = strpos($file, ".$phpEx")) !== false)
+			if (($substr_end = strpos($file, ".$this->php_ext")) !== false)
 			{
-				@sort($geshi_list[] = substr($file, 0, $substr_end));
+				$geshi_list[] = substr($file, 0, $substr_end);
 			}
 		}
 		$d->close();
+
+		sort($geshi_list);
 
 		return $geshi_list;
 	}
@@ -81,18 +87,35 @@ class utility
 	 */
 	function highlight_select($default = 'text')
 	{
-		global $user;
+		/** Programming languages used by geshi
+		 * Check \phpbbde\pastebin\vendor\easybook\geshi\geshi for more languages
+		 * Add them to the array $programming_langs
+		 * Don't forget to add fitting language variables to \phpbbde\pastebin\language\<iso>\pastebin.php as well
+		 */
+		$programming_langs = array(
+			'text',
+			'php',
+			'sql',
+			'html5',
+			'css',
+			'javascript',
+			'xml',
+			'diff',
+			'robots',
+		);
+
 		if (!in_array($default, $this->geshi_list))
 		{
 			$default = 'text';
 		}
 
 		$output = '';
-		foreach ($user->lang['PASTEBIN_LANGUAGES'] as $code => $name)
+		$lang_prefix = 'PASTEBIN_LANGS_';
+		foreach ($programming_langs as $code)
 		{
 			if (in_array($code, $this->geshi_list))
 			{
-				$output .= '<option' . (($default == $code) ? ' selected="selected"' : '') . ' value="' . htmlentities($code, ENT_QUOTES) . '">' . $name . '</option>';
+				$output .= '<option' . (($default == $code) ? ' selected="selected"' : '') . ' value="' . htmlentities($code, ENT_QUOTES) . '">' . $this->language->lang($lang_prefix . strtoupper($code)) . '</option>';
 			}
 		}
 

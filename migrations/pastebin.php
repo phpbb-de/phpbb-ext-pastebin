@@ -12,21 +12,23 @@ namespace phpbbde\pastebin\migrations;
 
 class pastebin extends \phpbb\db\migration\migration
 {
-	static public function depends_on()
-	{
-		return array();
-	}
-
 	public function effectively_installed()
 	{
 		return !empty($this->config['pastebin_version']) && version_compare($this->config['pastebin_version'], '0.2.2', '>=');
+	}
+
+	static public function depends_on()
+	{
+		 return array(
+			'\phpbb\db\migration\data\v32x\v324',
+		);
 	}
 
 	public function update_schema()
 	{
 		return array(
 			'add_tables' => array(
-				$this->table('pastebin') => array(
+				$this->table_prefix . 'pastebin' => array(
 					'COLUMNS' => array(
 						'snippet_id' 		=> array('UINT:8', null, 'auto_increment'),
 						'snippet_author' 	=> array('UINT:8', 0),
@@ -50,7 +52,7 @@ class pastebin extends \phpbb\db\migration\migration
 	public function revert_schema()
 	{
 		return array(
-			'drop_tables' => array($this->table('pastebin')),
+			'drop_tables' => array($this->table_prefix . 'pastebin'),
 		);
 	}
 
@@ -64,22 +66,5 @@ class pastebin extends \phpbb\db\migration\migration
 				array('permission.add', array('m_pastebin_delete', true, 'm_delete')),
 				array('config.add', array('pastebin_version', '0.2.2')),
 		);
-	}
-
-	public function revert_data()
-	{
-		return array(
-				array('permission.remove', array('u_pastebin_view')),
-				array('permission.remove', array('u_pastebin_post')),
-				array('permission.remove', array('u_pastebin_post_novc')),
-				array('permission.remove', array('m_pastebin_edit')),
-				array('permission.remove', array('m_pastebin_delete')),
-				array('config.remove', array('pastebin_version')),
-		);
-	}
-
-	private function table($name)
-	{
-		return $this->table_prefix . $name;
 	}
 }

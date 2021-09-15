@@ -1,38 +1,38 @@
-	<h3>{SNIPPET_TITLE_V}</h3>
-	<!-- IF SNIPPET_AUTHOR_FULL --><em class="author">{L_POST_BY_AUTHOR} {SNIPPET_AUTHOR_FULL}</em><!-- ENDIF -->
-	<!-- IF SNIPPET_DESC_V -->
+	<h3>{{ SNIPPET_TITLE_V }}</h3>
+	{% if SNIPPET_AUTHOR_FULL %}<em class="author">{{ lang('POST_BY_AUTHOR') }} {{ SNIPPET_AUTHOR_FULL }} ({{ SNIPPET_TIME }})</em>{% endif %}
+	{% if SNIPPET_DESC_V %}
 	<dl>
-		<dt><strong>{L_SNIPPET_DESC}:</strong></dt>
-		<dd>{SNIPPET_DESC_V}</dd>
-		<dt><strong>{L_SNIPPET_CREATION_TIME}:</strong></dt>
-		<dd>{SNIPPET_TIME}</dd>
-		<dt><strong>{L_SNIPPET_PRUNE_TIME}:</strong></dt>
-		<dd>{SNIPPET_PRUNE_ON}</dd>
+		<dt><strong>{{ lang('PASTEBIN_SNIPPET_DESC') }}{{ lang('COLON') }}</strong></dt>
+		<dd>{{ SNIPPET_DESC_V }}</dd>
+		<dt><strong>{{ lang('PASTEBIN_SNIPPET_CREATION_TIME') }}{{ lang('COLON') }}</strong></dt>
+		<dd>{{ SNIPPET_TIME }}</dd>
+		<dt><strong>{{ lang('PASTEBIN_SNIPPET_PRUNE_TIME') }}{{ lang('COLON') }}</strong></dt>
+		<dd>{{ SNIPPET_PRUNE_ON }}</dd>
 	</dl>
 	<br />
-	<!-- ENDIF -->
+	{% endif %}
 
-	<form action="{S_FORM_ACTION}" method="get">
+	<form action="{{ S_FORM_ACTION }}" method="get">
 		<p>
 			<input type="hidden" name="mode" value="view" />
-			{S_HIDDEN_FIELDS_V}
-			<label for="highlight">{L_HIGHLIGHT_LANG}:</label> <select id="highlight" name="highlight">{HIGHLIGHT_SELECT}</select>
-			<input type="submit" value="{L_SUBMIT}" class="button1" />
+			{{ S_HIDDEN_FIELDS_V }}
+			<label for="highlight">{{ lang('PASTEBIN_HIGHLIGHT_LANG') }}{{ lang('COLON') }}</label> <select id="highlight" name="highlight">{{ HIGHLIGHT_SELECT }}</select>
+			<input type="submit" value="{{ lang('SUBMIT') }}" class="button1" />
 		</p>
 	</form>
 
 	<dl id="pastebin-codebox" class="codebox">
-		<dt>{L_SNIPPET_TEXT}:</dt>
+		<dt>{{ lang('PASTEBIN_SNIPPET_TEXT') }}{{ lang('COLON') }}</dt>
 		<dd>
-			{SNIPPET_TEXT_DISPLAY}
+			{{ SNIPPET_TEXT_DISPLAY }}
 		</dd>
 	</dl>
 
-	<h3>{L_COPY_PASTE}</h3>
+	<h3>{{ lang('PASTEBIN_COPY_PASTE') }}</h3>
 	<p>
-		{L_COPY_PASTE_EXPLAIN} {DOWNLOAD_SNIPPET_EXPLAIN}<br />
+		{{ lang('PASTEBIN_COPY_PASTE_EXPLAIN') }} {{ DOWNLOAD_SNIPPET_EXPLAIN }}<br />
 		<div class="textwrapper">
-			<textarea id="copy_paste" class="inputbox" rows="5" cols="76" tabindex="4">{SNIPPET_TEXT_ORIG}</textarea>
+			<textarea id="copy_paste" class="inputbox" rows="5" cols="76" tabindex="4">{{ SNIPPET_TEXT_ORIG }}</textarea>
 		</div>
-		<input type="button" class="button1" onclick="getElementById('copy_paste').select(); return false;" value="{L_SELECT_CODE}" />
+		<input type="button" class="button1" onclick="getElementById('copy_paste').select(); return false;" value="{{ lang('PASTEBIN_SELECT_CODE') }}" />
 	</p>

@@ -12,36 +12,23 @@ namespace phpbbde\pastebin\cron;
 
 class main extends \phpbb\cron\task\base
 {
-	/** @var string phpBB root path */
-	protected $root_path;
-
-	/** @var string phpEx */
-	protected $php_ext;
-
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
-
-	/** @var \phpbb\cache\service */
-	protected $cache;
 
 	/** @var \phpbb\config\config */
 	protected $config;
 
-	/** @var \phpbb\log\log_interface */
-	protected $log;
-
 	protected $prune_interval;
 	protected $pastebin_table;
 
-	public function __construct(\phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\log\log_interface $log, $pastebin_path, $root_path, $php_ext, $prune_interval, $pastebin_table)
+	public function __construct(
+		\phpbb\config\config $config,
+		\phpbb\db\driver\driver_interface $db,
+		$prune_interval,
+		$pastebin_table)
 	{
-		$this->cache = $cache;
 		$this->config = $config;
 		$this->db = $db;
-		$this->log = $log;
-		$this->pastebin_path = $pastebin_path;
-		$this->root_path = $root_path;
-		$this->php_ext = $php_ext;
 		$this->prune_interval = $prune_interval;
 		$this->pastebin_table = $pastebin_table;
 	}
@@ -53,7 +40,7 @@ class main extends \phpbb\cron\task\base
 	public function run()
 	{
 		$now = time();
-		$sql = 'DELETE FROM ' . $this->table('pastebin') . '
+		$sql = 'DELETE FROM ' . $this->pastebin_table . '
 			WHERE snippet_prunable = 1 and snippet_prune_on < ' . $now;
 		$this->db->sql_query($sql);
 		$this->config->set('phpbbde_pastebin_prune_last_run', $now, true);
@@ -79,15 +66,5 @@ class main extends \phpbb\cron\task\base
 		$now = time();
 
 		return $now > $this->config['phpbbde_pastebin_prune_last_run'] + $this->prune_interval;
-	}
-
-	/**
-	 * Adjust table naming correctly
-	 * @param string $name
-	 * @return string
-	 */
-	private function table($name)
-	{
-		return $this->pastebin_table;
 	}
 }

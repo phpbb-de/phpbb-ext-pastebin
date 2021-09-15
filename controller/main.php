@@ -42,6 +42,12 @@ class main
 	/** @var \phpbb\user */
 	protected $user;
 
+	/* @var \phpbb\language\language */
+	protected $language;
+
+	/** @var \phpbb\files\factory */
+	protected $factory;
+
 	/** @var \phpbb\controller\helper */
 	protected $helper;
 
@@ -61,9 +67,6 @@ class main
 	protected $captcha_factory;
 
 	/** @var string */
-	protected $geshi_path;
-
-	/** @var string */
 	protected $geshi_lang;
 
 	/** @var string */
@@ -78,13 +81,32 @@ class main
 	 * @param \phpbb\db\driver\driver_interface $db
 	 * @param \phpbb\template\template $template
 	 * @param \phpbb\user $user
+	 * @param \phpbb\language\language	$language
+	 * @param \phpbb\files\factory $factory
 	 * @param \phpbb\controller\helper $helper
 	 * @param \phpbbde\pastebin\functions\pastebin $pastebin
 	 * @param \phpbbde\pastebin\functions\utility $util
 	 * @param string $root_path
 	 * @param string $php_ext
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\request\request $request, \phpbb\db\driver\driver_interface $db, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbb\captcha\factory $captcha_factory, \phpbbde\pastebin\functions\utility $util, \phpbbde\pastebin\functions\pastebin $pastebin, $root_path, $php_ext, $geshi_path, $geshi_lang, $pastebin_table)
+	public function __construct(
+		\phpbb\auth\auth $auth,
+		\phpbb\cache\service $cache,
+		\phpbb\config\config $config,
+		\phpbb\request\request $request,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\language\language $language,
+		\phpbb\files\factory $factory,
+		\phpbb\controller\helper $helper,
+		\phpbb\captcha\factory $captcha_factory,
+		\phpbbde\pastebin\functions\utility $util,
+		\phpbbde\pastebin\functions\pastebin $pastebin,
+		$root_path,
+		$php_ext,
+		$geshi_lang,
+		$pastebin_table)
 	{
 		$this->auth = $auth;
 		$this->cache = $cache;
@@ -93,6 +115,8 @@ class main
 		$this->db = $db;
 		$this->template = $template;
 		$this->user = $user;
+		$this->language = $language;
+		$this->factory = $factory;
 		$this->helper = $helper;
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
@@ -100,22 +124,17 @@ class main
 		$this->util = $util;
 		$this->captcha_factory = $captcha_factory;
 
-		$this->geshi_path = $geshi_path;
 		$this->pastebin_table = $pastebin_table;
 		$this->geshi_lang = $geshi_lang;
 	}
 
-	/**
-	 * Handle all calls
-	 * @param string $name
-	 */
-	public function handle($name = '')
+	public function handle()
 	{
-		$this->user->add_lang_ext('phpbbde/pastebin', 'pastebin');
+		$this->language->add_lang('pastebin', 'phpbbde/pastebin');
 
 		// Adding links to the breadcrumbs
 		$this->template->assign_block_vars('navlinks', array(
-				'FORUM_NAME'	=> $this->user->lang['PASTEBIN'],
+				'FORUM_NAME'	=> $this->language->lang('PASTEBIN'),
 				'U_VIEW_FORUM'	=> $this->helper->route('phpbbde_pastebin_main_controller'),
 		));
 
@@ -124,20 +143,7 @@ class main
 			return $response;
 		}
 
-		return $this->helper->render('pastebin_body.html', $this->user->lang['PASTEBIN']);
-	}
-
-	/**
-	 * Adjust table naming correctly
-	 * @param string $name
-	 * @return string
-	 */
-	private function table($name)
-	{
-		if ($name == 'pastebin')
-		{
-			return $this->pastebin_table;
-		}
+		return $this->helper->render('@phpbbde_pastebin/pastebin_body.html', $this->language->lang('PASTEBIN'));
 	}
 
 	/**
@@ -145,40 +151,32 @@ class main
 	 */
 	private function display_pb()
 	{
-		$util	 	= $this->util;
-		$template 	= $this->template;
-		$db 		= $this->db;
-		$auth 		= $this->auth;
-		$user 		= $this->user;
-
 		// Request variables
 		$mode			= $this->request->variable('mode', '');
-		$confirm_id		= $this->request->variable('confirm_id', '');
-		$confirm_code	= $this->request->variable('confirm_code', '');
 		$snippet_id		= $this->request->variable('s', 0);
-		$submit			= isset($_POST['submit']) ? true : false;
+		$submit			= $this->request->is_set_post('submit');
 
 		if (in_array($mode, array('view', 'download', 'moderate')))
 		{
 			// for all of these we have to check if the entry exists
 
-			$sql = $db->sql_build_query('SELECT', array(
+			$sql = $this->db->sql_build_query('SELECT', array(
 				'SELECT'	=> 'pb.*, u.user_id, u.username, u.user_colour',
 				'FROM'		=> array(
-					$this->table('pastebin')	=> 'pb',
+					$this->pastebin_table	=> 'pb',
 					USERS_TABLE		=> 'u',
 				),
 				'WHERE'		=> "pb.snippet_author = u.user_id AND pb.snippet_id = $snippet_id",
 			));
-			$result = $db->sql_query($sql);
-			$data   = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
+			$result = $this->db->sql_query($sql);
+			$data   = $this->db->sql_fetchrow($result);
+			$this->db->sql_freeresult($result);
 
 			if (!$data)
 			{
-				$message = $user->lang['NO_VALID_SNIPPET'];
+				$message = $this->language->lang('PASTEBIN_NO_VALID_SNIPPET');
 				$message .= '<br /><br />';
-				$message .= sprintf($user->lang['RETURN_PASTEBIN'], '<a href="' . $this->helper->route('phpbbde_pastebin_main_controller') . '">', '</a>');
+				$message .= $this->language->lang('PASTEBIN_RETURN_PASTEBIN', '<a href="' . $this->helper->route('phpbbde_pastebin_main_controller') . '">', '</a>');
 
 				trigger_error($message);
 			}
@@ -187,8 +185,8 @@ class main
 			$snippet = $this->pastebin;
 
 			$this->template->assign_vars(array(
-				'S_AUTH_EDIT'	=> ($auth->acl_get('m_pastebin_edit') || ($auth->acl_get('u_pastebin_edit') && $snippet['snippet_author'] == $this->user->data['user_id'])) ? true : false,
-				'S_AUTH_DELETE'	=> ($auth->acl_get('m_pastebin_delete') || ($auth->acl_get('u_pastebin_delete') && $snippet['snippet_author'] == $this->user->data['user_id'])) ? true : false,
+				'S_AUTH_EDIT'	=> ($this->auth->acl_get('m_pastebin_edit') || ($this->auth->acl_get('u_pastebin_edit') && $snippet['snippet_author'] == $this->user->data['user_id'])) ? true : false,
+				'S_AUTH_DELETE'	=> ($this->auth->acl_get('m_pastebin_delete') || ($this->auth->acl_get('u_pastebin_delete') && $snippet['snippet_author'] == $this->user->data['user_id'])) ? true : false,
 			));
 		}
 
@@ -196,39 +194,39 @@ class main
 		$error = $s_hidden_fields = array();
 
 		// Latest snippets
-		$sql = $db->sql_build_query('SELECT', array(
+		$sql = $this->db->sql_build_query('SELECT', array(
 				'SELECT'	=> 'pb.snippet_id, pb.snippet_time, pb.snippet_title, pb.snippet_desc, u.user_id, u.username, u.user_colour',
 				'FROM'		=> array(
-						$this->table('pastebin')	=> 'pb',
+						$this->pastebin_table	=> 'pb',
 						USERS_TABLE		=> 'u',
 				),
 				'WHERE'		=> 'pb.snippet_author = u.user_id',
 				'ORDER_BY'	=> 'pb.snippet_time DESC'
 		));
-		$result = $db->sql_query_limit($sql, 20);
+		$result = $this->db->sql_query_limit($sql, 20);
 
-		while ($row = $db->sql_fetchrow($result))
+		while ($row = $this->db->sql_fetchrow($result))
 		{
-			$template->assign_block_vars('latest_snippets', array(
+			$this->template->assign_block_vars('latest_snippets', array(
 				'URL'			=> $this->helper->route('phpbbde_pastebin_main_controller', array('mode'=>'view', 's' => $row['snippet_id'])),
 				'DESC'			=> $row['snippet_desc'],
 				'TITLE'			=> $row['snippet_title'],
 				'SNIPPET_TIME'	=> $this->user->format_date($row['snippet_time']),
-				'TITLE_SHORT'	=> (utf8_strlen($row['snippet_title']) > 50) ? utf8_substr($row['snippet_title'], 0, 50) . '...' : $row['snippet_title'],
+				'TITLE_SHORT'	=> (utf8_strlen($row['snippet_title']) > 25) ? utf8_substr($row['snippet_title'], 0, 25) . $this->language->lang('PASTEBIN_ELLIPSIS') : $row['snippet_title'],
 				'AUTHOR_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 			));
 		}
-		$db->sql_freeresult($result);
+		$this->db->sql_freeresult($result);
 
 		// Default template variables
-		$template->assign_vars(array(
+		$this->template->assign_vars(array(
 			'U_PASTEBIN'	=> $this->helper->route('phpbbde_pastebin_main_controller'),
 
 			'S_MODE'		=> $mode,
 			'S_FORM_ACTION'	=> $this->helper->route('phpbbde_pastebin_main_controller'),
 
-			'S_AUTH_VIEW'	=> ($auth->acl_get('u_pastebin_view')) ? true : false,
-			'S_AUTH_POST'	=> ($auth->acl_get('u_pastebin_post')) ? true : false,
+			'S_AUTH_VIEW'	=> ($this->auth->acl_get('u_pastebin_view')) ? true : false,
+			'S_AUTH_POST'	=> ($this->auth->acl_get('u_pastebin_post')) ? true : false,
 		));
 
 		// Now let's decide what to do
@@ -236,7 +234,7 @@ class main
 		{
 			case 'post':
 				// process submitted data from the posting form
-				if (!$auth->acl_get('u_pastebin_post'))
+				if (!$this->auth->acl_get('u_pastebin_post'))
 				{
 					trigger_error('PASTEBIN_AUTH_NO_POST');
 				}
@@ -247,9 +245,9 @@ class main
 				}
 
 				$data = array(
-						'snippet_title'		=> utf8_normalize_nfc(str_replace("\n", '', $this->request->variable('snippet_title', '', true))),
-						'snippet_desc'		=> utf8_normalize_nfc(str_replace("\n", '', $this->request->variable('snippet_desc', '', true))),
-						'snippet_text'		=> utf8_normalize_nfc($this->request->variable('snippet_text', '', true)),
+						'snippet_title'		=> str_replace("\n", '', $this->request->variable('snippet_title', '', true)),
+						'snippet_desc'		=> str_replace("\n", '', $this->request->variable('snippet_desc', '', true)),
+						'snippet_text'		=> $this->request->variable('snippet_text', '', true),
 						'snippet_prunable'	=> 1,
 						'snippet_highlight'	=> $this->request->variable('snippet_highlight', ''),
 						'snippet_prune_on'	=> max(1, min(6, $this->request->variable('pruning_months', 0))),
@@ -265,27 +263,42 @@ class main
 
 				if (empty($data['snippet_title']))
 				{
-					$error[] = $user->lang['ERR_NO_TITLE'];
+					$error[] = $this->language->lang('PASTEBIN_ERR_NO_TITLE');
 				}
 
-				if (!$util->geshi_check($data['snippet_highlight']))
+				if (!$this->util->geshi_check($data['snippet_highlight']))
 				{
 					$data['snippet_highlight'] = 'text';
 				}
 
 				$filedata = $this->request->file('fileupload');
-				if (isset($_FILES['fileupload']) && $filedata['name'] != 'none' && trim($filedata['name']))
+
+				if (!empty($filedata) && $filedata['name'] != 'none' && trim($filedata['name']))
 				{
-					include_once($this->root_path . 'includes/functions_upload.' . $this->php_ext);
-					$upload = new \fileupload('PASTEBIN_');
+					$upload = $this->factory->get('files.upload');
 
-					$upload->set_allowed_extensions(array('txt', 'mod', 'php', 'xml', 'html'));
+					$allowed_extensions = array('txt', 'php', 'html', 'xml', 'md', 'json', 'yml', 'js', 'diff', 'sql', 'pl');
 
-					$file = $upload->form_upload('fileupload');
+					$file = $upload
+						->set_allowed_extensions($allowed_extensions)
+						->handle_upload('files.types.form', 'fileupload');
 
-					if (!sizeof($file->error))
+					$upload->common_checks($file);
+
+					if (!$file->error)
 					{
-						$snippet_contents = utf8_normalize_nfc(utf8_convert_message(@file_get_contents($file->filename)));
+						// Well, ugly solutions work, too
+						$snippet_contents = @file_get_contents($file->get('filename'));
+						// Check for UTF-8 encoding; because utf8_convert_message() will destroy utf8-characters in UTF-8 documents
+						if (mb_detect_encoding($snippet_contents, 'UTF-8', true))
+						{
+							$snippet_contents = utf8_normalize_nfc($snippet_contents);
+						}
+						// e.g. ISO 8859-1 encoded files need the utf8_convert_message()
+						else
+						{
+							$snippet_contents = utf8_normalize_nfc(utf8_convert_message($snippet_contents));
+						}
 					}
 
 					$file->remove();
@@ -295,46 +308,41 @@ class main
 
 				if (empty($snippet_contents))
 				{
-					$error[] = $user->lang['ERR_NO_BODY'];
+					$error[] = $this->language->lang('PASTEBIN_ERR_NO_BODY');
 				}
 
 				if (!check_form_key('pastebinform'))
 				{
-					$error[] = $user->lang['FORM_INVALID'];
+					$error[] = $this->language->lang('PASTEBIN_FORM_INVALID');
 				}
 
 				// Visual Confirmation handling (borrowed from includes/ucp/ucp_register.php)
-				if (!$auth->acl_get('u_pastebin_post_novc'))
+				if (!$this->auth->acl_get('u_pastebin_post_novc'))
 				{
-					$user->add_lang('ucp');
+					$this->language->add_lang('ucp');
 
 					$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
 					$captcha->init($this::CONFIRM_PASTEBIN);
 
-					if (!$captcha->is_solved())
+					$vc_response = $captcha->validate($data);
+					if ($vc_response !== false)
 					{
-						$error[] = $user->lang['CONFIRM_CODE_WRONG'];
-					}
-					else if (!empty($error))
-					{
-						$captcha->new_attempt();
-					}
-					else
-					{
-						$captcha->garbage_collect($this::CONFIRM_PASTEBIN);
+						$error[] = $vc_response;
 					}
 				}
 
 				if (!empty($error))
 				{
-					// We have errors, we don't insert here, but instead go back to the posting page and tell the user what he did wrong
+					// Remove duplicate entries of the error array
+					$error = array_unique($error);
+					// We have errors, we don't insert here, but instead go back to the submit page and tell the user what he did wrong
 					$s_error = implode('<br />', $error);
 				}
 				else
 				{
 					// Everything went fine :)
 					$sql_ary = array(
-							'snippet_author'	=> $user->data['user_id'],
+							'snippet_author'	=> $this->user->data['user_id'],
 							'snippet_time'		=> time(),
 							'snippet_title'		=> $data['snippet_title'],
 							'snippet_desc'		=> $data['snippet_desc'],
@@ -344,18 +352,21 @@ class main
 							'snippet_prune_on'	=> time() + $this::SECONDS_MONTH * $data['snippet_prune_on'],
 					);
 
-					$sql = 'INSERT INTO ' . $this->table('pastebin') . ' ' . $db->sql_build_array('INSERT', $sql_ary);
-					$db->sql_query($sql);
+					// Okay, captcha, your job is done.
+					if (!$this->auth->acl_get('u_pastebin_post_novc') && isset($captcha) && $captcha->is_solved() === true)
+					{
+						$captcha->reset();
+					}
 
-					$snippet_id = $db->sql_nextid();
+					$sql = 'INSERT INTO ' . $this->pastebin_table . ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
+					$this->db->sql_query($sql);
+
+					$snippet_id = $this->db->sql_nextid();
 
 					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', array('mode' => "view", 's' => $snippet_id));
 
-					// Uncomment for instant redirect :)
-					//redirect($redirect_url);
-
 					meta_refresh(3, $redirect_url);
-					trigger_error($user->lang['SNIPPET_SUBMITTED'] . '<br /><br />' . sprintf($user->lang['RETURN_SNIPPET'], '<a href="' . $redirect_url . '">', '</a>'));
+					trigger_error($this->language->lang('PASTEBIN_SNIPPET_SUBMITTED') . '<br /><br />' . $this->language->lang('PASTEBIN_RETURN_SNIPPET', '<a href="' . $redirect_url . '">', '</a>'));
 				}
 
 				break;
@@ -365,29 +376,25 @@ class main
 			case 'moderate':
 				if ($mode == 'view')
 				{
-					if (!$auth->acl_get('u_pastebin_view'))
+					if (!$this->auth->acl_get('u_pastebin_view'))
 					{
 						trigger_error('PASTEBIN_AUTH_NO_VIEW');
 					}
 
-					page_header(sprintf($user->lang['PASTEBIN_VIEW'], $data['snippet_title']));
+					page_header($this->language->lang('PASTEBIN_VIEW', $data['snippet_title']));
 
 					$snippet_text = $data['snippet_text'];
 
-					$highlight = (isset($_REQUEST['highlight'])) ? $this->request->variable('highlight', '') : $data['snippet_highlight'];
+					$highlight = ($this->request->is_set('highlight')) ? $this->request->variable('highlight', '') : $data['snippet_highlight'];
 
-					if (!$util->geshi_check($highlight))
+					if (!$this->util->geshi_check($highlight))
 					{
 						$highlight = 'php';
 					}
 
-					// highlight using geshi (http://qbnz.com/highlighter/)
-					//require($this->ext_path . 'vendor/autoload.' . $this->php_ext);
-					require($this->geshi_path . 'geshi.' . $this->php_ext);
-
 					$code = htmlspecialchars_decode($snippet_text);
 
-					$geshi = new \GeSHi($code, $highlight, $util->geshi_dir);
+					$geshi = new \GeSHi($code, $highlight, $this->util->geshi_dir);
 					$geshi->set_header_type(GESHI_HEADER_NONE);
 					$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 100);
 
@@ -401,35 +408,35 @@ class main
 
 					$snippet_download_url = $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "download", "s" => $data['snippet_id']));
 
-					$template->assign_vars(array(
+					$this->template->assign_vars(array(
 						'SNIPPET_TEXT_ORIG'		=> $snippet_text,
 						'SNIPPET_TEXT_DISPLAY'	=> $snippet_text_display,
 
 						'SNIPPET_TIME'			=> $this->user->format_date($data['snippet_time']),
-						'SNIPPET_PRUNE_ON'		=> $data['snippet_prunable'] ? $this->user->format_date($data['snippet_prune_on']) : $this->user->lang['NEVER'],
+						'SNIPPET_PRUNE_ON'		=> $data['snippet_prunable'] ? $this->user->format_date($data['snippet_prune_on']) : $this->language->lang('PASTEBIN_INFINITE'),
 						'SNIPPET_DESC_V'		=> $data['snippet_desc'],
 						'SNIPPET_TITLE_V'		=> $data['snippet_title'],
 						'SNIPPET_AUTHOR'		=> $data['username'],
 						'SNIPPET_AUTHOR_ID'		=> $data['user_id'],
 						'SNIPPET_AUTHOR_COLOUR'	=> $data['user_colour'],
 						'SNIPPET_AUTHOR_FULL'	=> get_username_string('full', $data['user_id'], $data['username'], $data['user_colour']),
-						'SNIPPET_DATE'			=> $user->format_date($data['snippet_time']),
+						'SNIPPET_DATE'			=> $this->user->format_date($data['snippet_time']),
 
-						'HIGHLIGHT_SELECT_MOD'	=> $util->highlight_select($data['snippet_highlight']),
-						'DOWNLOAD_SNIPPET_EXPLAIN'	=> sprintf($user->lang['DOWNLOAD_SNIPPET_EXPLAIN'], '<a href="' . $snippet_download_url . '">', '</a>'),
+						'HIGHLIGHT_SELECT_MOD'	=> $this->util->highlight_select($data['snippet_highlight']),
+						'DOWNLOAD_SNIPPET_EXPLAIN'	=> $this->language->lang('PASTEBIN_DOWNLOAD_SNIPPET_EXPLAIN', '<a href="' . $snippet_download_url . '">', '</a>'),
 
 						'U_SNIPPET'				=> $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "view", "s" => $data['snippet_id'])),
 						'U_SNIPPET_DOWNLOAD'	=> $snippet_download_url,
 
 						'S_HIGHLIGHT'			=> $highlight,
 						'S_HIDDEN_FIELDS_V'		=> build_hidden_fields($s_hidden_fields),
-						'S_FORM_ACTION_MOD'		=> $this->helper->route('phpbbde_pastebin_main_controller', array(), true, $user->session_id),
+						'S_FORM_ACTION_MOD'		=> $this->helper->route('phpbbde_pastebin_main_controller', array(), true, $this->user->session_id),
 					));
 
 				}
 				else if ($mode == 'download')
 				{
-					if (!$auth->acl_get('u_pastebin_view'))
+					if (!$this->auth->acl_get('u_pastebin_view'))
 					{
 						trigger_error('PASTEBIN_AUTH_NO_VIEW');
 					}
@@ -467,13 +474,13 @@ class main
 				}
 				else if ($mode == 'moderate')
 				{
-					$delete			= (isset($_POST['delete_snippet'])) ? true : false;
+					$delete			= $this->request->is_set_post('delete_snippet');
 					$highlight		= $this->request->variable('snippet_highlight', '');
 					$pruning_months	= $this->request->variable('pruning_months', 0);
 					$prunable		= $pruning_months != -1;
 
-					$auth_edit = ($auth->acl_get('m_pastebin_edit') || ($auth->acl_get('u_pastebin_edit') && $this->user->data['user_id'] == $snippet['snippet_author']));
-					$auth_delete =  ($auth->acl_get('m_pastebin_delete') || ($auth->acl_get('u_pastebin_delete') && $this->user->data['user_id'] == $snippet['snippet_author']));
+					$auth_edit = ($this->auth->acl_get('m_pastebin_edit') || ($this->auth->acl_get('u_pastebin_edit') && $this->user->data['user_id'] == $snippet['snippet_author']));
+					$auth_delete =  ($this->auth->acl_get('m_pastebin_delete') || ($this->auth->acl_get('u_pastebin_delete') && $this->user->data['user_id'] == $snippet['snippet_author']));
 
 					// Generic permissions check
 					if (!$auth_edit && !$auth_delete)
@@ -481,9 +488,8 @@ class main
 						trigger_error('PASTEBIN_AUTH_NO_VIEW');
 					}
 
-					if (isset($_POST['cancel']))
+					if ($this->request->is_set_post('cancel'))
 					{
-						//redirect(append_sid("{$root_path}support/pastebin.$phpEx", "mode=view&amp;s=$snippet_id"));
 						redirect($this->helper->route('phpbbde_pastebin_main_controller', array("mode"=>"view","s"=>$snippet_id)));
 					}
 
@@ -493,7 +499,7 @@ class main
 						if (!confirm_box(true))
 						{
 							$hidden = build_hidden_fields(array('mode' => 'moderate', 's' => $snippet_id, 'delete_snippet' => 1));
-							confirm_box(false, sprintf($user->lang['DELETE_SNIPPET_CONFIRM'], $data['snippet_title']), $hidden);
+							confirm_box(false, $this->language->lang('PASTEBIN_DELETE_SNIPPET_CONFIRM', $data['snippet_title']), $hidden);
 						}
 						else
 						{
@@ -519,12 +525,9 @@ class main
 
 					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', $redirect_append);
 
-					// Uncomment for instant redirect :)
-					//redirect($redirect_url);
-
-					$message = $user->lang['SNIPPET_MODERATED'];
+					$message = $this->language->lang('PASTEBIN_SNIPPET_MODERATED');
 					$message .= '<br /><br />';
-					$message .= sprintf($user->lang['RETURN_' . ((!$delete) ? 'SNIPPET' : 'PASTEBIN')], '<a href="' . $redirect_url . '">', '</a>');
+					$message .= $this->language->lang('PASTEBIN_RETURN_' . ((!$delete) ? 'SNIPPET' : 'PASTEBIN'), '<a href="' . $redirect_url . '">', '</a>');
 
 					meta_refresh(3, $redirect_url);
 					trigger_error($message);
@@ -539,17 +542,17 @@ class main
 		}
 
 		$s_hidden_fields['mode'] = 'post';
-
 		// Visual Confirmation - Show images (borrowed from includes/ucp/ucp_register.php)
-		$confirm_image = '';
-		if (!$auth->acl_get('u_pastebin_post_novc'))
+		if (!$this->auth->acl_get('u_pastebin_post_novc'))
 		{
 			if (!isset($captcha))
 			{
 				$captcha = $this->captcha_factory->get_instance($this->config['captcha_plugin']);
 				$captcha->init($this::CONFIRM_PASTEBIN);
 			}
-			$this->template->assign_var('CAPTCHA_TEMPLATE', $captcha->get_template());
+			$s_hidden_fields = array_merge($s_hidden_fields, $captcha->get_hidden_fields());
+
+			$this->template->assign_var('PASTEBIN_CAPTCHA_TEMPLATE', $captcha->get_template());
 		}
 
 		$pruning_months_select = '';
@@ -582,35 +585,37 @@ class main
 			{
 				$selected = '';
 			}
-			$pruning_months_select .= '<option' . $selected . ' value="-1">' . $this->user->lang['INFINITE'] . '</option>';
+			$pruning_months_select .= '<option' . $selected . ' value="-1">' . $this->language->lang('PASTEBIN_INFINITE') . '</option>';
 		}
 
 		if (!isset($highlight))
 		{
 			$highlight = isset($data['snippet_highlight']) ? $data['snippet_highlight'] : 'php';
 		}
-		$highlight_select = $util->highlight_select($highlight);
+		$highlight_select = $this->util->highlight_select($highlight);
+
+		$captcha_in_use = $this->config['captcha_plugin'];
+		$is_recaptcha = strpos($captcha_in_use, 'recaptcha');
 
 		add_form_key('pastebinform');
 
-		$template->assign_vars(array(
+		$this->template->assign_vars(array(
 				'SNIPPET_TITLE'		=> isset($data['snippet_title']) ? $data['snippet_title'] : '',
 				'SNIPPET_DESC'		=> isset($data['snippet_desc']) ? $data['snippet_desc'] : '',
 				'AUTHOR_FULL'		=> isset($data['username']) ? get_username_string('full', $data['user_id'], $data['username'], $data['user_colour']) : '',
 				'SNIPPET_TEXT'		=> isset($data['snippet_text']) ? $data['snippet_text'] : '',
-				//'SNIPPET_PRUNABLE'	=> isset($data['snippet_prunable']) ? $data['snippet_prunable'] : true,
 
 				'HIGHLIGHT_SELECT'	=> $highlight_select,
 				'PRUNING_MONTHS_SELECT'	=> $pruning_months_select,
 
 				'FILESIZE'			=> $this->config['max_filesize'],
 
-				'CONFIRM_IMG'		=> $confirm_image,
+				'PASTEBIN_IS_RECAPTCHA'		=> $is_recaptcha,
 
 				'S_FORM_ENCTYPE'	=> ' enctype="multipart/form-data"',
 				'S_ERROR'			=> (isset($s_error)) ? $s_error : '',
-				'S_HIDDEN_FIELDS'	=> (sizeof($s_hidden_fields)) ? build_hidden_fields($s_hidden_fields) : '',
-				'S_CONFIRM_CODE'	=> (!$auth->acl_get('u_pastebin_post_novc')) ? true : false,
+				'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
+				'S_CONFIRM_CODE'	=> !$this->auth->acl_get('u_pastebin_post_novc'),
 		));
 	}
 }

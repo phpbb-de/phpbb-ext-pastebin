@@ -3,28 +3,39 @@
 	"type": "phpbb-extension",
 	"description": "Provides a pastebin including syntax highlighting",
 	"homepage": "https://www.phpbb.de/community/",
-	"version": "1.0.0-dev",
-	"time": "2015-01-03",
-	"license": "GPL-2.0",
+	"version": "2.0.6",
+	"time": "2020-10-04",
+	"license": "GPL-2.0-only",
 	"authors": [
 		{
 			"name": "Martin Beckmann",
 			"email": "gn#36@phpbb.de",
 			"homepage": "https://www.phpbb.de/",
 			"role": "Lead Developer"
+		},
+		{
+			"name": "Christian Schnegelberger",
+			"email": "crizzo@phpbb.de",
+			"homepage": "https://www.phpbb.de/",
+			"role": "Developer"
 		}
 	],
 	"require": {
-		"php": ">=5.3.3",
+		"php": ">=5.4.7, <=7.4",
 		"easybook/geshi": ">=1.0.8.4"
 	},
 	"require-dev": {
-		"phpbb/epv": "dev-master"
+		"phpbb/epv": "0.0.11"
 	},
 	"extra": {
-		"display-name": "phpBB.de - Pastebin",
+		"display-name": "Pastebin",
 		"soft-require": {
-			"phpbb/phpbb": ">=3.1.2,<3.2@dev"
+			"phpbb/phpbb": ">=3.2.4,<3.4.0@dev"
+		}
+	},
+	"config": {
+		"platform":{
+			"php":"5.6"
 		}
 	}
 }
