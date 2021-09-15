@@ -39,10 +39,6 @@ If you find a bug, please report it on https://github.com/phpbb-de/phpbb-ext-pas
 
 ## Automated Testing
 
-We use automated unit tests including functional tests to prevent regressions. Check out our travis build below:
-
-3.2.x: [![Build Status](https://travis-ci.org/phpbb-de/phpbb-ext-pastebin.png?branch=3.2.x)](http://travis-ci.org/phpbb-de/phpbb-ext-pastebin)
-
 ## License
 
 [GPLv2](license.txt)
