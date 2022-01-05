@@ -42,6 +42,7 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_ERR_NO_BODY'				=> 'You did not enter any code or a valid file for upload.',
 	'PASTEBIN_ERR_NO_TITLE'				=> 'You did not enter a title for your entry.',
 	'PASTEBIN_ERR_NO_DESC'				=> 'You did not enter a description for your entry.',
+	'PASTEBIN_FORM_INVALID'				=> 'Invalid form.',
 
 	'PASTEBIN_HIGHLIGHT_LANG'			=> 'Syntax highlighting',
 
@@ -102,6 +103,7 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_SNIPPET_PRUNABLE'			=> 'Entry prunable',
 	'PASTEBIN_SNIPPET_PRUNABLE_EXPLAIN'	=> 'If this option is disabled, the entry will not be entered in the monthly list of prunable entries.',
 	'PASTEBIN_SNIPPET_SUBMITTED'			=> 'Your entry was sucessfully created.',
+	'PASTEBIN_SNIPPET_SAVE'				=> 'Save edited snippet',
 
 	// Language keys for Syntax highlighting dropdown
 	'PASTEBIN_LANGS_TEXT'		=> 'Text',
