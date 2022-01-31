@@ -233,7 +233,7 @@ class main
 		switch ($mode)
 		{
 			case 'edit_snippet':
-				if (!check_form_key('phpbbde_pastebin_editform'))
+				if (!check_form_key('pastebinform'))
 				{
 					trigger_error('PASTEBIN_FORM_INVALID');
 				}
@@ -252,7 +252,7 @@ class main
 
 					$message = $this->language->lang('PASTEBIN_SNIPPET_MODERATED');
 					$message .= '<br /><br />';
-					$message .= $this->language->lang('PASTEBIN_RETURN_' . ((!$delete) ? 'SNIPPET' : 'PASTEBIN'), '<a href="' . $redirect_url . '">', '</a>');
+					$message .= $this->language->lang('PASTEBIN_RETURN_SNIPPET', '<a href="' . $redirect_url . '">', '</a>');
 
 					meta_refresh(3, $redirect_url);
 					trigger_error($message);
@@ -627,7 +627,6 @@ class main
 		$is_recaptcha = strpos($captcha_in_use, 'recaptcha');
 
 		add_form_key('pastebinform');
-		add_form_key('phpbbde_pastebin_editform');
 
 		$this->template->assign_vars(array(
 				'SNIPPET_TITLE'		=> isset($data['snippet_title']) ? $data['snippet_title'] : '',

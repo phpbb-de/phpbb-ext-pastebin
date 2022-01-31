@@ -42,11 +42,11 @@ $lang = array_merge($lang, array(
 	'ACL_U_PASTEBIN_POST'			=> 'Can post pastebin entries',
 	'ACL_U_PASTEBIN_POST_NOVC'		=> 'Can post pastebin entries without visual confirmation',
 	'ACL_U_PASTEBIN_POST_NOTLIM'	=> 'Can post non-pruned pastebin entries',
-	'ACL_U_PASTEBIN_EDIT'			=> 'Can edit own pastebin entries (Storage duration, Syntax highlighting)',
+	'ACL_U_PASTEBIN_EDIT'			=> 'Can edit own pastebin entries (Storage duration, Syntax highlighting, Source code)',
 	'ACL_U_PASTEBIN_DELETE'			=> 'Can delete own pastebin entries',
 
 	// Moderator perms
-	'ACL_M_PASTEBIN_EDIT'			=> 'Can edit pastebin entries (Storage duration, Syntax highlighting)',
+	'ACL_M_PASTEBIN_EDIT'			=> 'Can edit pastebin entries (Storage duration, Syntax highlighting, Source code)',
 	'ACL_M_PASTEBIN_DELETE'			=> 'Can delete pastebin entries',
 	'ACL_M_PASTEBIN_POST_NOTLIM'	=> 'Can deactivate pruning of selected pastebin entries',
 ));
