@@ -156,7 +156,7 @@ class main
 		$snippet_id		= $this->request->variable('s', 0);
 		$submit			= $this->request->is_set_post('submit');
 
-		if (in_array($mode, array('view', 'download', 'moderate')))
+		if (in_array($mode, array('view', 'download', 'moderate', 'edit_snippet')))
 		{
 			// for all of these we have to check if the entry exists
 
@@ -232,6 +232,35 @@ class main
 		// Now let's decide what to do
 		switch ($mode)
 		{
+			case 'edit_snippet':
+				if (!check_form_key('pastebinform'))
+				{
+					trigger_error('PASTEBIN_FORM_INVALID');
+				}
+				else
+				{
+					$data = [
+						'snippet_id'	=> $snippet_id,
+						'snippet_text'	=> $this->request->variable('edit_snippet', '', true),
+					];
+
+					$snippet->load_from_array($data);
+					$snippet->submit();
+
+					$redirect_append = array("mode"=>"view","s"=>$snippet_id);
+					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', $redirect_append);
+
+					$message = $this->language->lang('PASTEBIN_SNIPPET_MODERATED');
+					$message .= '<br /><br />';
+					$message .= $this->language->lang('PASTEBIN_RETURN_SNIPPET', '<a href="' . $redirect_url . '">', '</a>');
+
+					meta_refresh(3, $redirect_url);
+					trigger_error($message);
+				}
+
+
+				break;
+
 			case 'post':
 				// process submitted data from the posting form
 				if (!$this->auth->acl_get('u_pastebin_post'))

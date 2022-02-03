@@ -43,6 +43,7 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_ERR_NO_BODY'				=> 'Du hast keinen Code eingefügt oder keine gültige Datei zum Upload ausgewählt.',
 	'PASTEBIN_ERR_NO_TITLE'				=> 'Du hast keinen Titel für den Eintrag eingegeben.',
 	'PASTEBIN_ERR_NO_DESC'				=> 'Du hast keine Beschreibung für den Eintrag eingegeben.',
+	'PASTEBIN_FORM_INVALID'				=> 'Ungültiges Formular.',
 
 	'PASTEBIN_HIGHLIGHT_LANG'			=> 'Syntaxhervorhebung',
 
@@ -103,6 +104,7 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_SNIPPET_PRUNABLE'			=> 'Eintrag prunable - automatisch löschbar',
 	'PASTEBIN_SNIPPET_PRUNABLE_EXPLAIN'	=> 'Wenn diese Option deaktiviert ist, wird der Eintrag nicht in die monatlich automatisch zu löschenden Einträge aufgenommen.',
 	'PASTEBIN_SNIPPET_SUBMITTED'			=> 'Dein Eintrag wurde erfolgreich erstellt.',
+	'PASTEBIN_SNIPPET_SAVE'				=> 'Änderungen speichern',
 
 	// Language keys for Syntax highlighting dropdown
 	'PASTEBIN_LANGS_TEXT' 		=> 'Text',
