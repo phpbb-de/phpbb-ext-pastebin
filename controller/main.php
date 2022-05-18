@@ -257,8 +257,6 @@ class main
 					meta_refresh(3, $redirect_url);
 					trigger_error($message);
 				}
-
-
 				break;
 
 			case 'post':
