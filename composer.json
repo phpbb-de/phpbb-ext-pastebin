@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Provides a pastebin including syntax highlighting",
 	"homepage": "https://www.phpbb.de/community/",
-	"version": "2.0.6",
-	"time": "2020-10-04",
+	"version": "2.0.7",
+	"time": "2022-05-18",
 	"license": "GPL-2.0-only",
 	"authors": [
 		{
