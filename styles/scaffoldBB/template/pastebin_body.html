@@ -1,0 +1,78 @@
+{% INCLUDE 'overall_header.html' %}
+
+<div class="pastebin row gx-0 flex-column-reverse flex-md-row">
+
+	<div class="col-md-8 p-2">
+		<h2 class="fs-4">{{ lang('PASTEBIN') }}</h2>
+		{% if (S_AUTH_EDIT || S_AUTH_DELETE) && S_MODE eq 'view' %}
+			<div class="mod-panel mini-panel bg-opacity-25 bg-secondary p-2 rounded-3 mb-2">
+				<h3 class="fs-5 border-bottom">{{ lang('PASTEBIN_MODERATE_SNIPPET') }}</h3>
+				<form method="post" action="{{ S_FORM_ACTION_MOD }}">
+				<fieldset class="fields1">
+					{% if S_AUTH_EDIT %}
+					<dl class="row gx-0">
+						<dt class="col-md-3"><label for="pruning_months">{{ lang('PASTEBIN_PRUNING_MONTHS') }}{{ lang('COLON') }}</label></dt>
+						<dd class="col-md-auto hstack"><select class="form-select form-select-sm" name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PASTEBIN_PRUNING_MONTH_SHORT') }}</dd>
+					</dl>
+					<dl class="row gx-0">
+						<dt class="col-md-3"><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') }}{{ lang('COLON') }}</label></dt>
+						<dd class="col-md-auto"><select class="form-select form-select-sm" id="snippet_highlight" name="snippet_highlight">{{ HIGHLIGHT_SELECT_MOD }}</select></dd>
+					</dl>
+					{% endif %}
+					{% if S_AUTH_DELETE %}
+					<dl class="row gx-0">
+						<dt class="col-md-3"><label for="delete_snippet">{{ lang('PASTEBIN_DELETE_SNIPPET') }}{{ lang('COLON') }}</label></dt>
+						<dd class="col-md-auto"><label for="delete_snippet"><input class="form-check-input" type="checkbox" name="delete_snippet" id="delete_snippet" /> {{ lang('DELETE') }}</label></dd>
+					</dl>
+					{% endif %}
+				</fieldset>
+				<fieldset class="submit-buttons d-flex justify-content-center align-items-center">
+					{{ S_HIDDEN_FIELDS }}
+					<input type="hidden" name="mode" value="moderate" />
+					<input class="btn btn-primary btn-sm button fw-bold button1" name="submit" type="submit" value="{{ lang('SUBMIT') }}" />
+				</fieldset>
+				</form>
+			</div>
+			{% endif %}
+		<div id="content">
+			{% if S_MODE eq 'view' %}
+				{% INCLUDE '@phpbbde_pastebin/pastebin_view.html' %}
+			{% else %}
+				{% INCLUDE '@phpbbde_pastebin/pastebin_post.html' %}
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="col-md-4 p-2">
+		<div id="extras" class="bg-opacity-25 bg-secondary p-2 rounded-3 mb-2">
+			{% if S_AUTH_POST or S_MODE eq 'view' %}
+			<div class="new-entry mini-panel">
+				<h3 class="fs-5 border-bottom">{{ lang('PASTEBIN') }}</h3>
+				<ul>
+					{% if S_AUTH_POST %}<li><a class="text-decoration-none" href="{{ U_PASTEBIN }}">{{ lang('PASTEBIN_SNIPPET_NEW') }}</a></li>{% endif %}
+					{% if S_MODE eq 'view' %}<li><a class="text-decoration-none" href="{{ U_SNIPPET_DOWNLOAD }}">{{ lang('PASTEBIN_SNIPPET_DOWNLOAD') }}</a></li>{% endif %}
+				</ul>
+			</div>
+			{% endif %}
+		</div>
+		{% if S_AUTH_VIEW %}
+		<div class="last-snippets mini-panel bg-opacity-25 bg-secondary p-2 rounded-3 mb-2">
+			<h3 class="fs-5 border-bottom">{{ lang('PASTEBIN_LATEST_SNIPPETS') }}</h3>
+			{% if loops.latest_snippets|length %}
+			<ul>
+				{% for latest_snippets in loops.latest_snippets %}
+					<li><a class="text-decoration-none" href="{{ latest_snippets.URL }}" title="{{ latest_snippets.TITLE }}{% if latest_snippets.DESC %}{{ lang('COLON') }} {{ latest_snippets.DESC }}{% endif %}">{{ latest_snippets.TITLE_SHORT }}</a> ({{ latest_snippets.SNIPPET_TIME }}, {{ latest_snippets.AUTHOR_FULL }})</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+			<ul>
+				<li>{{ lang('PASTEBIN_NO_SNIPPETS') }}</li>
+			</ul>
+			{% endif %}
+		</div>
+		{% endif %}
+	</div>
+
+</div>
+
+{% INCLUDE 'overall_footer.html' %}
