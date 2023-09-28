@@ -258,7 +258,7 @@ class main
 					trigger_error($message);
 				}
 
-				break;
+        break;
 
 			case 'post':
 				// process submitted data from the posting form
