@@ -41,7 +41,7 @@ class main extends \phpbb\cron\task\base
 	{
 		$now = time();
 		$sql = 'DELETE FROM ' . $this->pastebin_table . '
-			WHERE snippet_prunable = 1 and snippet_prune_on < ' . $now;
+			WHERE snippet_prunable = 1 and snippet_prune_on < ' . (int) $now;
 		$this->db->sql_query($sql);
 		$this->config->set('phpbbde_pastebin_prune_last_run', $now, true);
 	}

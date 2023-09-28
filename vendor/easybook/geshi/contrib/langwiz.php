@@ -16,7 +16,7 @@ set_time_limit(0);
 error_reporting(E_ALL);
 $time_start = explode(' ', microtime());
 
-//Handle crappy PHP magic:
+/*//Handle crappy PHP magic:
 if (get_magic_quotes_gpc()) {
     function stripslashes_deep($value) {
         $value = is_array($value) ?
@@ -30,10 +30,10 @@ if (get_magic_quotes_gpc()) {
     $_GET = array_map('stripslashes_deep', $_GET);
     $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
     $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
-}
+}*/
 
 function htmlspecialchars_deep($value) {
-    return is_array($value) ? array_map('htmlspecialchars_deep', $value) : htmlspecialchars($value);
+    return is_array($value) ? array_map('htmlspecialchars_deep', $value) : htmlspecialchars($value, ENT_COMPAT);
 }
 
 define ('TYPE_NOTICE', 0);
