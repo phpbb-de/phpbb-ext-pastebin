@@ -1,0 +1,45 @@
+	<h3 class="fs-5 border-bottom">{{ SNIPPET_TITLE_V }}</h3>
+	{% if SNIPPET_AUTHOR_FULL %}<em class="author">{{ lang('POST_BY_AUTHOR') }} {{ SNIPPET_AUTHOR_FULL }} ({{ SNIPPET_TIME }})</em>{% endif %}
+	{% if SNIPPET_DESC_V %}
+	<dl>
+		<dt><strong>{{ lang('PASTEBIN_SNIPPET_DESC') }}{{ lang('COLON') }}</strong></dt>
+		<dd class="mb-0">{{ SNIPPET_DESC_V }}</dd>
+		<dt><strong>{{ lang('PASTEBIN_SNIPPET_CREATION_TIME') }}{{ lang('COLON') }}</strong></dt>
+		<dd class="mb-0">{{ SNIPPET_TIME }}</dd>
+		<dt><strong>{{ lang('PASTEBIN_SNIPPET_PRUNE_TIME') }}{{ lang('COLON') }}</strong></dt>
+		<dd class="mb-0">{{ SNIPPET_PRUNE_ON }}</dd>
+	</dl>
+	{% endif %}
+
+	<form action="{{ S_FORM_ACTION }}" method="get">
+		<p class="gap-1 hstack">
+			<input type="hidden" name="mode" value="view" />
+			{{ S_HIDDEN_FIELDS_V }}
+			<label for="highlight">{{ lang('PASTEBIN_HIGHLIGHT_LANG') }}{{ lang('COLON') }}</label> <select class="form-select form-select-sm" style="max-width: max-content;" id="highlight" name="highlight">{{ HIGHLIGHT_SELECT }}</select>
+			<input type="submit" value="{{ lang('SUBMIT') }}" class="btn btn-primary btn-sm button fw-bold button1" />
+		</p>
+	</form>
+
+	<dl id="pastebin-codebox" class="codebox p-2">
+		<dt>{{ lang('PASTEBIN_SNIPPET_TEXT') }}{{ lang('COLON') }}</dt>
+		<dd>
+			{{ SNIPPET_TEXT_DISPLAY }}
+		</dd>
+	</dl>
+
+	<h3 class="fs-5 border-bottom">{{ lang('PASTEBIN_COPY_PASTE') }}</h3>
+	<form id="edit_form" method="post" action="{{ S_FORM_ACTION }}">
+		<p>
+			{{ lang('PASTEBIN_COPY_PASTE_EXPLAIN') }} {{ DOWNLOAD_SNIPPET_EXPLAIN }}<br />
+			<div class="textwrapper mb-1">
+				<textarea id="copy_paste" class="inputbox form-control form-control-sm" name="edit_snippet" rows="5" cols="76" tabindex="4">{{ SNIPPET_TEXT_ORIG }}</textarea>
+			</div>
+			<input type="button" class="btn btn-secondary btn-sm button fw-bold button1" onclick="getElementById('copy_paste').select(); return false;" value="{{ lang('PASTEBIN_SELECT_CODE') }}" />
+			{% if S_AUTH_EDIT %}
+				<input type="hidden" name="mode" value="edit_snippet" />
+				{{ S_HIDDEN_FIELDS_V }}
+				&nbsp;<input type="submit" class="btn btn-secondary btn-sm button fw-bold button1" value="{{ lang('PASTEBIN_SNIPPET_SAVE') }}" />
+			{% endif %}
+		</p>
+		{{ S_FORM_TOKEN }}
+	</form>
