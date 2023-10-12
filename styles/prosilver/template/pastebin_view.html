@@ -29,10 +29,18 @@
 	</dl>
 
 	<h3>{{ lang('PASTEBIN_COPY_PASTE') }}</h3>
-	<p>
-		{{ lang('PASTEBIN_COPY_PASTE_EXPLAIN') }} {{ DOWNLOAD_SNIPPET_EXPLAIN }}<br />
-		<div class="textwrapper">
-			<textarea id="copy_paste" class="inputbox" rows="5" cols="76" tabindex="4">{{ SNIPPET_TEXT_ORIG }}</textarea>
-		</div>
-		<input type="button" class="button1" onclick="getElementById('copy_paste').select(); return false;" value="{{ lang('PASTEBIN_SELECT_CODE') }}" />
-	</p>
+	<form id="edit_form" method="post" action="{{ S_FORM_ACTION }}">
+		<p>
+			{{ lang('PASTEBIN_COPY_PASTE_EXPLAIN') }} {{ DOWNLOAD_SNIPPET_EXPLAIN }}<br />
+			<div class="textwrapper">
+				<textarea id="copy_paste" class="inputbox" name="edit_snippet" rows="5" cols="76" tabindex="4">{{ SNIPPET_TEXT_ORIG }}</textarea>
+			</div>
+			<input type="button" class="button1" onclick="getElementById('copy_paste').select(); return false;" value="{{ lang('PASTEBIN_SELECT_CODE') }}" />
+			{% if S_AUTH_EDIT %}
+				<input type="hidden" name="mode" value="edit_snippet" />
+				{{ S_HIDDEN_FIELDS_V }}
+				&nbsp;<input type="submit" class="button1" value="{{ lang('PASTEBIN_SNIPPET_SAVE') }}" />
+			{% endif %}
+		</p>
+		{{ S_FORM_TOKEN }}
+	</form>

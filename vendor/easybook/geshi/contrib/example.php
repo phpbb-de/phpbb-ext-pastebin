@@ -26,9 +26,9 @@ require $path . 'geshi.php';
 
 $fill_source = false;
 if (isset($_POST['submit'])) {
-    if (get_magic_quotes_gpc()) {
+    /*if (get_magic_quotes_gpc()) {
         $_POST['source'] = stripslashes($_POST['source']);
-    }
+    }*/
     if (!strlen(trim($_POST['source']))) {
         $_POST['language'] = preg_replace('#[^a-zA-Z0-9\-_]#', '', $_POST['language']);
         $_POST['source'] = implode('', @file($path . 'geshi/' . $_POST['language'] . '.php'));
@@ -172,7 +172,7 @@ if (isset($_POST['submit'])) {
 <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="post">
 <h3>Source to highlight</h3>
 <p>
-<textarea rows="10" cols="60" name="source" id="source"><?php echo $fill_source ? htmlspecialchars($_POST['source']) : '' ?></textarea>
+<textarea rows="10" cols="60" name="source" id="source"><?php echo $fill_source ? htmlspecialchars($_POST['source'], ENT_COMPAT) : '' ?></textarea>
 </p>
 <h3>Choose a language</h3>
 <p>

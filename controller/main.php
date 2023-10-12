@@ -156,7 +156,7 @@ class main
 		$snippet_id		= $this->request->variable('s', 0);
 		$submit			= $this->request->is_set_post('submit');
 
-		if (in_array($mode, array('view', 'download', 'moderate')))
+		if (in_array($mode, array('view', 'download', 'moderate', 'edit_snippet')))
 		{
 			// for all of these we have to check if the entry exists
 
@@ -232,6 +232,34 @@ class main
 		// Now let's decide what to do
 		switch ($mode)
 		{
+			case 'edit_snippet':
+				if (!check_form_key('pastebinform'))
+				{
+					trigger_error('PASTEBIN_FORM_INVALID');
+				}
+				else
+				{
+					$data = [
+						'snippet_id'	=> $snippet_id,
+						'snippet_text'	=> $this->request->raw_variable('edit_snippet', ''),
+					];
+
+					$snippet->load_from_array($data);
+					$snippet->submit();
+
+					$redirect_append = array("mode"=>"view","s"=>$snippet_id);
+					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', $redirect_append);
+
+					$message = $this->language->lang('PASTEBIN_SNIPPET_MODERATED');
+					$message .= '<br /><br />';
+					$message .= $this->language->lang('PASTEBIN_RETURN_SNIPPET', '<a href="' . $redirect_url . '">', '</a>');
+
+					meta_refresh(3, $redirect_url);
+					trigger_error($message);
+				}
+
+        break;
+
 			case 'post':
 				// process submitted data from the posting form
 				if (!$this->auth->acl_get('u_pastebin_post'))
@@ -247,7 +275,7 @@ class main
 				$data = array(
 						'snippet_title'		=> str_replace("\n", '', $this->request->variable('snippet_title', '', true)),
 						'snippet_desc'		=> str_replace("\n", '', $this->request->variable('snippet_desc', '', true)),
-						'snippet_text'		=> $this->request->variable('snippet_text', '', true),
+						'snippet_text'		=> $this->request->raw_variable('snippet_text', ''),
 						'snippet_prunable'	=> 1,
 						'snippet_highlight'	=> $this->request->variable('snippet_highlight', ''),
 						'snippet_prune_on'	=> max(1, min(6, $this->request->variable('pruning_months', 0))),
@@ -392,7 +420,7 @@ class main
 						$highlight = 'php';
 					}
 
-					$code = htmlspecialchars_decode($snippet_text);
+					$code = $snippet_text;
 
 					$geshi = new \GeSHi($code, $highlight, $this->util->geshi_dir);
 					$geshi->set_header_type(GESHI_HEADER_NONE);
@@ -442,9 +470,9 @@ class main
 					}
 
 					// Thanks download.php
-					$snippet_text = htmlspecialchars_decode(utf8_decode($data['snippet_text']));
+					$snippet_text = $data['snippet_text'];
 
-					$filename = htmlspecialchars_decode($data['snippet_title']) . '.' . $this->pastebin->file_ext();
+					$filename = $data['snippet_title'] . '.' . $this->pastebin->file_ext();
 
 					$user_agent = $this->request->server('HTTP_USER_AGENT', '');
 					if (strpos($user_agent, 'MSIE') !== false || strpos($user_agent, 'Safari') !== false || strpos($user_agent, 'Konqueror') !== false)
