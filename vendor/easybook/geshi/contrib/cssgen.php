@@ -30,7 +30,7 @@
  *
  ************************************************************************************/
 
-set_magic_quotes_runtime(0);
+//set_magic_quotes_runtime(0);
 //
 // Functions
 //
@@ -237,7 +237,7 @@ if ( !$step || $step == 1 )
         }
         else
         {
-            echo '<input type="hidden" name="geshi-path" value="' . htmlspecialchars($geshi_path) . '" />';
+            echo '<input type="hidden" name="geshi-path" value="' . htmlspecialchars($geshi_path, ENT_COMPAT) . '" />';
         }
         if ( $no_lang_dir_error )
         {

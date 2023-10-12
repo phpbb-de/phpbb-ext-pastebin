@@ -4,7 +4,7 @@
 	"description": "Provides a pastebin including syntax highlighting",
 	"homepage": "https://www.phpbb.de/community/",
 	"version": "2.0.7",
-	"time": "2022-05-18",
+	"time": "2023-10-03",
 	"license": "GPL-2.0-only",
 	"authors": [
 		{
@@ -21,7 +21,7 @@
 		}
 	],
 	"require": {
-		"php": ">=5.4.7, <=7.4",
+		"php": ">=7.2, <=8.2",
 		"easybook/geshi": ">=1.0.8.4"
 	},
 	"require-dev": {

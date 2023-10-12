@@ -241,7 +241,7 @@ class main
 				{
 					$data = [
 						'snippet_id'	=> $snippet_id,
-						'snippet_text'	=> $this->request->variable('edit_snippet', '', true),
+						'snippet_text'	=> $this->request->raw_variable('edit_snippet', ''),
 					];
 
 					$snippet->load_from_array($data);
@@ -257,7 +257,8 @@ class main
 					meta_refresh(3, $redirect_url);
 					trigger_error($message);
 				}
-				break;
+
+        break;
 
 			case 'post':
 				// process submitted data from the posting form
@@ -274,7 +275,7 @@ class main
 				$data = array(
 						'snippet_title'		=> str_replace("\n", '', $this->request->variable('snippet_title', '', true)),
 						'snippet_desc'		=> str_replace("\n", '', $this->request->variable('snippet_desc', '', true)),
-						'snippet_text'		=> $this->request->variable('snippet_text', '', true),
+						'snippet_text'		=> $this->request->raw_variable('snippet_text', ''),
 						'snippet_prunable'	=> 1,
 						'snippet_highlight'	=> $this->request->variable('snippet_highlight', ''),
 						'snippet_prune_on'	=> max(1, min(6, $this->request->variable('pruning_months', 0))),
@@ -419,7 +420,7 @@ class main
 						$highlight = 'php';
 					}
 
-					$code = htmlspecialchars_decode($snippet_text);
+					$code = $snippet_text;
 
 					$geshi = new \GeSHi($code, $highlight, $this->util->geshi_dir);
 					$geshi->set_header_type(GESHI_HEADER_NONE);
@@ -469,9 +470,9 @@ class main
 					}
 
 					// Thanks download.php
-					$snippet_text = htmlspecialchars_decode(utf8_decode($data['snippet_text']));
+					$snippet_text = $data['snippet_text'];
 
-					$filename = htmlspecialchars_decode($data['snippet_title']) . '.' . $this->pastebin->file_ext();
+					$filename = $data['snippet_title'] . '.' . $this->pastebin->file_ext();
 
 					$user_agent = $this->request->server('HTTP_USER_AGENT', '');
 					if (strpos($user_agent, 'MSIE') !== false || strpos($user_agent, 'Safari') !== false || strpos($user_agent, 'Konqueror') !== false)
