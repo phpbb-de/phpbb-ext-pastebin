@@ -2,11 +2,11 @@
 	{% if SNIPPET_AUTHOR_FULL %}<em class="author">{{ lang('POST_BY_AUTHOR') }} {{ SNIPPET_AUTHOR_FULL }} ({{ SNIPPET_TIME }})</em>{% endif %}
 	{% if SNIPPET_DESC_V %}
 	<dl>
-		<dt><strong>{{ lang('PASTEBIN_SNIPPET_DESC') }}{{ lang('COLON') }}</strong></dt>
+		<dt><strong>{{ lang('PASTEBIN_SNIPPET_DESC') ~ lang('COLON') }}</strong></dt>
 		<dd>{{ SNIPPET_DESC_V }}</dd>
-		<dt><strong>{{ lang('PASTEBIN_SNIPPET_CREATION_TIME') }}{{ lang('COLON') }}</strong></dt>
+		<dt><strong>{{ lang('PASTEBIN_SNIPPET_CREATION_TIME') ~ lang('COLON') }}</strong></dt>
 		<dd>{{ SNIPPET_TIME }}</dd>
-		<dt><strong>{{ lang('PASTEBIN_SNIPPET_PRUNE_TIME') }}{{ lang('COLON') }}</strong></dt>
+		<dt><strong>{{ lang('PASTEBIN_SNIPPET_PRUNE_TIME') ~ lang('COLON') }}</strong></dt>
 		<dd>{{ SNIPPET_PRUNE_ON }}</dd>
 	</dl>
 	<br>
@@ -16,13 +16,13 @@
 		<p>
 			<input type="hidden" name="mode" value="view">
 			{{ S_HIDDEN_FIELDS_V }}
-			<label for="highlight">{{ lang('PASTEBIN_HIGHLIGHT_LANG') }}{{ lang('COLON') }}</label> <select id="highlight" name="highlight">{{ HIGHLIGHT_SELECT }}</select>
+			<label for="highlight">{{ lang('PASTEBIN_HIGHLIGHT_LANG') ~ lang('COLON') }}</label> <select id="highlight" name="highlight">{{ HIGHLIGHT_SELECT }}</select>
 			<input type="submit" value="{{ lang('SUBMIT') }}" class="button1">
 		</p>
 	</form>
 
 	<dl id="pastebin-codebox" class="codebox">
-		<dt>{{ lang('PASTEBIN_SNIPPET_TEXT') }}{{ lang('COLON') }}</dt>
+		<dt>{{ lang('PASTEBIN_SNIPPET_TEXT') ~ lang('COLON') }}</dt>
 		<dd>
 			<pre data-lang="{{ S_HIGHLIGHT }}"><code>{{ SNIPPET_TEXT_DISPLAY }}</code></pre>
 		</dd>

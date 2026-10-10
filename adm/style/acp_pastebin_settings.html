@@ -12,14 +12,14 @@
         <p>{{ lang('PASTEBIN_MAIN_SETTINGS_EXPLAIN')}}</p>
 
         <dl>
-            <dt><label for="pastebin_allow_secret_snippets">{{ lang('PASTEBIN_ALLOW_SECRET_SNIPPETS')}}{{ lang('COLON') }}</label><br><span>{{ lang('PASTEBIN_ALLOW_SECRET_SNIPPETS_EXPLAIN')}}</span></dt>
+            <dt><label for="pastebin_allow_secret_snippets">{{ lang('PASTEBIN_ALLOW_SECRET_SNIPPETS') ~ lang('COLON') }}</label><br><span>{{ lang('PASTEBIN_ALLOW_SECRET_SNIPPETS_EXPLAIN')}}</span></dt>
             <dd>
                 <label><input type="radio" class="radio" id="pastebin_allow_secret_snippets" name="pastebin_allow_secret_snippets" value="1" {% if PASTEBIN_ALLOWED_SECRET %} checked {% endif %}> {{ lang('YES') }}</label>
                 <label><input type="radio" class="radio" name="pastebin_allow_secret_snippets" value="0" {% if not PASTEBIN_ALLOWED_SECRET %} checked {% endif %}> {{ lang('NO') }}</label>
             </dd>
         </dl>
         <dl>
-            <dt><label for="pastebin_default_prune_months">{{ lang('PASTEBIN_DEFAULT_PRUNE_MONTHS')}}{{ lang('COLON') }}</label><br><span>{{ lang('PASTEBIN_DEFAULT_PRUNE_MONTHS_EXPLAIN')}}</span></dt>
+            <dt><label for="pastebin_default_prune_months">{{ lang('PASTEBIN_DEFAULT_PRUNE_MONTHS') ~ lang('COLON') }}</label><br><span>{{ lang('PASTEBIN_DEFAULT_PRUNE_MONTHS_EXPLAIN')}}</span></dt>
             <dd><input id="pastebin_default_prune_months" type="number" min="1" max="9999" name="pastebin_default_prune_months" value="{{ PASTEBIN_DEFAULT_PRUNE_MONTHS_VALUE }}"> {{ lang('PASTEBIN_MONTHS') }}</dd>
         </dl>
     </fieldset>
