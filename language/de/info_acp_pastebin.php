@@ -63,7 +63,7 @@ if (empty($lang) || !is_array($lang))
 	'PASTEBIN_SETTINGS' 	=> 'Pastebin-Einstellungen',
 	'PASTEBIN_UPDATED' 		=> 'Die Einstellungen der Pastebin wurden aktualisiert.',
 
-	'PASTEBIN_LANG_CONFIG'			=> 'Pastebin - Language Configuration',
+	'PASTEBIN_LANG_CONFIG'			=> 'Pastebin - Sprach-Konfiguration',
 	'PASTEBIN_LANG_CONFIG_EXPLAIN'	=> 'Alle Eigenschaften einsehen und Sprachen aktivieren und deaktivieren.',
 
 	// Lang-Keys for the Pastebin-Lang-ACP-page
