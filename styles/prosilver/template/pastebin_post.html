@@ -82,13 +82,44 @@
 	</div>
 	</form>
 
+	<table class="table1 zebra-list responsive show-header" data-no-responsive-header="true">
+		<thead>
+			<tr>
+				<th>{{ lang('PASTEBIN_FAQ_TAG') }}</th>
+				<th>{{ lang('PASTEBIN_FAQ_DESC') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="tabled"><pre>{_ content _}</pre></td>
+				<td class="tabled">{{ lang('PASTEBIN_FAQ_EM') }}</td>
+			</tr>
+			<tr>
+				<td class="tabled"><pre>{* content *}</pre></td>
+				<td class="tabled">{{ lang('PASTEBIN_FAQ_STRONG') }}</td>
+			</tr>
+			<tr>
+				<td class="tabled"><pre>{~ content ~}</pre></td>
+				<td class="tabled">{{ lang('PASTEBIN_FAQ_BLURRED') }}</td>
+			</tr>
+			<tr>
+				<td class="tabled"><pre>{+ content +}</pre></td>
+				<td class="tabled">{{ lang('PASTEBIN_FAQ_ADDITION') }}</td>
+			</tr>
+			<tr>
+				<td class="tabled"><pre>{- content -}</pre></td>
+				<td class="tabled">{{ lang('PASTEBIN_FAQ_DELETION') }}</td>
+			</tr>
+		</tbody>
+	</table>
+
 	{% else %}
-		<h2>{{ lang('PASTEBIN_NO_AUTH') }}</h2>
-		<p>
-			{% if not S_USER_LOGGED_IN %}
-			{{ lang('PASTEBIN_NO_AUTH_GUEST_EXPLAIN') }}
-			{% else %}
-			{{ lang('PASTEBIN_NO_AUTH_EXPLAIN') }}
-			{% endif %}
-		</p>
+	<h2>{{ lang('PASTEBIN_NO_AUTH') }}</h2>
+	<p>
+		{% if not S_USER_LOGGED_IN %}
+		{{ lang('PASTEBIN_NO_AUTH_GUEST_EXPLAIN') }}
+		{% else %}
+		{{ lang('PASTEBIN_NO_AUTH_EXPLAIN') }}
+		{% endif %}
+	</p>
 	{% endif %}
