@@ -1,6 +1,6 @@
 parameters:
     phpbbde.pastebin.path: '%core.root_path%ext/phpbbde/pastebin/'
-    phpbbde.pastebin.highlight_css: 'ext/phpbbde/pastebin/vendor/tempest/highlight/src/Themes/Css/highlight-light-lite.css'
+    phpbbde.pastebin.highlight_css: 'ext/phpbbde/pastebin/vendor/tempest/highlight/src/Themes/Css/'
     phpbbde.pastebin.cron.prune_interval: 86400
 
 imports:
@@ -48,6 +48,8 @@ services:
             - '@language'
             - '@request'
             - '@template'
+            - '%core.root_path%'
+            - '%phpbbde.pastebin.highlight_css%'
 
     phpbbde.pastebin.languages.acp:
         class: phpbbde\pastebin\controller\acp_pastebin_languages

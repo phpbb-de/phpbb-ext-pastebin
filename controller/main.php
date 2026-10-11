@@ -387,7 +387,7 @@ class main
 						'HIGHLIGHT_SELECT_MOD' => $this->pastebin->highlight_select((string) $data['snippet_highlight']),
 						'DOWNLOAD_SNIPPET_EXPLAIN'	=> $this->language->lang('PASTEBIN_DOWNLOAD_SNIPPET_EXPLAIN', '<a href="' . $snippet_download_url . '">', '</a>'),
 
-						'U_HIGHLIGHT_CSS' => $this->path_helper->update_web_root_path($this->root_path . $this->highlighter_css),
+						'U_HIGHLIGHT_CSS' => $this->path_helper->update_web_root_path($this->root_path . $this->highlighter_css . $this->config['pastebin_highlight_css']),
 						'U_SNIPPET'	=> $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "view", "s" => $data['snippet_hash'])),
 						'U_SNIPPET_DOWNLOAD'	=> $snippet_download_url,
 

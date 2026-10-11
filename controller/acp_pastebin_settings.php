@@ -21,6 +21,8 @@ class acp_pastebin_settings
 		protected \phpbb\language\language $language,
 		protected \phpbb\request\request_interface $request,
 		protected \phpbb\template\template $template,
+		protected string $root_path,
+		protected $highlighter_css,
 	)
 	{
 
@@ -33,20 +35,44 @@ class acp_pastebin_settings
 		add_form_key($form_name);
 		$error = '';
 
+		// Grab the available CSS files from: 'ext/phpbbde/pastebin/vendor/tempest/highlight/src/Themes/Css/'
+		$css_dir = $this->root_path . $this->highlighter_css;
+		$css_files = [];
+		foreach (glob($css_dir . '/*.css') ?: [] as $file)
+		{
+			$css_files[] = basename($file);
+		}
+		sort($css_files, SORT_NATURAL | SORT_FLAG_CASE);
+
 		if ($this->request->is_set_post('submit'))
 		{
+			$css_file = $this->request->variable('pastebin_highlight_css', '');
+
 			if (!check_form_key($form_name))
 			{
 				$error = $this->language->lang('FORM_INVALID');
 			}
+			else if ($css_file !== '' && !in_array($css_file, $css_files, true))
+			{
+				$error = $this->language->lang('PASTEBIN_HIGHLIGHT_CSS_INVALID');
+			}
 
-			if (empty($error) && $this->request->is_set_post('submit'))
+			if (empty($error))
 			{
 				$this->config->set('pastebin_allow_secret_snippets', $this->request->variable('pastebin_allow_secret_snippets', false));
 				$this->config->set('pastebin_default_prune_months', $this->request->variable('pastebin_default_prune_months', 0));
+				$this->config->set('pastebin_highlight_css', $css_file);
 
 				trigger_error($this->language->lang('PASTEBIN_UPDATED') . adm_back_link($this->u_action));
 			}
+		}
+
+		foreach ($css_files as $name)
+		{
+			$this->template->assign_block_vars('css_files', [
+				'NAME'     => $name,
+				'SELECTED' => ($name === $this->config['pastebin_highlight_css']),
+			]);
 		}
 
 		$this->template->assign_vars(array(

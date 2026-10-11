@@ -54,6 +54,12 @@ if (empty($lang) || !is_array($lang))
 	'PASTEBIN_DEFAULT_PRUNE_MONTHS_EXPLAIN' 	=> 'Hiermit wird eingestellt, was bei der Speicherdauer beim Erstellen von Snippets vorausgewählt ist.',
 	'PASTEBIN_MONTHS' 							=> 'Monate',
 
+	// Select CSS
+	'PASTEBIN_HIGHLIGHT_CSS_FILE'			=> 'Highlight-CSS-Datei auswählen',
+	'PASTEBIN_HIGHLIGHT_CSS_FILE_EXPLAIN'	=> 'Du kannst zwischen verschiedenen Highlight-Styles auswählen.',
+	'PASTEBIN_HIGHLIGHT_CSS_NONE'			=> 'Es wurde keine gültige CSS-Datei ausgewählt.',
+	'PASTEBIN_HIGHLIGHT_CSS_INVALID'		=> 'Die ausgewählte CSS-Datei ist ungültig.',
+
 	'PASTEBIN_SETTINGS' 	=> 'Pastebin-Einstellungen',
 	'PASTEBIN_UPDATED' 		=> 'Die Einstellungen der Pastebin wurden aktualisiert.',
 

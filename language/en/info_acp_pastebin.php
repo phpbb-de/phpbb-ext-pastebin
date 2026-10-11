@@ -54,6 +54,12 @@ $lang = array_merge($lang, [
 	'PASTEBIN_DEFAULT_PRUNE_MONTHS_EXPLAIN' 	=> 'With this value the default store duration for the snippets is defined. The users can change the value to the presets.',
 	'PASTEBIN_MONTHS' 							=> 'Months',
 
+	// Select CSS
+	'PASTEBIN_HIGHLIGHT_CSS_FILE'			=> 'Select Highlight CSS file',
+	'PASTEBIN_HIGHLIGHT_CSS_FILE_EXPLAIN'	=> 'You can select between a few existing highlight styles.',
+	'PASTEBIN_HIGHLIGHT_CSS_NONE'			=> 'No valid CSS file was selected.',
+	'PASTEBIN_HIGHLIGHT_CSS_INVALID'		=> 'The selected CSS file is invalid.',
+
 	'PASTEBIN_SETTINGS' 	=> 'Pastebin settings',
 	'PASTEBIN_UPDATED' 		=> 'The Pastebin settings have been updated.',
 

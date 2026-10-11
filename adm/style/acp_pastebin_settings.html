@@ -7,27 +7,40 @@
 <p>{{ lang('PASTEBIN_CONFIG_EXPLAIN') }}</p>
 
 <form id="pastebin_acp_settings" method="post" action="{{ U_ACTION }}">
-    <fieldset>
-        <legend>{{ lang('PASTEBIN_MAIN_SETTINGS')}}</legend>
-        <p>{{ lang('PASTEBIN_MAIN_SETTINGS_EXPLAIN')}}</p>
+	<fieldset>
+		<legend>{{ lang('PASTEBIN_MAIN_SETTINGS')}}</legend>
+		<p>{{ lang('PASTEBIN_MAIN_SETTINGS_EXPLAIN')}}</p>
 
-        <dl>
-            <dt><label for="pastebin_allow_secret_snippets">{{ lang('PASTEBIN_ALLOW_SECRET_SNIPPETS') ~ lang('COLON') }}</label><br><span>{{ lang('PASTEBIN_ALLOW_SECRET_SNIPPETS_EXPLAIN')}}</span></dt>
-            <dd>
-                <label><input type="radio" class="radio" id="pastebin_allow_secret_snippets" name="pastebin_allow_secret_snippets" value="1" {% if PASTEBIN_ALLOWED_SECRET %} checked {% endif %}> {{ lang('YES') }}</label>
-                <label><input type="radio" class="radio" name="pastebin_allow_secret_snippets" value="0" {% if not PASTEBIN_ALLOWED_SECRET %} checked {% endif %}> {{ lang('NO') }}</label>
-            </dd>
-        </dl>
-        <dl>
-            <dt><label for="pastebin_default_prune_months">{{ lang('PASTEBIN_DEFAULT_PRUNE_MONTHS') ~ lang('COLON') }}</label><br><span>{{ lang('PASTEBIN_DEFAULT_PRUNE_MONTHS_EXPLAIN')}}</span></dt>
-            <dd><input id="pastebin_default_prune_months" type="number" min="1" max="9999" name="pastebin_default_prune_months" value="{{ PASTEBIN_DEFAULT_PRUNE_MONTHS_VALUE }}"> {{ lang('PASTEBIN_MONTHS') }}</dd>
-        </dl>
-    </fieldset>
+		<dl>
+			<dt><label for="pastebin_allow_secret_snippets">{{ lang('PASTEBIN_ALLOW_SECRET_SNIPPETS') ~ lang('COLON') }}</label><br><span>{{ lang('PASTEBIN_ALLOW_SECRET_SNIPPETS_EXPLAIN')}}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" id="pastebin_allow_secret_snippets" name="pastebin_allow_secret_snippets" value="1" {% if PASTEBIN_ALLOWED_SECRET %} checked {% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="pastebin_allow_secret_snippets" value="0" {% if not PASTEBIN_ALLOWED_SECRET %} checked {% endif %}> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="pastebin_default_prune_months">{{ lang('PASTEBIN_DEFAULT_PRUNE_MONTHS') ~ lang('COLON') }}</label><br><span>{{ lang('PASTEBIN_DEFAULT_PRUNE_MONTHS_EXPLAIN')}}</span></dt>
+			<dd><input id="pastebin_default_prune_months" type="number" min="1" max="9999" name="pastebin_default_prune_months" value="{{ PASTEBIN_DEFAULT_PRUNE_MONTHS_VALUE }}"> {{ lang('PASTEBIN_MONTHS') }}</dd>
+		</dl>
+		<dl>
+			<dt><label for="pastebin_highlight_css">{{ lang('PASTEBIN_HIGHLIGHT_CSS_FILE') }}</label><br><span>{{ lang('PASTEBIN_HIGHLIGHT_CSS_FILE_EXPLAIN')}}</span></dt>
+			<dd>
+				<select name="pastebin_highlight_css" id="pastebin_highlight_css">
+					{% if loops.css_files|length == 0 %}
+					<option value="">{{ lang('PASTEBIN_HIGHLIGHT_CSS_NONE') }}</option>
+					{% endif %}
+					{% for f in loops.css_files %}
+					<option value="{{ f.NAME }}"{% if f.SELECTED %} selected{% endif %}>{{ f.NAME }}</option>
+					{% endfor %}
+				</select>
+			</dd>
+		</dl>
+	</fieldset>
 
-    <fieldset class="submit-buttons">
-        <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">&nbsp;
-        {{ S_FORM_TOKEN }}
-    </fieldset>
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">&nbsp;
+		{{ S_FORM_TOKEN }}
+	</fieldset>
 </form>
 
 {% include 'overall_footer.html' %}
