@@ -64,12 +64,18 @@
 	}
 
 	& .mini-panel h3 {
+		display: none;
 		font-size: 14px;
 		margin-top: 0;
 	}
 
 	& .mini-panel ul {
 		padding-left: 12px;
+		list-style-type: none;
+
+		& li {
+			margin-bottom: 5px;
+		}
 	}
 
 	& #copy_paste.inputbox{

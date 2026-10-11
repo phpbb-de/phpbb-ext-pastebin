@@ -92,7 +92,7 @@ $lang = array_merge($lang, array(
 
 	'PASTEBIN_SHORT_PRUNABLE'			=> 'Prunable',
 	'PASTEBIN_INFINITE'					=> 'Infinite',
-	'PASTEBIN_SNIPPET_NEW'				=> 'New entry',
+	'PASTEBIN_SNIPPET_NEW'				=> 'New Paste',
 	'PASTEBIN_SNIPPET_DESC'				=> 'Description',
 	'PASTEBIN_SNIPPET_DOWNLOAD'			=> 'Download entry',
 	'PASTEBIN_SNIPPET_HILIT'				=> 'Show highlighted entry',
