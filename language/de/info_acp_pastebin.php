@@ -39,7 +39,6 @@ if (empty($lang) || !is_array($lang))
 	'PASTEBIN_NAV_TITLE' 		=> 'Pastebin',
 	'PASTEBIN_NAV_CONFIG' 		=> 'Pastebin - Einstellungen',
 	'PASTEBIN_NAV_LANGS' 		=> 'Pastebin - Sprachen',
-	'PASTEBIN_NAV_LANGUAGES' 	=> 'Pastebin - Sprachen',
 
 	'PASTEBIN_CONFIG' 			=> 'Pastebin Einstellungen',
 	'PASTEBIN_CONFIG_EXPLAIN' 	=> 'Hier können Einstellungen für die Extension <em>Pastebin</em> vorgenommen werden. Eingestellt werden kann, ob geheime Snippets erstellt werden können und was der Standardwert für die Speicherdauer der Snippets ist.',

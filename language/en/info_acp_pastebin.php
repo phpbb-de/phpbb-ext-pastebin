@@ -39,7 +39,6 @@ $lang = array_merge($lang, [
 	'PASTEBIN_NAV_TITLE' 		=> 'Pastebin',
 	'PASTEBIN_NAV_CONFIG' 		=> 'Pastebin - Settings',
 	'PASTEBIN_NAV_LANGS' 		=> 'Pastebin - Languages',
-	'PASTEBIN_NAV_LANGUAGES' 	=> 'Pastebin - Languages',
 
 	'PASTEBIN_CONFIG' 			=> 'Pastebin - Settings',
 	'PASTEBIN_CONFIG_EXPLAIN' 	=> 'On this page the settings for the <em>Pastebin</em> extensions can be done. 
