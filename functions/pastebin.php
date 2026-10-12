@@ -178,7 +178,8 @@ class pastebin implements \ArrayAccess
 		{
 			if (!empty($row['lang_file_extension']))
 			{
-				$exts[] = strtolower(ltrim($row['lang_file_extension'], '.'));
+				$exts_db_entry	= strtolower(ltrim($row['lang_file_extension'], '.'));
+				$exts			= array_merge($exts, preg_split('/ *, */', $exts_db_entry));
 			}
 		}
 		$this->db->sql_freeresult($result);
