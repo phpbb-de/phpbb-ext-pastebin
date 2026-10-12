@@ -168,7 +168,8 @@ class pastebin implements \ArrayAccess
 	 */
 	public function get_allowed_extensions(): array
 	{
-		$exts = [];
+		$exts_db	= [];
+		$exts		= [];
 
 		$sql = 'SELECT lang_file_extension
 		FROM ' . $this->pastebin_langs_table . '
@@ -178,10 +179,15 @@ class pastebin implements \ArrayAccess
 		{
 			if (!empty($row['lang_file_extension']))
 			{
-				$exts[] = strtolower(ltrim($row['lang_file_extension'], '.'));
+				$exts_db[] = strtolower(ltrim($row['lang_file_extension'], '.'));
 			}
 		}
 		$this->db->sql_freeresult($result);
+
+		foreach ($exts_db as $ext)
+		{
+			$exts = array_merge($exts, preg_split('/, */', $ext));
+		}
 
 		return array_values(array_unique($exts)) ?: ['txt'];
 	}
