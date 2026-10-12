@@ -21,10 +21,8 @@
 		}
 	],
 	"require": {
-		"php": "^8.4"
-	},
-	"require-dev": {
-		"tempest/highlight": "^2.22.0"
+		"php": "^8.4",
+		"tempest/highlight": "2.28.1"
 	},
 	"extra": {
 		"display-name": "Pastebin",
