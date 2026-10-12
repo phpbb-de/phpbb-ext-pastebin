@@ -31,7 +31,7 @@ class acp_pastebin_module
 			// Langs overview
 			case 'languages':
 				$this->tpl_name = 'acp_pastebin_langs';
-				$this->page_title = $language->lang('PASTEBIN_NAV_TITLE') . ' - ' . $language->lang('PASTEBIN_NAV_LANGUAGES');
+				$this->page_title = $language->lang('PASTEBIN_NAV_TITLE') . ' - ' . $language->lang('PASTEBIN_NAV_LANGS');
 
 				$acp_controller = $phpbb_container->get('phpbbde.pastebin.languages.acp');
 

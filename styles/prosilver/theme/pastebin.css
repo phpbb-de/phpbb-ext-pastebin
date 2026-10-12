@@ -64,12 +64,18 @@
 	}
 
 	& .mini-panel h3 {
+		display: none;
 		font-size: 14px;
 		margin-top: 0;
 	}
 
 	& .mini-panel ul {
 		padding-left: 12px;
+		list-style-type: none;
+
+		& li {
+			margin-bottom: 5px;
+		}
 	}
 
 	& #copy_paste.inputbox{
@@ -83,6 +89,35 @@
 		padding: 5px;
 		margin-bottom: 10px;
 		margin-top: 10px;
+	}
+
+	/* Table on view for FAQ */
+	& .table1 {
+		margin-top: 20px;
+
+		& th {
+			font-weight: bold;
+			padding: 3px 4px;
+			color: #FFFFFF;
+			background: #70AED3;
+			border-top: 1px solid #6DACD2;
+			border-bottom: 1px solid #327AA5;
+			text-align: center;
+			font-size: 14px;
+			text-transform: uppercase;
+		}
+
+		& td {
+
+			& pre {
+				font-family: monospace;
+			}
+		}
+
+		& td:first-child {
+			font-weight: bold;
+			text-align: center;
+		}
 	}
 }
 

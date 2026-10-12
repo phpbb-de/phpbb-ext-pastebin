@@ -1,6 +1,6 @@
 parameters:
     phpbbde.pastebin.path: '%core.root_path%ext/phpbbde/pastebin/'
-    phpbbde.pastebin.highlight: '%phpbbde.pastebin.path%assets/tempest/highlight/'
+    phpbbde.pastebin.highlight_css: 'ext/phpbbde/pastebin/vendor/tempest/highlight/src/Themes/Css/'
     phpbbde.pastebin.cron.prune_interval: 86400
 
 imports:
@@ -30,11 +30,12 @@ services:
             - '@language'
             - '@files.factory'
             - '@controller.helper'
+            - '@path_helper'
             - '@captcha.factory'
             - '@phpbbde.pastebin.functions.pastebin'
             - '%core.root_path%'
             - '%core.php_ext%'
-            - '%phpbbde.pastebin.highlight%'
+            - '%phpbbde.pastebin.highlight_css%'
             - '%phpbbde.pastebin.tables.pastebin%'
             - '%phpbbde.pastebin.tables.pastebin_langs%'
 
@@ -47,6 +48,8 @@ services:
             - '@language'
             - '@request'
             - '@template'
+            - '%core.root_path%'
+            - '%phpbbde.pastebin.highlight_css%'
 
     phpbbde.pastebin.languages.acp:
         class: phpbbde\pastebin\controller\acp_pastebin_languages
@@ -56,6 +59,7 @@ services:
             - '@language'
             - '@request'
             - '@template'
+            - '%phpbbde.pastebin.tables.pastebin_langs%'
 
     phpbbde.pastebin.base_listener:
         class: phpbbde\pastebin\event\base_events

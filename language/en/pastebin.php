@@ -92,7 +92,7 @@ $lang = array_merge($lang, array(
 
 	'PASTEBIN_SHORT_PRUNABLE'			=> 'Prunable',
 	'PASTEBIN_INFINITE'					=> 'Infinite',
-	'PASTEBIN_SNIPPET_NEW'				=> 'New entry',
+	'PASTEBIN_SNIPPET_NEW'				=> 'New Paste',
 	'PASTEBIN_SNIPPET_DESC'				=> 'Description',
 	'PASTEBIN_SNIPPET_DOWNLOAD'			=> 'Download entry',
 	'PASTEBIN_SNIPPET_HILIT'				=> 'Show highlighted entry',
@@ -125,4 +125,14 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_LANGS_TWIG' 		=> 'Twig',
 	'PASTEBIN_LANGS_XML' 		=> 'XML',
 	'PASTEBIN_LANGS_YAML' 		=> 'Yaml',
+
+	// FAQ on pastebin_post.html
+	'PASTEBIN_FAQ_TAG' 		=> 'Tag',
+	'PASTEBIN_FAQ_DESC'		=> 'Description',
+
+	'PASTEBIN_FAQ_EM'			=> 'Add this tag around your code parts to display it <em>italic</em> e.g. <pre>{_ echo "test" _}</pre>',
+	'PASTEBIN_FAQ_STRONG'		=> 'Add this tag around your code parts to display it <strong>bold</strong> e.g. <pre>{* echo "test" *}</pre>',
+	'PASTEBIN_FAQ_BLURRED'		=> 'Add this tag around your code parts to display it blurred e.g. <pre>{~ echo "test" ~}</pre>',
+	'PASTEBIN_FAQ_ADDITION'		=> 'Add this tag around your code parts to display with green background as an addition e.g. <pre>{+ echo "test" +}</pre>',
+	'PASTEBIN_FAQ_DELETION'		=> 'Add this tag around your code parts to display with red background as an deletion e.g. <pre>{- echo "test" -}</pre>',
 ));

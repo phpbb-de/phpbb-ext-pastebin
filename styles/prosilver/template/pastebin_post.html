@@ -17,25 +17,25 @@
 		<p class="error">{{ S_ERROR }}</p>
 		{% endif %}
 		<dl>
-			<dt><label for="snippet_title">{{ lang('PASTEBIN_SNIPPET_TITLE') }}{{ lang('COLON') }}</label></dt>
+			<dt><label for="snippet_title">{{ lang('PASTEBIN_SNIPPET_TITLE') ~ lang('COLON') }}</label></dt>
 			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_title" id="snippet_title" value="{{ SNIPPET_TITLE }}" tabindex="1"></dd>
 		</dl>
 		<dl>
-			<dt><label for="snippet_desc">{{ lang('PASTEBIN_SNIPPET_DESC') }}{{ lang('COLON') }}</label></dt>
+			<dt><label for="snippet_desc">{{ lang('PASTEBIN_SNIPPET_DESC') ~ lang('COLON') }}</label></dt>
 			<dd><input type="text" size="45" maxlength="64" class="autowidth inputbox" name="snippet_desc" id="snippet_desc" value="{{ SNIPPET_DESC }}" tabindex="2"></dd>
 		</dl>
 		<dl>
-			<dt><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') }}{{ lang('COLON') }}</label></dt>
+			<dt><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') ~ lang('COLON') }}</label></dt>
 			<dd><select name="snippet_highlight" id="snippet_highlight">{{ HIGHLIGHT_SELECT }}</select></dd>
 		</dl>
 		
 		<dl>
-			<dt><label for="pruning_months">{{ lang('PASTEBIN_PRUNING_MONTHS') }}{{ lang('COLON') }}</label></dt>
+			<dt><label for="pruning_months">{{ lang('PASTEBIN_PRUNING_MONTHS') ~ lang('COLON') }}</label></dt>
 			<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PASTEBIN_PRUNING_MONTH_SHORT') }}</dd>
 		</dl>
 
 		<dl>
-			<dt><label for="snippet_secret">{{ lang('PASTEBIN_SNIPPET_SECRET') }}{{ lang('COLON') }}</label></dt>
+			<dt><label for="snippet_secret">{{ lang('PASTEBIN_SNIPPET_SECRET') ~ lang('COLON') }}</label></dt>
 			<dd><label for="snippet_secret"><input type="checkbox" name="snippet_secret" id="snippet_secret" value="1"{% if SNIPPET_SECRET %} checked{% endif %}> {{ lang('PASTEBIN_SNIPPET_SECRET_SHORT') }}</label></dd>
 		</dl>
 		
@@ -45,7 +45,7 @@
 
 		<fieldset class="fields1">
 		<dl>
-			<dt><label for="fileupload">{{ lang('FILENAME') }}{{ lang('COLON') }}</label></dt>
+			<dt><label for="fileupload">{{ lang('FILENAME') ~ lang('COLON') }}</label></dt>
 			<dd>
 				<input type="file" name="fileupload" id="fileupload" maxlength="{{ FILESIZE }}" value="" class="inputbox autowidth">
 			</dd>
@@ -82,13 +82,44 @@
 	</div>
 	</form>
 
+	<table class="table1 zebra-list responsive show-header" data-no-responsive-header="true">
+		<thead>
+			<tr>
+				<th>{{ lang('PASTEBIN_FAQ_TAG') }}</th>
+				<th>{{ lang('PASTEBIN_FAQ_DESC') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="tabled"><pre>{_ content _}</pre></td>
+				<td class="tabled">{{ lang('PASTEBIN_FAQ_EM') }}</td>
+			</tr>
+			<tr>
+				<td class="tabled"><pre>{* content *}</pre></td>
+				<td class="tabled">{{ lang('PASTEBIN_FAQ_STRONG') }}</td>
+			</tr>
+			<tr>
+				<td class="tabled"><pre>{~ content ~}</pre></td>
+				<td class="tabled">{{ lang('PASTEBIN_FAQ_BLURRED') }}</td>
+			</tr>
+			<tr>
+				<td class="tabled"><pre>{+ content +}</pre></td>
+				<td class="tabled">{{ lang('PASTEBIN_FAQ_ADDITION') }}</td>
+			</tr>
+			<tr>
+				<td class="tabled"><pre>{- content -}</pre></td>
+				<td class="tabled">{{ lang('PASTEBIN_FAQ_DELETION') }}</td>
+			</tr>
+		</tbody>
+	</table>
+
 	{% else %}
-		<h2>{{ lang('PASTEBIN_NO_AUTH') }}</h2>
-		<p>
-			{% if not S_USER_LOGGED_IN %}
-			{{ lang('PASTEBIN_NO_AUTH_GUEST_EXPLAIN') }}
-			{% else %}
-			{{ lang('PASTEBIN_NO_AUTH_EXPLAIN') }}
-			{% endif %}
-		</p>
+	<h2>{{ lang('PASTEBIN_NO_AUTH') }}</h2>
+	<p>
+		{% if not S_USER_LOGGED_IN %}
+		{{ lang('PASTEBIN_NO_AUTH_GUEST_EXPLAIN') }}
+		{% else %}
+		{{ lang('PASTEBIN_NO_AUTH_EXPLAIN') }}
+		{% endif %}
+	</p>
 	{% endif %}

@@ -47,11 +47,12 @@ class main
 		protected \phpbb\language\language $language,
 		protected \phpbb\files\factory $factory,
 		protected \phpbb\controller\helper $helper,
+		protected \phpbb\path_helper $path_helper,
 		protected \phpbb\captcha\factory $captcha_factory,
 		protected \phpbbde\pastebin\functions\pastebin $pastebin,
 		protected $root_path,
 		protected $php_ext,
-		protected $highlighter,
+		protected $highlighter_css,
 		protected $pastebin_table,
 		protected $pastebin_langs_table,
 	)
@@ -369,7 +370,7 @@ class main
 					$snippet_download_url = $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "download", "s" => $data['snippet_hash']));
 
 					$this->template->assign_vars(array(
-						'SNIPPET_TEXT_ORIG'		=> $snippet_text,
+						'SNIPPET_TEXT_ORIG' => htmlspecialchars($snippet_text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
 						'SNIPPET_TEXT_DISPLAY'	=> $snippet_text_display,
 
 						'SNIPPET_TIME'			=> $this->user->format_date($data['snippet_time']),
@@ -386,7 +387,7 @@ class main
 						'HIGHLIGHT_SELECT_MOD' => $this->pastebin->highlight_select((string) $data['snippet_highlight']),
 						'DOWNLOAD_SNIPPET_EXPLAIN'	=> $this->language->lang('PASTEBIN_DOWNLOAD_SNIPPET_EXPLAIN', '<a href="' . $snippet_download_url . '">', '</a>'),
 
-						'U_HIGHLIGHT_CSS'	=> generate_board_url() . '/ext/phpbbde/pastebin/assets/tempest/highlight/src/Themes/Css/highlight-light-lite.css',
+						'U_HIGHLIGHT_CSS' => $this->path_helper->update_web_root_path($this->root_path . $this->highlighter_css . $this->config['pastebin_highlight_css']),
 						'U_SNIPPET'	=> $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "view", "s" => $data['snippet_hash'])),
 						'U_SNIPPET_DOWNLOAD'	=> $snippet_download_url,
 
@@ -569,7 +570,7 @@ class main
 				'SNIPPET_TITLE'		=> $data['snippet_title'] ?? '',
 				'SNIPPET_DESC'		=> $data['snippet_desc'] ?? '',
 				'AUTHOR_FULL'		=> isset($data['username']) ? get_username_string('full', $data['user_id'], $data['username'], $data['user_colour']) : '',
-				'SNIPPET_TEXT'		=> $data['snippet_text'] ?? '',
+				'SNIPPET_TEXT' => htmlspecialchars($data['snippet_text'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
 
 				'HIGHLIGHT_SELECT'	=> $highlight_select,
 				'PRUNING_MONTHS_SELECT'	=> $pruning_months_select,

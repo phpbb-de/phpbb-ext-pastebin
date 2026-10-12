@@ -9,8 +9,8 @@
 		<div class="new-entry mini-panel navbar">
 			<h3>{{ lang('PASTEBIN') }}</h3>
 			<ul>
-				{% if S_AUTH_POST %}<li><a href="{{ U_PASTEBIN }}">{{ lang('PASTEBIN_SNIPPET_NEW') }}</a></li>{% endif %}
-				{% if S_MODE eq 'view' %}<li><a href="{{ U_SNIPPET_DOWNLOAD }}">{{ lang('PASTEBIN_SNIPPET_DOWNLOAD') }}</a></li>{% endif %}
+				{% if S_AUTH_POST %}<li><a class="button" title="{{ lang('PASTEBIN_SNIPPET_NEW') }}" href="{{ U_PASTEBIN }}"><span>{{ lang('PASTEBIN_SNIPPET_NEW') }}</span><i class="icon fa-pencil fa-fw" aria-hidden="true"></i></a></li>{% endif %}
+				{% if S_MODE eq 'view' %}<li><a class="button" title="{{ lang('PASTEBIN_SNIPPET_DOWNLOAD') }}" href="{{ U_SNIPPET_DOWNLOAD }}"><span>{{ lang('PASTEBIN_SNIPPET_DOWNLOAD') }}</span><i class="icon fa-download fa-fw" aria-hidden="true"></i></a></li>{% endif %}
 			</ul>
 		</div>
 		{% endif %}
@@ -23,21 +23,21 @@
 			<fieldset class="fields1">
 				{% if S_AUTH_EDIT %}
 				<dl>
-					<dt><label for="pruning_months">{{ lang('PASTEBIN_PRUNING_MONTHS') }}{{ lang('COLON') }}</label></dt>
+					<dt><label for="pruning_months">{{ lang('PASTEBIN_PRUNING_MONTHS') ~ lang('COLON') }}</label></dt>
 					<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PASTEBIN_PRUNING_MONTH_SHORT') }}</dd>
 				</dl>
 				<dl>
-					<dt><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') }}{{ lang('COLON') }}</label></dt>
+					<dt><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') ~ lang('COLON') }}</label></dt>
 					<dd><select id="snippet_highlight" name="snippet_highlight">{{ HIGHLIGHT_SELECT_MOD }}</select></dd>
 				</dl>
 				<dl>
-					<dt><label for="snippet_secret">{{ lang('PASTEBIN_SNIPPET_SECRET') }}{{ lang('COLON') }}</label></dt>
+					<dt><label for="snippet_secret">{{ lang('PASTEBIN_SNIPPET_SECRET') ~ lang('COLON') }}</label></dt>
 					<dd><label for="snippet_secret"><input type="checkbox" name="snippet_secret" id="snippet_secret" value="1"{% if SNIPPET_SECRET %} checked{% endif %}> {{ lang('PASTEBIN_SNIPPET_SECRET_SHORT') }}</label></dd>
 				</dl>
 				{% endif %}
 				{% if S_AUTH_DELETE %}
 				<dl>
-					<dt><label for="delete_snippet">{{ lang('PASTEBIN_DELETE_SNIPPET') }}{{ lang('COLON') }}</label></dt>
+					<dt><label for="delete_snippet">{{ lang('PASTEBIN_DELETE_SNIPPET') ~ lang('COLON') }}</label></dt>
 					<dd><label for="delete_snippet"><input type="checkbox" name="delete_snippet" id="delete_snippet"> {{ lang('DELETE') }}</label></dd>
 				</dl>
 				{% endif %}

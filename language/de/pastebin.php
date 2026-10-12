@@ -126,4 +126,14 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_LANGS_TWIG' 		=> 'Twig',
 	'PASTEBIN_LANGS_XML' 		=> 'XML',
 	'PASTEBIN_LANGS_YAML' 		=> 'Yaml',
+
+	// FAQ on pastebin_post.html
+	'PASTEBIN_FAQ_TAG' 		=> 'Tag',
+	'PASTEBIN_FAQ_DESC'		=> 'Beschreibung',
+
+	'PASTEBIN_FAQ_EM'			=> 'Mit diesem Tag um deinen Code wird der Abschnitt <em>kursiv</em> dargestellt e.g. <pre>{_ echo "test" _}</pre>',
+	'PASTEBIN_FAQ_STRONG'		=> 'Mit diesem Tag um deinen Code wird der Abschnitt <strong>fett</strong> dargestellt e.g. <pre>{* echo "test" *}</pre>',
+	'PASTEBIN_FAQ_BLURRED'		=> 'Mit diesem Tag um deinen Code wird der Abschnitt verschwommen dargestellt e.g. <pre>{~ echo "test" ~}</pre>',
+	'PASTEBIN_FAQ_ADDITION'		=> 'Mit diesem Tag können Zeilen oder Code-Abschnitte markiert werden, die ergänzt werden sollen, sie sind grün hinterlegt e.g. <pre>{+ echo "test" +}</pre>',
+	'PASTEBIN_FAQ_DELETION'		=> 'Mit diesem Tag können Zeilen oder Code-Abschnitte markiert werden, die gelöscht werden sollen, sie sind rot hinterlegt e.g. <pre>{- echo "test" -}</pre>',
 ));

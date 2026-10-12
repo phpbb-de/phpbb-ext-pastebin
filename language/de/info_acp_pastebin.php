@@ -34,9 +34,11 @@ if (empty($lang) || !is_array($lang))
 
 	$lang = array_merge($lang, [
 	// ACP
-	'PASTEBIN_NAV_TITLE' 	=> 'Pastebin',
-	'PASTEBIN_NAV_CONFIG' 	=> 'Pastebin - Einstellungen',
-	'PASTEBIN_NAV_LANGS' 	=> 'Pastebin - Sprachen',
+	'ACP_PASTEBIN_TITLE'	=>'Pastebin',
+
+	'PASTEBIN_NAV_TITLE' 		=> 'Pastebin',
+	'PASTEBIN_NAV_CONFIG' 		=> 'Pastebin - Einstellungen',
+	'PASTEBIN_NAV_LANGS' 		=> 'Pastebin - Sprachen',
 
 	'PASTEBIN_CONFIG' 			=> 'Pastebin Einstellungen',
 	'PASTEBIN_CONFIG_EXPLAIN' 	=> 'Hier können Einstellungen für die Extension <em>Pastebin</em> vorgenommen werden. Eingestellt werden kann, ob geheime Snippets erstellt werden können und was der Standardwert für die Speicherdauer der Snippets ist.',
@@ -52,12 +54,22 @@ if (empty($lang) || !is_array($lang))
 	'PASTEBIN_DEFAULT_PRUNE_MONTHS_EXPLAIN' 	=> 'Hiermit wird eingestellt, was bei der Speicherdauer beim Erstellen von Snippets vorausgewählt ist.',
 	'PASTEBIN_MONTHS' 							=> 'Monate',
 
+	// Select CSS
+	'PASTEBIN_HIGHLIGHT_CSS_FILE'			=> 'Highlight-CSS-Datei auswählen',
+	'PASTEBIN_HIGHLIGHT_CSS_FILE_EXPLAIN'	=> 'Du kannst zwischen verschiedenen Highlight-Styles auswählen.',
+	'PASTEBIN_HIGHLIGHT_CSS_NONE'			=> 'Es wurde keine gültige CSS-Datei ausgewählt.',
+	'PASTEBIN_HIGHLIGHT_CSS_INVALID'		=> 'Die ausgewählte CSS-Datei ist ungültig.',
+
 	'PASTEBIN_SETTINGS' 	=> 'Pastebin-Einstellungen',
 	'PASTEBIN_UPDATED' 		=> 'Die Einstellungen der Pastebin wurden aktualisiert.',
 
+	'PASTEBIN_LANG_CONFIG'			=> 'Pastebin - Sprach-Konfiguration',
+	'PASTEBIN_LANG_CONFIG_EXPLAIN'	=> 'Alle Eigenschaften einsehen und Sprachen aktivieren und deaktivieren.',
+
 	// Lang-Keys for the Pastebin-Lang-ACP-page
-	'PASTEBIN_LANG_CONFIG' 			=> 'Pastebin - Sprachen',
-	'PASTEBIN_LANG_CONFIG_EXPLAIN' 	=> 'Hier kann eingerichtet werden, welche Sprachen aktiviert und durch den Highlighter nutzbar sind.',
+	'PASTEBIN_LANG_SETTINGS'			=> 'Pastebin - Spracheinstellungen',
+	'PASTEBIN_LANG_SETTINGS_EXPLAIN'	=> 'Auf dieser Seite können die verfügbaren Sprachen mit ihrer ID, Namen und Dateiendung eingesehen werden. Sie können aktiv oder nicht aktiv gesetzt werden.  
+											Für nicht aktive Sprachen kann der entsprechende Highlighter vom Benutzer nicht im Dropdown-Menü ausgewählt werden.',
 
 	// Table header - languages overview page
 	'PASTEBIN_TABLE_LANG_ID' 			=> 'Sprach-ID',

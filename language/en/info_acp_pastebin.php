@@ -33,10 +33,12 @@ if (empty($lang) || !is_array($lang))
 // ’ « » “ ” … „ “
 
 $lang = array_merge($lang, [
-// ACP
-	'PASTEBIN_NAV_TITLE' 	=> 'Pastebin',
-	'PASTEBIN_NAV_CONFIG' 	=> 'Pastebin - Settings',
-	'PASTEBIN_NAV_LANGS' 	=> 'Pastebin - Languages',
+	// ACP
+	'ACP_PASTEBIN_TITLE'	=>'Pastebin',
+
+	'PASTEBIN_NAV_TITLE' 		=> 'Pastebin',
+	'PASTEBIN_NAV_CONFIG' 		=> 'Pastebin - Settings',
+	'PASTEBIN_NAV_LANGS' 		=> 'Pastebin - Languages',
 
 	'PASTEBIN_CONFIG' 			=> 'Pastebin - Settings',
 	'PASTEBIN_CONFIG_EXPLAIN' 	=> 'On this page the settings for the <em>Pastebin</em> extensions can be done. 
@@ -52,12 +54,22 @@ $lang = array_merge($lang, [
 	'PASTEBIN_DEFAULT_PRUNE_MONTHS_EXPLAIN' 	=> 'With this value the default store duration for the snippets is defined. The users can change the value to the presets.',
 	'PASTEBIN_MONTHS' 							=> 'Months',
 
+	// Select CSS
+	'PASTEBIN_HIGHLIGHT_CSS_FILE'			=> 'Select Highlight CSS file',
+	'PASTEBIN_HIGHLIGHT_CSS_FILE_EXPLAIN'	=> 'You can select between a few existing highlight styles.',
+	'PASTEBIN_HIGHLIGHT_CSS_NONE'			=> 'No valid CSS file was selected.',
+	'PASTEBIN_HIGHLIGHT_CSS_INVALID'		=> 'The selected CSS file is invalid.',
+
 	'PASTEBIN_SETTINGS' 	=> 'Pastebin settings',
 	'PASTEBIN_UPDATED' 		=> 'The Pastebin settings have been updated.',
 
+	'PASTEBIN_LANG_CONFIG'			=> 'Pastebin - Language Configuration',
+	'PASTEBIN_LANG_CONFIG_EXPLAIN'	=> 'See all lanuage properties and activate and deactivate languages.',
+
 	// Lang-Keys for the Pastebin-Lang-ACP-page
-	'PASTEBIN_LANG_CONFIG' 			=> 'Pastebin - Languages',
-	'PASTEBIN_LANG_CONFIG_EXPLAIN' 	=> 'On this page can be setup, which languages can be used by the Highlighter.',
+	'PASTEBIN_LANG_SETTINGS'			=> 'Pastebin - Languages settings',
+	'PASTEBIN_LANG_SETTINGS_EXPLAIN'	=> 'On this page the available languages can be seen by ID, name, file extension and set active or not active. For 
+											not active languages the highlighter cannot be used by the users in the dropdown menu.',
 
 	// Table header - languages overview page
 	'PASTEBIN_TABLE_LANG_ID' 			=> 'Language-ID',
