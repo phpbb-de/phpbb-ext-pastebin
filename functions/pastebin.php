@@ -174,15 +174,14 @@ class pastebin implements \ArrayAccess
 		FROM ' . $this->pastebin_langs_table . '
 		WHERE lang_active = 1';
 		$result = $this->db->sql_query($sql);
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			if (!empty($row['lang_file_extension']))
-			{
-				$exts_db_entry	= strtolower(ltrim($row['lang_file_extension'], '.'));
-				$exts			= array_merge($exts, preg_split('/ *, */', $exts_db_entry));
-			}
-		}
+		$exts_db = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
+
+		foreach ($exts_db as $row)
+		{
+			$exts_db_entry	= preg_replace('/[^a-z,]/', '', strtolower($row['lang_file_extension']));
+			$exts			= array_merge($exts, preg_split('/,/', $exts_db_entry, -1, PREG_SPLIT_NO_EMPTY));
+		}
 
 		return array_values(array_unique($exts)) ?: ['txt'];
 	}
