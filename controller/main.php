@@ -50,6 +50,7 @@ class main
 		protected \phpbb\path_helper $path_helper,
 		protected \phpbb\captcha\factory $captcha_factory,
 		protected \phpbbde\pastebin\functions\pastebin $pastebin,
+		protected \phpbbde\pastebin\functions\pb_common $pb_common,
 		protected $root_path,
 		protected $php_ext,
 		protected $highlighter_css,
@@ -210,7 +211,7 @@ class main
 						'snippet_desc'		=> str_replace("\n", '', $this->request->variable('snippet_desc', '', true)),
 						'snippet_text'		=> $this->request->raw_variable('snippet_text', ''),
 						'snippet_prunable'	=> 1,
-						'snippet_highlight' => $this->pastebin->validate_language($this->request->variable('snippet_highlight', '')),
+						'snippet_highlight' => $this->pb_common->validate_language($this->request->variable('snippet_highlight', '')),
 						'snippet_prune_on'	=> max(1, min(6, $this->request->variable('pruning_months', 0))),
 						'snippet_secret'	=> $this->request->variable('snippet_secret', 0),
 				);
@@ -239,7 +240,7 @@ class main
 				{
 					$upload = $this->factory->get('files.upload');
 
-					$allowed_extensions = $this->pastebin->get_allowed_extensions();
+					$allowed_extensions = $this->pb_common->get_allowed_extensions();
 
 					$file = $upload
 						->set_allowed_extensions($allowed_extensions)
@@ -355,7 +356,7 @@ class main
 					$snippet_text = $data['snippet_text'];
 
 					$highlight = $this->request->is_set('highlight')
-						? $this->pastebin->validate_language($this->request->variable('highlight', ''))
+						? $this->pb_common->validate_language($this->request->variable('highlight', ''))
 						: ((string) $data['snippet_highlight'] ?: 'text');
 
 					$highlighter = new \Tempest\Highlight\Highlighter();
@@ -384,7 +385,7 @@ class main
 						'SNIPPET_DATE'			=> $this->user->format_date($data['snippet_time']),
 						'SNIPPET_SECRET'		=> $data['snippet_secret'],
 
-						'HIGHLIGHT_SELECT_MOD' => $this->pastebin->highlight_select((string) $data['snippet_highlight']),
+						'HIGHLIGHT_SELECT_MOD' => $this->pb_common->highlight_select((string) $data['snippet_highlight']),
 						'DOWNLOAD_SNIPPET_EXPLAIN'	=> $this->language->lang('PASTEBIN_DOWNLOAD_SNIPPET_EXPLAIN', '<a href="' . $snippet_download_url . '">', '</a>'),
 
 						'U_HIGHLIGHT_CSS' => $this->path_helper->update_web_root_path($this->root_path . $this->highlighter_css . $this->config['pastebin_highlight_css']),
@@ -408,7 +409,7 @@ class main
 					// Thanks download.php
 					$snippet_text = $data['snippet_text'];
 
-					$filename = $data['snippet_title'] . '.' . $this->pastebin->get_file_extension($data['snippet_highlight']);
+					$filename = $data['snippet_title'] . '.' . $this->pb_common->get_file_extension($data['snippet_highlight']);
 
 					$user_agent = $this->request->server('HTTP_USER_AGENT', '');
 					if (strpos($user_agent, 'MSIE') !== false || strpos($user_agent, 'Safari') !== false || strpos($user_agent, 'Konqueror') !== false)
@@ -439,7 +440,7 @@ class main
 				else if ($mode == 'moderate')
 				{
 					$delete				= $this->request->is_set_post('delete_snippet');
-					$highlight = $this->pastebin->validate_language($this->request->variable('snippet_highlight', ''));
+					$highlight = $this->pb_common->validate_language($this->request->variable('snippet_highlight', ''));
 					$pruning_months	= $this->request->variable('pruning_months', 0);
 					$prunable		= $pruning_months != -1;
 					$secret			= $this->request->variable('snippet_secret', 0);
@@ -557,9 +558,9 @@ class main
 
 		if (!isset($highlight))
 		{
-			$highlight = $this->pastebin->validate_language($data['snippet_highlight'] ?? 'php');
+			$highlight = $this->pb_common->validate_language($data['snippet_highlight'] ?? 'php');
 		}
-		$highlight_select = $this->pastebin->highlight_select($highlight);
+		$highlight_select = $this->pb_common->highlight_select($highlight);
 
 		$captcha_in_use = $this->config['captcha_plugin'];
 		$is_recaptcha = strpos($captcha_in_use, 'recaptcha');

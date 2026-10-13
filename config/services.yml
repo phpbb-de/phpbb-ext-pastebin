@@ -11,10 +11,14 @@ services:
         class: phpbbde\pastebin\functions\pastebin
         arguments:
             - '@dbal.conn'
-            - '@language'
             - '@user'
-            - '%core.php_ext%'
             - '%phpbbde.pastebin.tables.pastebin%'
+
+    phpbbde.pastebin.functions.pbcommon:
+        class: phpbbde\pastebin\functions\pb_common
+        arguments:
+            - '@config'
+            - '@dbal.conn'
             - '%phpbbde.pastebin.tables.pastebin_langs%'
 
     phpbbde.pastebin.controller.main:
@@ -33,6 +37,7 @@ services:
             - '@path_helper'
             - '@captcha.factory'
             - '@phpbbde.pastebin.functions.pastebin'
+            - '@phpbbde.pastebin.functions.pbcommon'
             - '%core.root_path%'
             - '%core.php_ext%'
             - '%phpbbde.pastebin.highlight_css%'
