@@ -64,7 +64,5 @@
                 }
         ],
         "dev": true,
-        "dev-package-names": [
-                "tempest/highlight"
-        ]
+        "dev-package-names": []
 }

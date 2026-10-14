@@ -26,7 +26,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../tempest/highlight',
             'aliases' => array(),
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
     ),
 );
