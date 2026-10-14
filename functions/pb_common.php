@@ -130,12 +130,4 @@ class pb_common
 
 		return $ext ? ltrim($ext, '.') : 'txt';
 	}
-
-	/**
-	 * Calculates the pruning time based on the snippet and ACP settings
-	 */
-	public function calculate_prune($value, $factor)
-	{
-
-	}
 }

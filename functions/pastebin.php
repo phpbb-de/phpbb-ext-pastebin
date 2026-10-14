@@ -18,9 +18,6 @@ class pastebin implements \ArrayAccess
 	/** @var array */
 	protected array $data;
 
-	/** @var array|null Cache für aktive Sprachen [lang_name_clean => lang_name] */
-	private ?array $active_langs = null;
-
 	/**
 	 * Constructor
 	 * @param \phpbb\db\driver\driver_interface $db
