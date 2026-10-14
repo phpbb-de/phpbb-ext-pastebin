@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "867165c85457d8aa62dea443f6c775ae",
+    "content-hash": "ae085c2c906734f3618c8ecc55a2b03d",
     "packages": [
         {
             "name": "tempest/highlight",
