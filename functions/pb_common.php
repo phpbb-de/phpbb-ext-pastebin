@@ -75,12 +75,14 @@ class pb_common
                 FROM ' . $this->pastebin_langs_table . '
                 WHERE lang_active = 1
                 ORDER BY lang_name ASC';
-			$result = $this->db->sql_query($sql);
-			while ($row = $this->db->sql_fetchrow($result))
+			$result		= $this->db->sql_query($sql);
+			$langs_db	= $this->db->sql_fetchrowset($result);
+			$this->db->sql_freeresult($result);
+
+			foreach ($langs_db as $row)
 			{
 				$this->active_langs[$row['lang_name_clean']] = $row['lang_name'];
 			}
-			$this->db->sql_freeresult($result);
 		}
 
 		return $this->active_langs;
@@ -95,7 +97,7 @@ class pb_common
 		foreach ($this->get_active_languages() as $clean => $name)
 		{
 			$sel = ($clean === $selected) ? ' selected' : '';
-			$html .= '<option value="' . htmlspecialchars($clean) . '"' . $sel . '>' . htmlspecialchars($name) . '</option>';
+			$html .= '<option value="' . utf8_htmlspecialchars($clean) . '"' . $sel . '>' . utf8_htmlspecialchars($name) . "</option>\n";
 		}
 
 		return $html;
