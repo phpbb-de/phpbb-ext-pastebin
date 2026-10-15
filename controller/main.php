@@ -371,7 +371,7 @@ class main
 					$snippet_download_url = $this->helper->route('phpbbde_pastebin_main_controller', array("mode" => "download", "s" => $data['snippet_hash']));
 
 					$this->template->assign_vars(array(
-						'SNIPPET_TEXT_ORIG' => htmlspecialchars($snippet_text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+						'SNIPPET_TEXT_ORIG'		=> utf8_htmlspecialchars($snippet_text),
 						'SNIPPET_TEXT_DISPLAY'	=> $snippet_text_display,
 
 						'SNIPPET_TIME'			=> $this->user->format_date($data['snippet_time']),
@@ -571,7 +571,7 @@ class main
 				'SNIPPET_TITLE'		=> $data['snippet_title'] ?? '',
 				'SNIPPET_DESC'		=> $data['snippet_desc'] ?? '',
 				'AUTHOR_FULL'		=> isset($data['username']) ? get_username_string('full', $data['user_id'], $data['username'], $data['user_colour']) : '',
-				'SNIPPET_TEXT' => htmlspecialchars($data['snippet_text'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+				'SNIPPET_TEXT'		=> utf8_htmlspecialchars($data['snippet_text'] ?? ''),
 
 				'HIGHLIGHT_SELECT'	=> $highlight_select,
 				'PRUNING_MONTHS_SELECT'	=> $pruning_months_select,

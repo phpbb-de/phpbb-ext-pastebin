@@ -100,7 +100,7 @@ class v300 extends \phpbb\db\migration\migration
 			['Terminal', 'terminal', '1', ''],
 			['Terraform', 'terraform', '0', 'go'],
 			['Text', 'text', '1', 'txt'],
-			['Twig', 'twig', '1', 'html'],
+			['Twig', 'twig', '1', 'twig, html'],
 			['TypeScript', 'ts', '0', 'ts'],
 			['XML', 'xml', '1', 'xml'],
 			['YAML', 'yaml', '1', 'yml, yaml'],
