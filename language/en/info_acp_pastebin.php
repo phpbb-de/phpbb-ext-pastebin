@@ -53,6 +53,11 @@ $lang = array_merge($lang, [
 	'PASTEBIN_DEFAULT_PRUNE_MONTHS' 			=> 'Default store duration',
 	'PASTEBIN_DEFAULT_PRUNE_MONTHS_EXPLAIN' 	=> 'With this value the default store duration for the snippets is defined. The users can change the value to the presets.',
 	'PASTEBIN_MONTHS' 							=> 'Months',
+	'PASTEBIN_PRUNE_MIN_DAYS'					=> 'Minimum storage duration',
+	'PASTEBIN_PRUNE_MIN_DAYS_EXPLAIN'			=> 'Shortest duration the user can select.',
+	'PASTEBIN_PRUNE_MAX_DAYS'					=> 'Maximum storage duration',
+	'PASTEBIN_PRUNE_MAX_DAYS_EXPLAIN'			=> 'Longest duration the user can select.',
+	'PASTEBIN_PRUNE_LIMITS_INVALID'				=> 'The minimum has to be at least "1" and cannot exceed the maximum.',
 
 	// Select CSS
 	'PASTEBIN_HIGHLIGHT_CSS_FILE'			=> 'Select Highlight CSS file',

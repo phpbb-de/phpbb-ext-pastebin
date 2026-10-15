@@ -22,10 +22,15 @@ class pb_common
 	private ?array $active_langs = null;
 
 	// Constants for time calculations like prunning
-	const SECONDS_DAY   = 86400;
-	const SECONDS_WEEK  = 604800;
-	const SECONDS_MONTH = 2592000;
-	const SECONDS_YEAR  = 31536000;
+	const int SECONDS_DAY   = 86400;
+	const int SECONDS_WEEK  = 604800;
+	const int SECONDS_MONTH = 2592000;
+
+	const PRUNE_UNITS = [
+		'days'   => self::SECONDS_DAY,
+		'weeks'  => self::SECONDS_WEEK,
+		'months' => self::SECONDS_MONTH,
+	];
 
 	/**
 	 * Constructor
@@ -131,5 +136,54 @@ class pb_common
 		$this->db->sql_freeresult($result);
 
 		return $ext ? ltrim($ext, '.') : 'txt';
+	}
+
+	/**
+	 * Uses min/max value from ACP, returns in seconds
+	 *
+	 * @return int[] [min, max]
+	 */
+	public function get_prune_limits(): array
+	{
+		$min_days = max(1, (int) $this->config['pastebin_prune_min_days']);
+		$max_days = max($min_days, (int) $this->config['pastebin_prune_max_days']);
+
+		return [$min_days * self::SECONDS_DAY, $max_days * self::SECONDS_DAY];
+	}
+
+	/**
+	 * Calculates the prune date with amount and unit, limits it to min/max from ACP setting
+	 */
+	public function calculate_prune_on(int $amount, string $unit, ?int $base_time = null): int
+	{
+		if (!isset(self::PRUNE_UNITS[$unit]))
+		{
+			$unit = 'months';
+		}
+
+		[$min, $max] = $this->get_prune_limits();
+
+		$duration = max(1, $amount) * self::PRUNE_UNITS[$unit];
+		$duration = max($min, min($max, $duration));
+
+		return ($base_time ?? time()) + $duration;
+	}
+
+	/**
+	 * Calculates the seconds back to fitting days, weeks and months for the template output
+	 *
+	 * @return array [amount, unit]
+	 */
+	public function split_prune_duration(int $seconds): array
+	{
+		foreach (['months', 'weeks', 'days'] as $unit)
+		{
+			if ($seconds >= self::PRUNE_UNITS[$unit] && $seconds % self::PRUNE_UNITS[$unit] === 0)
+			{
+				return [intdiv($seconds, self::PRUNE_UNITS[$unit]), $unit];
+			}
+		}
+
+		return [max(1, (int) round($seconds / self::SECONDS_DAY)), 'days'];
 	}
 }

@@ -57,11 +57,21 @@ class acp_pastebin_settings
 				$error = $this->language->lang('PASTEBIN_HIGHLIGHT_CSS_INVALID');
 			}
 
+			$min_days = $this->request->variable('pastebin_prune_min_days', 1);
+			$max_days = $this->request->variable('pastebin_prune_max_days', 180);
+
+			if (empty($error) && ($min_days < 1 || $max_days < $min_days))
+			{
+				$error = $this->language->lang('PASTEBIN_PRUNE_LIMITS_INVALID');
+			}
+
 			if (empty($error))
 			{
 				$this->config->set('pastebin_allow_secret_snippets', $this->request->variable('pastebin_allow_secret_snippets', false));
 				$this->config->set('pastebin_default_prune_months', $this->request->variable('pastebin_default_prune_months', 0));
 				$this->config->set('pastebin_highlight_css', $css_file);
+				$this->config->set('pastebin_prune_min_days', $min_days);
+				$this->config->set('pastebin_prune_max_days', $max_days);
 
 				trigger_error($this->language->lang('PASTEBIN_UPDATED') . adm_back_link($this->u_action));
 			}
@@ -70,8 +80,8 @@ class acp_pastebin_settings
 		foreach ($css_files as $name)
 		{
 			$this->template->assign_block_vars('css_files', [
-				'NAME'     => $name,
-				'SELECTED' => ($name === $this->config['pastebin_highlight_css']),
+				'NAME'		=> $name,
+				'SELECTED' 	=> ($name === $this->config['pastebin_highlight_css']),
 			]);
 		}
 
@@ -81,6 +91,9 @@ class acp_pastebin_settings
 
 			'PASTEBIN_ALLOWED_SECRET' => $this->config['pastebin_allow_secret_snippets'],
 			'PASTEBIN_DEFAULT_PRUNE_MONTHS_VALUE' => $this->config['pastebin_default_prune_months'],
+
+			'PASTEBIN_PRUNE_MIN_DAYS' => (int) $this->config['pastebin_prune_min_days'],
+			'PASTEBIN_PRUNE_MAX_DAYS' => (int) $this->config['pastebin_prune_max_days'],
 		));
 
 	}

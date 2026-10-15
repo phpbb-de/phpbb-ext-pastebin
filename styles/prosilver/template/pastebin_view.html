@@ -1,16 +1,16 @@
 	<h3>{{ lang('PASTEBIN_SNIPPET_TITLE') ~ lang('COLON') }} »{{ SNIPPET_TITLE_V }}</h3>
 	{% if SNIPPET_AUTHOR_FULL %}<em class="author">{{ lang('POST_BY_AUTHOR') }} {{ SNIPPET_AUTHOR_FULL }} ({{ SNIPPET_TIME }})</em>{% endif %}
-	{% if SNIPPET_DESC_V %}
 	<dl>
+		{% if SNIPPET_DESC_V %}
 		<dt><strong>{{ lang('PASTEBIN_SNIPPET_DESC') ~ lang('COLON') }}</strong></dt>
 		<dd>{{ SNIPPET_DESC_V }}</dd>
+		{% endif %}
 		<dt><strong>{{ lang('PASTEBIN_SNIPPET_CREATION_TIME') ~ lang('COLON') }}</strong></dt>
 		<dd>{{ SNIPPET_TIME }}</dd>
 		<dt><strong>{{ lang('PASTEBIN_SNIPPET_PRUNE_TIME') ~ lang('COLON') }}</strong></dt>
 		<dd>{{ SNIPPET_PRUNE_ON }}</dd>
 	</dl>
 	<br>
-	{% endif %}
 
 	<form action="{{ S_FORM_ACTION }}" method="get">
 		<p>

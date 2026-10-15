@@ -84,8 +84,7 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_VIEW'				=> 'View entry - %s',
 	'PASTEBIN_WRONG_FILESIZE'	=> 'The file is too large (Maximum file size is %1d %2s)',
 
-	'PASTEBIN_PRUNING_MONTHS'			=> 'Storage duration',
-	'PASTEBIN_PRUNING_MONTH_SHORT'		=> 'months',
+	'PASTEBIN_PRUNING_DURATION'			=> 'Storage duration',
 
 	'PASTEBIN_RETURN_PASTEBIN'			=> '%sReturn to Pastebin%s',
 	'PASTEBIN_RETURN_SNIPPET'			=> '%sShow entry%s',
@@ -102,11 +101,17 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_SNIPPET_TITLE'				=> 'Title',
 	'PASTEBIN_SNIPPET_CREATION_TIME'		=> 'Entry created on',
 	'PASTEBIN_SNIPPET_PRUNE_TIME'		=> 'Entry will be automatically deleted',
+
 	'PASTEBIN_SNIPPET_PLAIN'				=> 'Show simple entry.',
 	'PASTEBIN_SNIPPET_PRUNABLE'			=> 'Entry prunable',
 	'PASTEBIN_SNIPPET_PRUNABLE_EXPLAIN'	=> 'If this option is disabled, the entry will not be entered in the monthly list of prunable entries.',
 	'PASTEBIN_SNIPPET_SUBMITTED'			=> 'Your entry was sucessfully created.',
 	'PASTEBIN_SNIPPET_SAVE'				=> 'Save edited snippet',
+
+	'PASTEBIN_UNIT_DAYS'						=> 'Days',
+	'PASTEBIN_UNIT_WEEKS'						=> 'Weeks',
+	'PASTEBIN_UNIT_MONTHS'						=> 'Months',
+	'PASTEBIN_PRUNE_LIMITS'						=> 'Allows: %1$d to %2$d days',
 
 	// Language keys for Syntax highlighting dropdown
 	'PASTEBIN_LANGS_BASE'		=> 'Base',
