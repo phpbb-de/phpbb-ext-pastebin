@@ -65,6 +65,8 @@ class v300 extends \phpbb\db\migration\migration
 			['config.add', ['pastebin_allow_secret_snippets', 1]],
 			['config.add', ['pastebin_default_prune_months', 1]],
 			['config.add', ['pastebin_highlight_css', 'highlight-tempest.css']],
+			['config.add', ['pastebin_prune_min_days', 1]],
+			['config.add', ['pastebin_prune_max_days', 180]],
 			// Remove version entry in database
 			['config.remove', ['pastebin_version']],
 		];

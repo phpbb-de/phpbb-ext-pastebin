@@ -23,8 +23,8 @@
 			<fieldset class="fields1">
 				{% if S_AUTH_EDIT %}
 				<dl>
-					<dt><label for="pruning_months">{{ lang('PASTEBIN_PRUNING_MONTHS') ~ lang('COLON') }}</label></dt>
-					<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PASTEBIN_PRUNING_MONTH_SHORT') }}</dd>
+					<dt><label for="pruning_value">{{ lang('PASTEBIN_PRUNING_DURATION') }}{{ lang('COLON') }}</label><br><span>{{ PRUNE_LIMITS_TEXT }}</span></dt>
+					<dd><input type="number" id="pruning_value" name="pruning_value" min="1" value="{PRUNING_VALUE}"><select name="pruning_unit">{PRUNING_UNIT_SELECT}</select></dd>
 				</dl>
 				<dl>
 					<dt><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') ~ lang('COLON') }}</label></dt>

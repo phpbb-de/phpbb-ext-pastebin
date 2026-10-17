@@ -28,12 +28,10 @@
 			<dt><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') ~ lang('COLON') }}</label></dt>
 			<dd><select name="snippet_highlight" id="snippet_highlight">{{ HIGHLIGHT_SELECT }}</select></dd>
 		</dl>
-		
 		<dl>
-			<dt><label for="pruning_months">{{ lang('PASTEBIN_PRUNING_MONTHS') ~ lang('COLON') }}</label></dt>
-			<dd><select name="pruning_months" id="pruning_months">{{ PRUNING_MONTHS_SELECT }}</select> {{ lang('PASTEBIN_PRUNING_MONTH_SHORT') }}</dd>
+			<dt><label for="pruning_value">{{ lang('PASTEBIN_PRUNING_DURATION') }}{{ lang('COLON') }}</label><br><span>{{ PRUNE_LIMITS_TEXT }}</span></dt>
+			<dd><input type="number" id="pruning_value" name="pruning_value" min="1" value="{PRUNING_VALUE}"><select name="pruning_unit">{PRUNING_UNIT_SELECT}</select></dd>
 		</dl>
-
 		<dl>
 			<dt><label for="snippet_secret">{{ lang('PASTEBIN_SNIPPET_SECRET') ~ lang('COLON') }}</label></dt>
 			<dd><label for="snippet_secret"><input type="checkbox" name="snippet_secret" id="snippet_secret" value="1"{% if SNIPPET_SECRET %} checked{% endif %}> {{ lang('PASTEBIN_SNIPPET_SECRET_SHORT') }}</label></dd>

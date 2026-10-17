@@ -23,6 +23,14 @@
 			<dd><input id="pastebin_default_prune_months" type="number" min="1" max="9999" name="pastebin_default_prune_months" value="{{ PASTEBIN_DEFAULT_PRUNE_MONTHS_VALUE }}"> {{ lang('PASTEBIN_MONTHS') }}</dd>
 		</dl>
 		<dl>
+			<dt><label for="pastebin_prune_min_days">{L_PASTEBIN_PRUNE_MIN_DAYS}{L_COLON}</label><br><span>{L_PASTEBIN_PRUNE_MIN_DAYS_EXPLAIN}</span></dt>
+			<dd><input type="number" id="pastebin_prune_min_days" name="pastebin_prune_min_days" min="1" value="{PASTEBIN_PRUNE_MIN_DAYS}"> {L_DAYS}</dd>
+		</dl>
+		<dl>
+			<dt><label for="pastebin_prune_max_days">{L_PASTEBIN_PRUNE_MAX_DAYS}{L_COLON}</label><br><span>{L_PASTEBIN_PRUNE_MAX_DAYS_EXPLAIN}</span></dt>
+			<dd><input type="number" id="pastebin_prune_max_days" name="pastebin_prune_max_days" min="1" value="{PASTEBIN_PRUNE_MAX_DAYS}"> {L_DAYS}</dd>
+		</dl>
+		<dl>
 			<dt><label for="pastebin_highlight_css">{{ lang('PASTEBIN_HIGHLIGHT_CSS_FILE') }}</label><br><span>{{ lang('PASTEBIN_HIGHLIGHT_CSS_FILE_EXPLAIN')}}</span></dt>
 			<dd>
 				<select name="pastebin_highlight_css" id="pastebin_highlight_css">

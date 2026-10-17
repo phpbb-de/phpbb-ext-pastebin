@@ -14,12 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class main
 {
-	const CONFIRM_PASTEBIN = 5;
-	const SECONDS_DAY   = 86400;
-	const SECONDS_WEEK  = 604800;
-	const SECONDS_MONTH = 2592000;
-	const SECONDS_YEAR  = 31536000;
-
+	const int CONFIRM_PASTEBIN = 5;
 	/**
 	 * Construct
 	 *
@@ -212,13 +207,14 @@ class main
 						'snippet_text'		=> $this->request->raw_variable('snippet_text', ''),
 						'snippet_prunable'	=> 1,
 						'snippet_highlight' => $this->pb_common->validate_language($this->request->variable('snippet_highlight', '')),
-						'snippet_prune_on'	=> max(1, min(6, $this->request->variable('pruning_months', 0))),
 						'snippet_secret'	=> $this->request->variable('snippet_secret', 0),
 				);
+				// Special case for pruning
+				$prune_amount = $this->request->variable('pruning_value', 0);
+				$prune_unit   = $this->request->variable('pruning_unit', 'months');
 
-				if ($this->auth->acl_get('u_pastebin_post_notlim') && $this->request->variable('pruning_months',0) == -1)
+				if ($prune_unit === 'infinite' && $this->auth->acl_get('u_pastebin_post_notlim'))
 				{
-					//Infinite Time...
 					$data['snippet_prunable'] = 0;
 				}
 
@@ -320,7 +316,7 @@ class main
 							'snippet_text'		=> $snippet_contents,
 							'snippet_prunable'	=> (int) $data['snippet_prunable'],
 							'snippet_highlight'	=> $data['snippet_highlight'],
-							'snippet_prune_on'	=> time() + $this::SECONDS_MONTH * $data['snippet_prune_on'],
+							'snippet_prune_on'	=> $data['snippet_prunable'] ? $this->pb_common->calculate_prune_on($prune_amount, $prune_unit) : 0,
 							'snippet_hash'		=> $snippet_hash,
 					);
 
@@ -439,10 +435,11 @@ class main
 				}
 				else if ($mode == 'moderate')
 				{
-					$delete				= $this->request->is_set_post('delete_snippet');
-					$highlight = $this->pb_common->validate_language($this->request->variable('snippet_highlight', ''));
-					$pruning_months	= $this->request->variable('pruning_months', 0);
-					$prunable		= $pruning_months != -1;
+					$delete			= $this->request->is_set_post('delete_snippet');
+					$highlight 		= $this->pb_common->validate_language($this->request->variable('snippet_highlight', ''));
+					$prune_amount 	= $this->request->variable('pruning_value', 0);
+					$prune_unit		= $this->request->variable('pruning_unit', 'months');
+					$prunable		= !($prune_unit === 'infinite' && ($this->auth->acl_get('u_pastebin_post_notlim') || !$data['snippet_prunable']));
 					$secret			= $this->request->variable('snippet_secret', 0);
 
 					$auth_edit = ($this->auth->acl_get('m_pastebin_edit') || ($this->auth->acl_get('u_pastebin_edit') && $this->user->data['user_id'] == $snippet['snippet_author']));
@@ -478,7 +475,7 @@ class main
 						$snippet->load_from_array(array(
 							'snippet_prunable'	=> (int) $prunable,
 							'snippet_highlight'	=> $highlight,
-							'snippet_prune_on'	=> $data['snippet_time'] + ($pruning_months * $this::SECONDS_MONTH),
+							'snippet_prune_on'	=> $prunable ? $this->pb_common->calculate_prune_on($prune_amount, $prune_unit, (int) $data['snippet_time']) : 0,
 							'snippet_secret'	=> $secret,
 						));
 						$snippet->submit();
@@ -509,6 +506,7 @@ class main
 		}
 
 		$s_hidden_fields['mode'] = 'post';
+
 		// Visual Confirmation - Show images (borrowed from includes/ucp/ucp_register.php)
 		if (!$this->auth->acl_get('u_pastebin_post_novc'))
 		{
@@ -522,39 +520,44 @@ class main
 			$this->template->assign_var('PASTEBIN_CAPTCHA_TEMPLATE', $captcha->get_template());
 		}
 
-		$pruning_months_select = '';
-		$prune_month = $this->request->variable('pruning_months', 0);
-		for ($i = 1; $i < 7; $i++)
+		// Define pre-selection
+		if (isset($data['snippet_prunable']) && !$data['snippet_prunable'])
 		{
-			if (isset($data['snippet_prune_on']) && isset($data['snippet_time']))
-			{
-				$selected = ($data['snippet_prune_on'] - $data['snippet_time'] == $i * $this::SECONDS_MONTH) ? ' selected' : '';
-			}
-			else if ($prune_month)
-			{
-				$selected = ($i == $prune_month) ? ' selected' : '';
-			}
-			else
-			{
-				$selected = ($i == 1) ? ' selected' : '';
-			}
-			$pruning_months_select .= '<option' . $selected . ' value="' . $i . '">' . $i . '</option>';
+			$prune_value	= 1;
+			$prune_unit_sel = 'infinite';
+		}
+		else if (isset($data['snippet_prune_on'], $data['snippet_time']))
+		{
+			[$prune_value, $prune_unit_sel] = $this->pb_common->split_prune_duration((int) ($data['snippet_prune_on'] - $data['snippet_time']));
+		}
+		else if ($this->request->is_set_post('pruning_value'))
+		{
+			$prune_value	= $this->request->variable('pruning_value', 1);
+			$prune_unit_sel = $this->request->variable('pruning_unit', 'months');
+		}
+		else
+		{
+			// Get default and limit to min/max values
+			$default_duration = $this->pb_common->calculate_prune_on((int) $this->config['pastebin_default_prune_months'], 'months', 0);
+			[$prune_value, $prune_unit_sel] = $this->pb_common->split_prune_duration($default_duration);
 		}
 
-		//Allow infinite storage if it is already set and we are editing, or if the user is allowed to
-		// TODO: Allow infinite storage?? Check for min, max and intervall setting
+		$pruning_unit_select = '';
+		foreach (array_keys($this->pb_common::PRUNE_UNITS) as $unit)
+		{
+			$pruning_unit_select .= '<option value="' . $unit . '"' . (($unit === $prune_unit_sel) ? ' selected' : '') . '>'
+				. $this->language->lang('PASTEBIN_UNIT_' . strtoupper($unit)) . '</option>';
+		}
+
+		// Allow infinite only if allowed or stored like this
 		if ((isset($data['snippet_prunable']) && !$data['snippet_prunable']) || $this->auth->acl_get('u_pastebin_post_notlim'))
 		{
-			if (isset($data['snippet_prunable']))
-			{
-				$selected = ($data['snippet_prunable'] == 0 || $prune_month == -1) ? ' selected' : '';
-			}
-			else
-			{
-				$selected = '';
-			}
-			$pruning_months_select .= '<option' . $selected . ' value="-1">' . $this->language->lang('PASTEBIN_INFINITE') . '</option>';
+			$infinite_selected = (isset($data['snippet_prunable']) && !$data['snippet_prunable']) || $prune_unit_sel === 'infinite';
+			$pruning_unit_select .= '<option value="infinite"' . ($infinite_selected ? ' selected' : '') . '>'
+				. $this->language->lang('PASTEBIN_INFINITE') . '</option>';
 		}
+
+		[$prune_min, $prune_max] = $this->pb_common->get_prune_limits();
 
 		if (!isset($highlight))
 		{
@@ -573,8 +576,13 @@ class main
 				'AUTHOR_FULL'		=> isset($data['username']) ? get_username_string('full', $data['user_id'], $data['username'], $data['user_colour']) : '',
 				'SNIPPET_TEXT'		=> utf8_htmlspecialchars($data['snippet_text'] ?? ''),
 
-				'HIGHLIGHT_SELECT'	=> $highlight_select,
-				'PRUNING_MONTHS_SELECT'	=> $pruning_months_select,
+				'HIGHLIGHT_SELECT'		=> $highlight_select,
+				'PRUNING_VALUE'			=> $prune_value,
+				'PRUNING_UNIT_SELECT'	=> $pruning_unit_select,
+				'PRUNE_MIN_DAYS'		=> (int) ($prune_min / $this->pb_common::SECONDS_DAY),
+				'PRUNE_MAX_DAYS'		=> (int) ($prune_max / $this->pb_common::SECONDS_DAY),
+				'PRUNE_LIMITS_TEXT'		=> $this->language->lang('PASTEBIN_PRUNE_LIMITS', (int) ($prune_min / $this->pb_common::SECONDS_DAY), (int) ($prune_max / $this->pb_common::SECONDS_DAY)),
+
 				'SNIPPET_SECRET'		=> $data['snippet_secret'] ?? '',
 
 				'FILESIZE'			=> $this->config['max_filesize'],

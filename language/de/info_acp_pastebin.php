@@ -50,9 +50,15 @@ if (empty($lang) || !is_array($lang))
 	'PASTEBIN_ALLOW_SECRET_SNIPPETS_EXPLAIN' 	=> 'Sofern aktiviert, können Benutzer auch geheime Snippets erstellen, die nur diejenigen
 												anzeigen können, die den Link zum Snippet kennen.',
 
+
 	'PASTEBIN_DEFAULT_PRUNE_MONTHS' 			=> 'Standard-Speicherdauer',
 	'PASTEBIN_DEFAULT_PRUNE_MONTHS_EXPLAIN' 	=> 'Hiermit wird eingestellt, was bei der Speicherdauer beim Erstellen von Snippets vorausgewählt ist.',
 	'PASTEBIN_MONTHS' 							=> 'Monate',
+	'PASTEBIN_PRUNE_MIN_DAYS'					=> 'Minimale Aufbewahrungsdauer',
+	'PASTEBIN_PRUNE_MIN_DAYS_EXPLAIN'			=> 'Kürzeste Dauer, die Nutzer auswählen können.',
+	'PASTEBIN_PRUNE_MAX_DAYS'					=> 'Maximale Aufbewahrungsdauer',
+	'PASTEBIN_PRUNE_MAX_DAYS_EXPLAIN'			=> 'Die längste Dauer, die Nutzer auswählen können.',
+	'PASTEBIN_PRUNE_LIMITS_INVALID'				=> 'Das Minimum muss mindestens "1" sein und darf das Maximum nicht überschreiten.',
 
 	// Select CSS
 	'PASTEBIN_HIGHLIGHT_CSS_FILE'			=> 'Highlight-CSS-Datei auswählen',
