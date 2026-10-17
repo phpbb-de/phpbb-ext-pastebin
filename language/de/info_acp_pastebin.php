@@ -57,7 +57,7 @@ if (empty($lang) || !is_array($lang))
 	'PASTEBIN_PRUNE_MIN_DAYS'					=> 'Minimale Aufbewahrungsdauer',
 	'PASTEBIN_PRUNE_MIN_DAYS_EXPLAIN'			=> 'Kürzeste Dauer, die Nutzer auswählen können.',
 	'PASTEBIN_PRUNE_MAX_DAYS'					=> 'Maximale Aufbewahrungsdauer',
-	'PASTEBIN_PRUNE_MIN_DAYS_EXPLAIN'			=> 'Die längste Dauer, die Nutzer auswählen können.',
+	'PASTEBIN_PRUNE_MAX_DAYS_EXPLAIN'			=> 'Die längste Dauer, die Nutzer auswählen können.',
 	'PASTEBIN_PRUNE_LIMITS_INVALID'				=> 'Das Minimum muss mindestens "1" sein und darf das Maximum nicht überschreiten.',
 
 	// Select CSS
