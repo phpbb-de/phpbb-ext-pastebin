@@ -29,7 +29,7 @@
 				<td>{{ item.lang_name_clean }}</td>
 				<td>{{ item.lang_file_extension }}</td>
 				<td><input type="checkbox" class="checkbox" name="lang_active[{{ item.lang_id }}]"
-				           value="1" {{ item.lang_active ? ' checked' }}>
+				           value="1"{{ item.lang_active ? ' checked' }}>
 				</td>
 			</tr>
 			{% endfor %}
