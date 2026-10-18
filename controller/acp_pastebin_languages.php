@@ -21,8 +21,8 @@ class acp_pastebin_languages
 
 	public function module_settings(): void
 	{
-		// Get content of pastebin_langs to display the table
-		$sql = 'SELECT *
+		/* Get content of pastebin_langs to display the table */
+		$sql = 'SELECT lang_id, lang_name, lang_name_clean, lang_active, lang_file_extension
 				FROM ' . $this->pastebin_lang_tables . '
 				ORDER BY lang_name_clean ASC';
 		$result = $this->db->sql_query($sql);
@@ -38,12 +38,18 @@ class acp_pastebin_languages
 				trigger_error($this->language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
-			$activated_lang_db	= array_combine(array_column($langs_db, 'lang_id'), array_column($langs_db, 'lang_active'));
-			$activated_lang_req	= $this->request->variable('lang_active', ['']);
-			$activated_lang_all	= array_replace(array_fill(1, count($activated_lang_db), '0'), $activated_lang_req);
-			$lang_update_list	= array_diff_assoc($activated_lang_all, $activated_lang_db);
+			/* Creates an array (extract) from the language table, using `lang_id` as the key and `lang_active` as the value */
+			$activated_lang_db		= array_combine(array_column($langs_db, 'lang_id'), array_column($langs_db, 'lang_active'));
+			/* Retrieves all checked (active) checkboxes from the form */
+			$activated_lang_req		= $this->request->variable('lang_active', ['']);
+			/* Creates a placeholder array using the IDs from the table and sets all values ​​to `0` */
+			$activated_lang_filled	= array_combine(array_keys($activated_lang_db), array_fill(1, count($activated_lang_db), '0'));
+			/* Combines the placeholder array with the active checkboxes from the form to enable the creation of a diff array */
+			$activated_lang_req		= array_replace($activated_lang_filled, $activated_lang_req);
+			/* Generates a diff array so that only the necessary records are modified */
+			$lang_update_list		= array_diff_assoc($activated_lang_req, $activated_lang_db);
 
-			// Make a loop for write lang_active = 1 for checked and 0 for not checked
+			/* Make a loop for write lang_active = 1 for checked and 0 for not checked */
 			foreach ($lang_update_list as $lang_id => $lang_active)
 			{
 				$this->change_lang_settings($lang_id, $lang_active);
@@ -70,9 +76,7 @@ class acp_pastebin_languages
 		$sql = 'UPDATE ' . $this->pastebin_lang_tables . '
 				SET lang_active=' . $lang_active . '
 				WHERE lang_id = ' . (int) $lang_id;
-
 		$result = $this->db->sql_query($sql);
-
 		$this->db->sql_freeresult($result);
 	}
 }
