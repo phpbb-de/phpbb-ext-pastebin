@@ -22,14 +22,14 @@
 			</tr>
 			</thead>
 			<tbody>
-			{% for item in loops.langlist %}
+			{% for item in PB_LANGS %}
 			<tr>
-				<td>{{ item.LANG_ID }}</td>
-				<td>{{ item.LANG_NAME }}</td>
-				<td>{{ item.LANG_NAME_CLEAN }}</td>
-				<td>{{ item.LANG_FILE_EXTENSION }}</td>
-				<td><input type="checkbox" class="checkbox" name="lang_active[{{ item.LANG_ID }}]"
-				           value="{{ item.LANG_ID }}" {{ item.LANG_ACTIVE ? ' checked' }}>
+				<td>{{ item.lang_id }}</td>
+				<td>{{ item.lang_name }}</td>
+				<td>{{ item.lang_name_clean }}</td>
+				<td>{{ item.lang_file_extension }}</td>
+				<td><input type="checkbox" class="checkbox" name="lang_active[{{ item.lang_id }}]"
+				           value="1"{{ item.lang_active ? ' checked' }}>
 				</td>
 			</tr>
 			{% endfor %}
