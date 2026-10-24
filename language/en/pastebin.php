@@ -140,4 +140,6 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_FAQ_BLURRED'		=> 'Add this tag around your code parts to display it blurred e.g. <pre>{~ echo "test" ~}</pre>',
 	'PASTEBIN_FAQ_ADDITION'		=> 'Add this tag around your code parts to display with green background as an addition e.g. <pre>{+ echo "test" +}</pre>',
 	'PASTEBIN_FAQ_DELETION'		=> 'Add this tag around your code parts to display with red background as an deletion e.g. <pre>{- echo "test" -}</pre>',
+
+	'DISALLOWED_CONTENT'		=> 'The upload was rejected.',
 ));

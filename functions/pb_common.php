@@ -124,18 +124,48 @@ class pb_common
 	}
 
 	/**
-	 * Gets the file extensions from phpbb_pastebin_langs
+	 * Cleans an extension: lowercase, no dot, only a-z0-9, max 16 chars
+	 */
+	public function sanitize_extension(string $ext): string
+	{
+		$ext = preg_replace('/[^a-z0-9]/', '', strtolower(ltrim(trim($ext), '.')));
+
+		return substr($ext, 0, 16);
+	}
+
+	/**
+	 * Gets only the FIRST file extension of a language from phpbb_pastebin_langs
+	 * (the DB field may contain several, e.g. "html, htm")
 	 */
 	public function get_file_extension(string $lang_clean): string
 	{
 		$sql = 'SELECT lang_file_extension
-			FROM ' . $this->pastebin_langs_table . "
-			WHERE lang_name_clean = '" . $this->db->sql_escape($lang_clean) . "'";
+		FROM ' . $this->pastebin_langs_table . "
+		WHERE lang_name_clean = '" . $this->db->sql_escape($lang_clean) . "'";
 		$result = $this->db->sql_query_limit($sql, 1);
-		$ext = $this->db->sql_fetchfield('lang_file_extension');
+		$ext = (string) $this->db->sql_fetchfield('lang_file_extension');
 		$this->db->sql_freeresult($result);
 
-		return $ext ? ltrim($ext, '.') : 'txt';
+		$parts = preg_split('/[\s,]+/', $ext, -1, PREG_SPLIT_NO_EMPTY);
+
+		return $this->sanitize_extension($parts[0] ?? '') ?: 'txt';
+	}
+
+	/**
+	 * Builds the download filename:
+	 * stored extension > first extension of the highlighter > txt
+	 */
+	public function build_download_filename(string $title, string $stored_ext, string $lang_clean): string
+	{
+		$ext = $this->sanitize_extension($stored_ext) ?: $this->get_file_extension($lang_clean);
+
+		// Title already ends with the extension (e.g. "index.html") -> don't append twice
+		if (preg_match('/\.' . preg_quote($ext, '/') . '$/i', $title))
+		{
+			return $title;
+		}
+
+		return $title . '.' . $ext;
 	}
 
 	/**

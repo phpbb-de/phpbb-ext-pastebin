@@ -49,6 +49,7 @@ class pastebin implements \ArrayAccess
 			'snippet_highlight' => 'text',
 			'snippet_secret'	=> 0,
 			'snippet_hash'		=> '',
+			'snippet_file_ext'	=> '',
 		);
 	}
 

@@ -232,6 +232,8 @@ class main
 
 				$filedata = $this->request->file('fileupload');
 
+				$snippet_file_ext = '';
+
 				if (!empty($filedata) && $filedata['name'] != 'none' && trim($filedata['name']))
 				{
 					$upload = $this->factory->get('files.upload');
@@ -240,12 +242,15 @@ class main
 
 					$file = $upload
 						->set_allowed_extensions($allowed_extensions)
+						->set_disallowed_content([])
 						->handle_upload('files.types.form', 'fileupload');
 
 					$upload->common_checks($file);
 
 					if (!$file->error)
 					{
+						// Extension of the original filename (already checked against the allowed extensions)
+						$snippet_file_ext = $this->pb_common->sanitize_extension((string) $file->get('extension'));
 						// Well, ugly solutions work, too
 						$snippet_contents = @file_get_contents($file->get('filename'));
 						// Check for UTF-8 encoding; because utf8_convert_message() will destroy utf8-characters in UTF-8 documents
@@ -318,6 +323,7 @@ class main
 							'snippet_highlight'	=> $data['snippet_highlight'],
 							'snippet_prune_on'	=> $data['snippet_prunable'] ? $this->pb_common->calculate_prune_on($prune_amount, $prune_unit) : 0,
 							'snippet_hash'		=> $snippet_hash,
+							'snippet_file_ext'	=> $snippet_file_ext,
 					);
 
 					// Okay, captcha, your job is done.
@@ -405,7 +411,11 @@ class main
 					// Thanks download.php
 					$snippet_text = $data['snippet_text'];
 
-					$filename = $data['snippet_title'] . '.' . $this->pb_common->get_file_extension($data['snippet_highlight']);
+					$filename = $this->pb_common->build_download_filename(
+						$data['snippet_title'],
+						(string) ($data['snippet_file_ext'] ?? ''),
+						(string) $data['snippet_highlight']
+					);
 
 					$user_agent = $this->request->server('HTTP_USER_AGENT', '');
 					if (strpos($user_agent, 'MSIE') !== false || strpos($user_agent, 'Safari') !== false || strpos($user_agent, 'Konqueror') !== false)
