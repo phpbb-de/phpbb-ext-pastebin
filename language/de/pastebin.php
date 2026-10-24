@@ -140,4 +140,6 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_FAQ_BLURRED'		=> 'Mit diesem Tag um deinen Code wird der Abschnitt verschwommen dargestellt e.g. <pre>{~ echo "test" ~}</pre>',
 	'PASTEBIN_FAQ_ADDITION'		=> 'Mit diesem Tag können Zeilen oder Code-Abschnitte markiert werden, die ergänzt werden sollen, sie sind grün hinterlegt e.g. <pre>{+ echo "test" +}</pre>',
 	'PASTEBIN_FAQ_DELETION'		=> 'Mit diesem Tag können Zeilen oder Code-Abschnitte markiert werden, die gelöscht werden sollen, sie sind rot hinterlegt e.g. <pre>{- echo "test" -}</pre>',
+
+	'DISALLOWED_CONTENT'		=> 'Die hochgeladene Datei wurde abgelehnt!',
 ));
