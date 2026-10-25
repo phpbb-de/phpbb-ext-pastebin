@@ -2,13 +2,13 @@
 
 ## Function overview 📓
 
-This extension adds a new page to phpBB where users can add code and share this code with others e.g. to get help
+This extension adds a new page to phpBB where users can add and share code with others e.g. to get help
 from support or distribute code snippets or ideas. 
 
-The Pastebin uses syntax highlighting from the _tempest/highlight_ package. For every entry the suiting language for the syntax highlighting can be selected 
-during upload or post of the file. The moderators can change the code. 
+Pastebin uses syntax highlighting from the _tempest/highlight_ package. For every entry the suiting language for the syntax highlighting can be selected 
+during upload or posting of the file. Moderators can change the code. 
 
-The admin can change settings in the ACP on:
+The admin can change these settings in the ACP:
 - Which languages are available to the users
 - What are the minimal and maximal storage duration of the snippets
 - What highlight-style is used
@@ -24,7 +24,7 @@ The Pastebin extension can only be used with the following requirements:
 ## Installation 🖥
 
 Download the latest release from the GitHub release page: https://github.com/phpbb-de/phpbb-ext-pastebin/releases 
-and copy the content of the zip file to your phpBB installation (**Do not use the "Source Code"-files!**):
+and copy the content of the zip file to your phpBB installation's extension directory (**Do not use the "Source Code"-files!**):
 
     /ext
 
