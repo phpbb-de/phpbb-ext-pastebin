@@ -40,14 +40,14 @@ Copy the content of this repository via git clone:
 
     git clone https://github.com/phpbb-de/phpbb-ext-pastebin ext/phpbbde/pastebin
 
-Install the composer dependencies:
+Install the composer dependencies (path to composer.phar must be changed according to directory structure):
 
     cd ext/phpbbde/pastebin
-    ../[..]/../composer.phar install --no-dev
+    ../../../composer.phar install --no-dev
 
 Go to "ACP" > "Customise" > "Extensions" and enable the "Pastebin" extension.
 
-## Added permissions 🧑‍✈️
+## Added permissions 👮
 The extension adds on the first install group permissions to "user standard" role and "Standard Moderator" 
 and "Full Moderator" roles. You will find them in the user or moderator roles tab "Pastebin".
 
@@ -62,9 +62,9 @@ and "Full Moderator" roles. You will find them in the user or moderator roles ta
 
 **New moderator permissions:** 👨‍⚖️
 
-- Can delete pastebin entries
-- Can edit pastebin entries (Storage duration, Syntax highlighting)
-- Can deactivate pruning of selected pastebin entries
+- Can delete Pastebin entries
+- Can edit Pastebin entries (Storage duration, Syntax highlighting)
+- Can deactivate pruning of selected Pastebin entries
 
 ** New admin permissions:** 🤴
 
