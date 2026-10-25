@@ -1,44 +1,79 @@
-# phpBB 3.3 Extension - phpBB.de Pastebin
+# Pastebin Extension for phpBB 3.3 from phpBB.de
 
-## Installation
+## Function overview 📓
+
+This extension adds a new page to phpBB where users can add code and share this code with others e.g. to get help
+from support or distribute code snippets or ideas. 
+
+The Pastebin uses syntax highlighting from the _tempest/highlight_ package. For every entry the suiting language for the syntax highlighting can be selected 
+during upload or post of the file. The moderators can change the code. 
+
+The admin can change settings in the ACP on:
+- Which languages are available to the users
+- What are the minimal and maximal storage duration of the snippets
+- What highlight-style is used
+- If secret snippets can be created (secret snippets are only available to the author and everyone who knows the URL)
+
+
+## Requirements 🧰
+
+The Pastebin extension can only be used with the following requirements:
+- PHP 8.4 or higher
+- phpBB 3.3.17 or higher (might work with older versions, although not tested properly)
+
+## Installation 🖥
+
+Download the latest release from the GitHub release page: https://github.com/phpbb-de/phpbb-ext-pastebin/releases 
+and copy the content of the zip file to your phpBB installation (**Do not use the "Source Code"-files!**):
+
+    /ext
+
+so that you get:
+
+    /ext/phpbbde/pastebin
+
+Go to "ACP" > "Customise" > "Extensions" and enable the "Pastebin" extension.
+
+### Installation from GitHub ⚙️ 
 
 Copy the content of this repository via git clone:
 
     git clone https://github.com/phpbb-de/phpbb-ext-pastebin ext/phpbbde/pastebin
 
-or create the following directory structure in your phpBB-root directory:
+Install the composer dependencies:
 
-	ext/phpbbde/pastebin
-
-and copy the repository content to it.
+    cd ext/phpbbde/pastebin
+    ../[..]/../composer.phar install --no-dev
 
 Go to "ACP" > "Customise" > "Extensions" and enable the "Pastebin" extension.
 
-## Added permissions
+## Added permissions 🧑‍✈️
 The extension adds on the first install group permissions to "user standard" role and "Standard Moderator" 
 and "Full Moderator" roles. You will find them in the user or moderator roles tab "Pastebin".
 
-**New user permissions:**
+**New user permissions:** 🧍‍♂️
 
-- Can delete own pastebin entries
-- Can edit own pastebin entries (Storage duration, Syntax highlighting)
-- Can post pastebin entries
-- Can post non-pruned pastebin entries
-- Can post pastebin entries without visual confirmation
-- Can view pastebin entries
+- Can delete own Pastebin entries
+- Can edit own Pastebin entries (Storage duration, Syntax highlighting)
+- Can post Pastebin entries
+- Can post non-pruned Pastebin entries
+- Can post Pastebin entries without visual confirmation
+- Can view Pastebin entries
 
-**New moderator permissions:**
+**New moderator permissions:** 👨‍⚖️
 
 - Can delete pastebin entries
 - Can edit pastebin entries (Storage duration, Syntax highlighting)
 - Can deactivate pruning of selected pastebin entries
 
-## Development and bug reports
+** New admin permissions:** 🤴
 
-If you find a bug, please report it on https://github.com/phpbb-de/phpbb-ext-pastebin
+- Can manage Pastebin settings (admin permission)
 
-## Automated Testing
+## Development and bug reports 🏗️ 
 
-## License
+If you find a bug, please report it on https://github.com/phpbb-de/phpbb-ext-pastebin/issues
+
+## License 📜
 
 [GPLv2](license.txt)
