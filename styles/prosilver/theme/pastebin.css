@@ -74,8 +74,6 @@
 
 	& .mini-panel h3 {
 		display: none;
-		font-size: 14px;
-		margin-top: 0;
 	}
 
 	& .mini-panel ul {
@@ -84,6 +82,10 @@
 
 		& li {
 			margin-bottom: 5px;
+		}
+
+		& li:last-child {
+			margin-bottom: 0;
 		}
 	}
 
