@@ -12,8 +12,10 @@ class acp_pastebin_languages
 		protected \phpbb\auth\auth $auth,
 		protected \phpbb\db\driver\driver_interface $db,
 		protected \phpbb\language\language $language,
+		protected \phpbb\log\log $log,
 		protected \phpbb\request\request_interface $request,
 		protected \phpbb\template\template $template,
+		protected \phpbb\user $user,
 		protected $pastebin_lang_tables,
 	)
 	{
@@ -54,6 +56,15 @@ class acp_pastebin_languages
 			{
 				$this->change_lang_settings($lang_id, $lang_active);
 			}
+
+			// Log the change to admin log
+			$this->log->add(
+				'admin',
+				$this->user->data['user_id'],
+				$this->user->ip,
+				'ACP_PASTEBIN_LANGS_UPDATED',
+				time()
+			);
 
 			trigger_error($this->language->lang('ACP_PASTEBIN_LANGS_UPDATED') . adm_back_link($this->u_action));
 		}

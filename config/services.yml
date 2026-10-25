@@ -51,8 +51,10 @@ services:
             - '@config'
             - '@dbal.conn'
             - '@language'
+            - '@log'
             - '@request'
             - '@template'
+            - '@user'
             - '%core.root_path%'
             - '%phpbbde.pastebin.highlight_css%'
 
@@ -62,8 +64,10 @@ services:
             - '@auth'
             - '@dbal.conn'
             - '@language'
+            - '@log'
             - '@request'
             - '@template'
+            - '@user'
             - '%phpbbde.pastebin.tables.pastebin_langs%'
 
     phpbbde.pastebin.base_listener:
