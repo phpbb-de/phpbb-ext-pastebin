@@ -24,7 +24,7 @@
 				{% if S_AUTH_EDIT %}
 				<dl>
 					<dt><label for="pruning_value">{{ lang('PASTEBIN_PRUNING_DURATION') }}{{ lang('COLON') }}</label><br><span>{{ PRUNE_LIMITS_TEXT }}</span></dt>
-					<dd><input type="number" id="pruning_value" name="pruning_value" min="1" value="{PRUNING_VALUE}"><select name="pruning_unit">{PRUNING_UNIT_SELECT}</select></dd>
+					<dd><input type="number" class="inputbox autowidth" id="pruning_value" name="pruning_value" min="1" value="{PRUNING_VALUE}"><select name="pruning_unit">{PRUNING_UNIT_SELECT}</select></dd>
 				</dl>
 				<dl>
 					<dt><label for="snippet_highlight">{{ lang('PASTEBIN_SNIPPET_HIGHLIGHT') ~ lang('COLON') }}</label></dt>

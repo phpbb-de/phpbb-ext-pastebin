@@ -34,7 +34,20 @@
 		float: right;
 		line-height: 1.5;
 		margin-right: 10px;
-		width: 30%
+		text-align: center;
+		width: 30%;
+
+		& li:last-child {
+			margin-bottom: 0;
+		}
+
+		& i.icon {
+			margin-left: 3px;
+		}
+
+		& h3 {
+			display: none;
+		}
 	}
 
 	& .last-snippets {
@@ -55,7 +68,7 @@
 		width: 65%;
 
 		& h3 {
-			font-size: 16px;
+			font-size: 15px;
 		}
 	}
 
@@ -64,8 +77,7 @@
 	}
 
 	& .mini-panel h3 {
-		display: none;
-		font-size: 14px;
+		font-size: 12px;
 		margin-top: 0;
 	}
 
@@ -75,6 +87,10 @@
 
 		& li {
 			margin-bottom: 5px;
+		}
+
+		& li:last-child {
+			margin-bottom: 0;
 		}
 	}
 
@@ -91,9 +107,22 @@
 		margin-top: 10px;
 	}
 
+	/* Firefox specific code */
+	@-moz-document url-prefix() {
+		select[name="highlight"],
+		select[name="pruning_unit"],
+		select[name="snippet_highlight"] {
+			padding-left: 4px;
+		}
+	}
+
 	/* Table on view for FAQ */
-	& .table1 {
-		margin-top: 20px;
+	& .pastebin-table {
+		margin: 20px 0;
+		border: 1px solid #ccc;
+		border-radius: 12px;
+		border-collapse: separate;
+		overflow: hidden;
 
 		& th {
 			font-weight: bold;
@@ -115,6 +144,7 @@
 		}
 
 		& td:first-child {
+			border-right: 1px solid #ccc;
 			font-weight: bold;
 			text-align: center;
 		}
