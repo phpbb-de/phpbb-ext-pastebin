@@ -80,7 +80,7 @@ class acp_pastebin_settings
 					'admin',
 					$this->user->data['user_id'],
 					$this->user->ip,
-					'ACP_PASTEBIN_SETTINGS_UPDATED',
+					'LOG_ACP_PASTEBIN_SETTINGS_UPDATED',
 					time()
 				);
 

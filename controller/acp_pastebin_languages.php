@@ -62,7 +62,7 @@ class acp_pastebin_languages
 				'admin',
 				$this->user->data['user_id'],
 				$this->user->ip,
-				'ACP_PASTEBIN_LANGS_UPDATED',
+				'LOG_ACP_PASTEBIN_LANGS_UPDATED',
 				time()
 			);
 
