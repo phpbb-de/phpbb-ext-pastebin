@@ -44,6 +44,10 @@
 		& i.icon {
 			margin-left: 3px;
 		}
+
+		& h3 {
+			display: none;
+		}
 	}
 
 	& .last-snippets {
@@ -73,7 +77,8 @@
 	}
 
 	& .mini-panel h3 {
-		display: none;
+		font-size: 12px;
+		margin-top: 0;
 	}
 
 	& .mini-panel ul {
