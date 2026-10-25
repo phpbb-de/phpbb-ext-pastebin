@@ -118,7 +118,7 @@
 
 	/* Table on view for FAQ */
 	& .table1 {
-		margin-top: 20px;
+		margin: 20px 0;
 
 		& th {
 			font-weight: bold;
