@@ -66,7 +66,7 @@ and "Full Moderator" roles. You will find them in the user or moderator roles ta
 - Can edit Pastebin entries (Storage duration, Syntax highlighting)
 - Can deactivate pruning of selected Pastebin entries
 
-** New admin permissions:** 🤴
+**New admin permissions:** 🤴
 
 - Can manage Pastebin settings (admin permission)
 
