@@ -117,8 +117,12 @@
 	}
 
 	/* Table on view for FAQ */
-	& .table1 {
+	& .pastebin-table {
 		margin: 20px 0;
+		border: 1px solid #ccc;
+		border-radius: 12px;
+		border-collapse: separate;
+		overflow: hidden;
 
 		& th {
 			font-weight: bold;
@@ -140,6 +144,7 @@
 		}
 
 		& td:first-child {
+			border-right: 1px solid #ccc;
 			font-weight: bold;
 			text-align: center;
 		}
