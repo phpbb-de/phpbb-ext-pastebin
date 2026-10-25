@@ -19,8 +19,10 @@ class acp_pastebin_settings
 		protected \phpbb\config\config $config,
 		protected \phpbb\db\driver\driver_interface $db,
 		protected \phpbb\language\language $language,
+		protected \phpbb\log\log $log,
 		protected \phpbb\request\request_interface $request,
 		protected \phpbb\template\template $template,
+		protected \phpbb\user $user,
 		protected string $root_path,
 		protected $highlighter_css,
 	)
@@ -73,7 +75,16 @@ class acp_pastebin_settings
 				$this->config->set('pastebin_prune_min_days', $min_days);
 				$this->config->set('pastebin_prune_max_days', $max_days);
 
-				trigger_error($this->language->lang('PASTEBIN_UPDATED') . adm_back_link($this->u_action));
+				// Log the change to admin log
+				$this->log->add(
+					'admin',
+					$this->user->data['user_id'],
+					$this->user->ip,
+					'LOG_ACP_PASTEBIN_SETTINGS_UPDATED',
+					time()
+				);
+
+				trigger_error($this->language->lang('ACP_PASTEBIN_SETTINGS_UPDATED') . adm_back_link($this->u_action));
 			}
 		}
 

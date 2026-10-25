@@ -34,7 +34,12 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, [
 	// ACP
-	'ACP_PASTEBIN_TITLE'	=>'Pastebin',
+	'ACP_PASTEBIN_TITLE'			=>'Pastebin',
+	'ACP_PASTEBIN_LANGS_UPDATED' 	=> 'Active Pastebin languages have been updated.',
+	'ACP_PASTEBIN_SETTINGS_UPDATED'	=> 'Pastebin settings have been updated.',
+
+	'LOG_ACP_PASTEBIN_LANGS_UPDATED'	=> '<strong>Active Pastebin languages have been updated.</strong>',
+	'LOG_ACP_PASTEBIN_SETTINGS_UPDATED'	=> '<strong>Pastebin settings have been updated.</strong>',
 
 	'PASTEBIN_NAV_TITLE' 		=> 'Pastebin',
 	'PASTEBIN_NAV_CONFIG' 		=> 'Pastebin - Settings',
