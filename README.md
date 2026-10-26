@@ -1,18 +1,18 @@
-# Pastebin Extension for phpBB 3.3 from phpBB.de
+# Pastebin Extension for phpBB 3.3 by phpBB.de
 
 ## Function overview 📓
 
-This extension adds a new page to phpBB where users can add code and share this code with others e.g. to get help
-from support or distribute code snippets or ideas. 
+This extension adds a new page to phpBB where users can add and share code with others, e.g. to get help
+from support, or distribute code snippets or ideas. 
 
-The Pastebin uses syntax highlighting from the _tempest/highlight_ package. For every entry the suiting language for the syntax highlighting can be selected 
-during upload or post of the file. The moderators can change the code. 
+Pastebin uses syntax highlighting from the _tempest/highlight_ package. For every entry the suiting language for the syntax highlighting can be selected 
+when uploading or posting the file. Moderators can change the code and these settings. 
 
-The admin can change settings in the ACP on:
+The administrator can change the following settings in the ACP:
 - Which languages are available to the users
 - What are the minimal and maximal storage duration of the snippets
-- What highlight-style is used
-- If secret snippets can be created (secret snippets are only available to the author and everyone who knows the URL)
+- Which highlight-style is used
+- If secret snippets can be created (secret snippets are only available to their author and everyone who knows the URL)
 
 
 ## Requirements 🧰
@@ -23,8 +23,8 @@ The Pastebin extension can only be used with the following requirements:
 
 ## Installation 🖥
 
-Download the latest release from the GitHub release page: https://github.com/phpbb-de/phpbb-ext-pastebin/releases 
-and copy the content of the zip file to your phpBB installation (**Do not use the "Source Code"-files!**):
+Download the latest release from the GitHub releases page: https://github.com/phpbb-de/phpbb-ext-pastebin/releases 
+and copy the contents of the zip file to your phpBB installation's extension directory (**Do not use the "Source Code" files!**):
 
     /ext
 
@@ -36,11 +36,11 @@ Go to "ACP" > "Customise" > "Extensions" and enable the "Pastebin" extension.
 
 ### Installation from GitHub ⚙️ 
 
-Copy the content of this repository via git clone:
+Clone this repository with git to the extension directory with "phpbbde/pastebin" as vendor name:
 
     git clone https://github.com/phpbb-de/phpbb-ext-pastebin ext/phpbbde/pastebin
 
-Install the composer dependencies (path to composer.phar must be changed according to directory structure):
+Install the Composer dependencies (adjust the path to composer.phar to match your directory structure):
 
     cd ext/phpbbde/pastebin
     ../../../composer.phar install --no-dev
@@ -48,8 +48,8 @@ Install the composer dependencies (path to composer.phar must be changed accordi
 Go to "ACP" > "Customise" > "Extensions" and enable the "Pastebin" extension.
 
 ## Added permissions 👮
-The extension adds on the first install group permissions to "user standard" role and "Standard Moderator" 
-and "Full Moderator" roles. You will find them in the user or moderator roles tab "Pastebin".
+On first installation, the extension adds group permissions to the "Standard Features" role and the "Standard Moderator" and "Full Moderator" roles. 
+You will find these under the "Pastebin" tab within the user or moderator role settings.
 
 **New user permissions:** 🧍‍♂️
 
@@ -63,16 +63,16 @@ and "Full Moderator" roles. You will find them in the user or moderator roles ta
 **New moderator permissions:** 👨‍⚖️
 
 - Can delete Pastebin entries
-- Can edit Pastebin entries (Storage duration, Syntax highlighting)
+- Can edit Pastebin entries (Storage duration, syntax highlighting, code)
 - Can deactivate pruning of selected Pastebin entries
 
 **New admin permissions:** 🤴
 
-- Can manage Pastebin settings (admin permission)
+- Can manage Pastebin settings
 
 ## Development and bug reports 🏗️ 
 
-If you find a bug, please report it on https://github.com/phpbb-de/phpbb-ext-pastebin/issues
+If you find a bug, please report it in the issue tracker: https://github.com/phpbb-de/phpbb-ext-pastebin/issues
 
 ## License 📜
 
