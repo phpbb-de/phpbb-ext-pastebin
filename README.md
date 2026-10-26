@@ -12,7 +12,7 @@ The administrator can change the following settings in the ACP:
 - Which languages are available to the users
 - What are the minimal and maximal storage duration of the snippets
 - Which highlight-style is used
-- If secret snippets can be created (secret snippets are only available to their author and everyone who knows the URL)
+- Whether secret snippets can be created (secret snippets are only available to their author and everyone who knows the URL)
 
 
 ## Requirements 🧰
