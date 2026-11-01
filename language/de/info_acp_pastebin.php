@@ -55,7 +55,6 @@ if (empty($lang) || !is_array($lang))
 	'PASTEBIN_ALLOW_SECRET_SNIPPETS_EXPLAIN' 	=> 'Sofern aktiviert, können Benutzer auch geheime Snippets erstellen, die nur diejenigen
 												anzeigen können, die den Link zum Snippet kennen.',
 
-
 	'PASTEBIN_DEFAULT_PRUNE_MONTHS' 			=> 'Standard-Speicherdauer',
 	'PASTEBIN_DEFAULT_PRUNE_MONTHS_EXPLAIN' 	=> 'Hiermit wird eingestellt, was bei der Speicherdauer beim Erstellen von Snippets vorausgewählt ist.',
 	'PASTEBIN_MONTHS' 							=> 'Monate',
@@ -79,7 +78,7 @@ if (empty($lang) || !is_array($lang))
 
 	// Lang-Keys for the Pastebin-Lang-ACP-page
 	'PASTEBIN_LANG_SETTINGS'			=> 'Pastebin - Spracheinstellungen',
-	'PASTEBIN_LANG_SETTINGS_EXPLAIN'	=> 'Auf dieser Seite können die verfügbaren Sprachen mit ihrer ID, Namen und Dateiendung eingesehen werden. Sie können aktiv oder nicht aktiv gesetzt werden.  
+	'PASTEBIN_LANG_SETTINGS_EXPLAIN'	=> 'Auf dieser Seite können die verfügbaren Sprachen mit ihrer ID, Namen und Dateiendung eingesehen werden. Sie können aktiv oder nicht aktiv gesetzt werden.
 											Für nicht aktive Sprachen kann der entsprechende Highlighter vom Benutzer nicht im Dropdown-Menü ausgewählt werden.',
 
 	// Table header - languages overview page
@@ -87,5 +86,6 @@ if (empty($lang) || !is_array($lang))
 	'PASTEBIN_TABLE_LANG_NAME' 			=> 'Name',
 	'PASTEBIN_TABLE_LANG_NAME_CLEAN' 	=> 'Name (clean)',
 	'PASTEBIN_TABLE_FILE_EXTENSIONS'	=> 'Dateiendungen',
+	'PASTEBIN_TABLE_FILE_AUTOSYNTAX' 	=> 'Auto Syntax',
 	'PASTEBIN_TABLE_LANG_ACTIVE' 		=> 'Aktive Sprachen',
-	]);
+]);

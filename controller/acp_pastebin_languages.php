@@ -24,7 +24,7 @@ class acp_pastebin_languages
 	public function module_settings(): void
 	{
 		/* Get content of pastebin_langs to display the table */
-		$sql = 'SELECT lang_id, lang_name, lang_name_clean, lang_active, lang_file_extension
+		$sql = 'SELECT lang_id, lang_name, lang_name_clean, lang_file_extension, lang_file_autosyntax, lang_active
 				FROM ' . $this->pastebin_lang_tables . '
 				ORDER BY lang_name_clean ASC';
 		$result = $this->db->sql_query($sql);
@@ -40,24 +40,14 @@ class acp_pastebin_languages
 				trigger_error($this->language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
-			/* Creates an array (extract) from the language table, using `lang_id` as the key and `lang_active` as the value */
-			$activated_lang_db		= array_combine(array_column($langs_db, 'lang_id'), array_column($langs_db, 'lang_active'));
-			/* Retrieves all checked (active) checkboxes from the form */
-			$activated_lang_req		= $this->request->variable('lang_active', ['']);
-			/* Creates a placeholder array using the IDs from the table and sets all values ​​to `0` */
-			$activated_lang_filled	= array_combine(array_keys($activated_lang_db), array_fill(1, count($activated_lang_db), '0'));
-			/* Combines the placeholder array with the active checkboxes from the form to enable the creation of a diff array */
-			$activated_lang_req		= array_replace($activated_lang_filled, $activated_lang_req);
-			/* Generates a diff array so that only the necessary records are modified */
-			$lang_update_list		= array_diff_assoc($activated_lang_req, $activated_lang_db);
+			$column_autosyntax_update_list	= $this->column_request_and_diff($langs_db, 'lang_file_autosyntax', 'lang_autosyntax', '');
+			$column_active_update_list		= $this->column_request_and_diff($langs_db, 'lang_active', 'lang_active', '0');
 
-			/* Make a loop for write lang_active = 1 for checked and 0 for not checked */
-			foreach ($lang_update_list as $lang_id => $lang_active)
-			{
-				$this->change_lang_settings($lang_id, $lang_active);
-			}
+			$this->update_lang_settings($column_autosyntax_update_list, 'lang_file_autosyntax');
+			$this->update_lang_settings($column_active_update_list, 'lang_active');
 
-			// Log the change to admin log
+
+			/* Log the change to admin log */
 			$this->log->add(
 				'admin',
 				$this->user->data['user_id'],
@@ -82,12 +72,31 @@ class acp_pastebin_languages
 		$this->u_action = $u_action;
 	}
 
-	private function change_lang_settings($lang_id, $lang_active): void
+	private function column_request_and_diff(array $table_db, string $column_name_db, string $column_name_req, string $array_filler): array
 	{
-		$sql = 'UPDATE ' . $this->pastebin_lang_tables . '
-				SET lang_active=' . $lang_active . '
-				WHERE lang_id = ' . (int) $lang_id;
-		$result = $this->db->sql_query($sql);
-		$this->db->sql_freeresult($result);
+		/* Creates an array (extract) from the language table, using `lang_id` as the key */
+		$column_db		= array_combine(array_column($table_db, 'lang_id'), array_column($table_db, $column_name_db));
+		/* Retrieves column from the form */
+		$column_req		= $this->request->variable($column_name_req, ['']);
+		/* Creates a placeholder array using the IDs from the table and sets all values ​​to the array filler */
+		$column_filled	= array_combine(array_keys($column_db), array_fill(1, count($column_db), $array_filler));
+		/* Combines the placeholder array with the column from the form to enable the creation of a diff array */
+		$column_req		= array_replace($column_filled, $column_req);
+		/* Generates a diff array so that only the necessary records are modified */
+		$column_diff	= array_diff_assoc($column_req, $column_db);
+
+		return $column_diff;
+	}
+
+	private function update_lang_settings(array $update_list, string $column_name): void
+	{
+		foreach ($update_list as $lang_id => $column_value)
+		{
+			$sql = 'UPDATE ' . $this->pastebin_lang_tables . '
+					SET ' . $column_name . ' = "' . $this->db->sql_escape($column_value) . '"
+					WHERE lang_id = ' . (int) $lang_id;
+			$result = $this->db->sql_query($sql);
+			$this->db->sql_freeresult($result);
+		}
 	}
 }
