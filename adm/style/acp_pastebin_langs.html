@@ -13,29 +13,32 @@
 
 		<table class="table1 zebra-table">
 			<thead>
-			<tr>
-				<th>{{ lang('PASTEBIN_TABLE_LANG_ID') }}</th>
-				<th>{{ lang('PASTEBIN_TABLE_LANG_NAME') }}</th>
-				<th>{{ lang('PASTEBIN_TABLE_LANG_NAME_CLEAN') }}</th>
-				<th>{{ lang('PASTEBIN_TABLE_FILE_EXTENSIONS') }}</th>
-				<th>{{ lang('PASTEBIN_TABLE_LANG_ACTIVE') }}</th>
-			</tr>
+				<tr>
+					<th>{{ lang('PASTEBIN_TABLE_LANG_ID') }}</th>
+					<th>{{ lang('PASTEBIN_TABLE_LANG_NAME') }}</th>
+					<th>{{ lang('PASTEBIN_TABLE_LANG_NAME_CLEAN') }}</th>
+					<th>{{ lang('PASTEBIN_TABLE_FILE_EXTENSIONS') }}</th>
+					<th>{{ lang('PASTEBIN_TABLE_FILE_AUTOSYNTAX') }}</th>
+					<th>{{ lang('PASTEBIN_TABLE_LANG_ACTIVE') }}</th>
+				</tr>
 			</thead>
 			<tbody>
-			{% for item in PB_LANGS %}
-			<tr>
-				<td>{{ item.lang_id }}</td>
-				<td>{{ item.lang_name }}</td>
-				<td>{{ item.lang_name_clean }}</td>
-				<td>{{ item.lang_file_extension }}</td>
-				<td><input type="checkbox" class="checkbox" name="lang_active[{{ item.lang_id }}]"
-				           value="1"{{ item.lang_active ? ' checked' }}>
-				</td>
-			</tr>
-			{% endfor %}
+				{% for item in PB_LANGS %}
+					<tr>
+						<td>{{ item.lang_id }}</td>
+						<td>{{ item.lang_name }}</td>
+						<td>{{ item.lang_name_clean }}</td>
+						<td>{{ item.lang_file_extension }}</td>
+						<td>
+							<input type="text" name="lang_autosyntax[{{ item.lang_id }}]" value="{{ item.lang_file_autosyntax}}" maxlength="255" pattern="[a-z, ]*">
+						</td>
+						<td>
+							<input type="checkbox" class="checkbox" name="lang_active[{{ item.lang_id }}]" value="1"{{ item.lang_active ? ' checked' }}>
+						</td>
+					</tr>
+				{% endfor %}
 			</tbody>
 		</table>
-
 	</fieldset>
 
 	<fieldset class="submit-buttons">

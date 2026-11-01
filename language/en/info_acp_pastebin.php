@@ -46,7 +46,7 @@ $lang = array_merge($lang, [
 	'PASTEBIN_NAV_LANGS' 		=> 'Pastebin - Languages',
 
 	'PASTEBIN_CONFIG' 			=> 'Pastebin - Settings',
-	'PASTEBIN_CONFIG_EXPLAIN' 	=> 'On this page the settings for the <em>Pastebin</em> extensions can be done. 
+	'PASTEBIN_CONFIG_EXPLAIN' 	=> 'On this page the settings for the <em>Pastebin</em> extensions can be done.
 									Set up includes, if user can use secret snippets and the default value for store duration of the snippets.',
 
 	'PASTEBIN_MAIN_SETTINGS' 			=> 'Pastebin - Settings',
@@ -78,7 +78,7 @@ $lang = array_merge($lang, [
 
 	// Lang-Keys for the Pastebin-Lang-ACP-page
 	'PASTEBIN_LANG_SETTINGS'			=> 'Pastebin - Languages settings',
-	'PASTEBIN_LANG_SETTINGS_EXPLAIN'	=> 'On this page the available languages can be seen by ID, name, file extension and set active or not active. For 
+	'PASTEBIN_LANG_SETTINGS_EXPLAIN'	=> 'On this page the available languages can be seen by ID, name, file extension and set active or not active. For
 											not active languages the highlighter cannot be used by the users in the dropdown menu.',
 
 	// Table header - languages overview page
@@ -86,5 +86,6 @@ $lang = array_merge($lang, [
 	'PASTEBIN_TABLE_LANG_NAME' 			=> 'Name',
 	'PASTEBIN_TABLE_LANG_NAME_CLEAN' 	=> 'Name (clean)',
 	'PASTEBIN_TABLE_FILE_EXTENSIONS'	=> 'File extensions',
+	'PASTEBIN_TABLE_FILE_AUTOSYNTAX' 	=> 'Auto Syntax',
 	'PASTEBIN_TABLE_LANG_ACTIVE' 		=> 'Active languages',
 ]);
