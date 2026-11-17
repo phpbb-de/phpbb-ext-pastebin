@@ -86,6 +86,6 @@ if (empty($lang) || !is_array($lang))
 	'PASTEBIN_TABLE_LANG_NAME' 			=> 'Name',
 	'PASTEBIN_TABLE_LANG_NAME_CLEAN' 	=> 'Name (clean)',
 	'PASTEBIN_TABLE_FILE_EXTENSIONS'	=> 'Dateiendungen',
-	'PASTEBIN_TABLE_FILE_AUTOSYNTAX' 	=> 'Auto Syntax',
+	'PASTEBIN_TABLE_FILE_AUTOSYNTAX' 	=> 'Auto-Syntax',
 	'PASTEBIN_TABLE_LANG_ACTIVE' 		=> 'Aktive Sprachen',
 ]);

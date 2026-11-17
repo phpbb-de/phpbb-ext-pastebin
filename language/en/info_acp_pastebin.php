@@ -86,6 +86,6 @@ $lang = array_merge($lang, [
 	'PASTEBIN_TABLE_LANG_NAME' 			=> 'Name',
 	'PASTEBIN_TABLE_LANG_NAME_CLEAN' 	=> 'Name (clean)',
 	'PASTEBIN_TABLE_FILE_EXTENSIONS'	=> 'File extensions',
-	'PASTEBIN_TABLE_FILE_AUTOSYNTAX' 	=> 'Auto Syntax',
+	'PASTEBIN_TABLE_FILE_AUTOSYNTAX' 	=> 'Auto syntax',
 	'PASTEBIN_TABLE_LANG_ACTIVE' 		=> 'Active languages',
 ]);
