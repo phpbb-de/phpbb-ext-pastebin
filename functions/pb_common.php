@@ -76,7 +76,7 @@ class pb_common
 		{
 			$this->active_langs = [];
 
-			$sql = 'SELECT lang_name, lang_name_clean
+			$sql = 'SELECT lang_name, lang_name_clean, lang_file_autosyntax
                 FROM ' . $this->pastebin_langs_table . '
                 WHERE lang_active = 1
                 ORDER BY lang_name ASC';
@@ -86,7 +86,10 @@ class pb_common
 
 			foreach ($langs_db as $row)
 			{
-				$this->active_langs[$row['lang_name_clean']] = $row['lang_name'];
+				$this->active_langs[$row['lang_name_clean']] = [
+					'name'				=> $row['lang_name'],
+					'file_autosyntax' 	=> $row['lang_file_autosyntax'],
+				];
 			}
 		}
 
@@ -99,10 +102,14 @@ class pb_common
 	public function highlight_select(string $selected): string
 	{
 		$html = '';
-		foreach ($this->get_active_languages() as $clean => $name)
+		foreach ($this->get_active_languages() as $name_clean => $values)
 		{
-			$sel = ($clean === $selected) ? ' selected' : '';
-			$html .= '<option value="' . utf8_htmlspecialchars($clean) . '"' . $sel . '>' . utf8_htmlspecialchars($name) . "</option>\n";
+			$select		= ($name_clean === $selected) ? ' selected' : '';
+			$autosyntax	= preg_replace('/ *, */', ' ', $values['file_autosyntax']);
+			$html .= '<option value="' . htmlspecialchars($name_clean) .
+				'" data-autosyntax="' . htmlspecialchars($autosyntax) . '"' .
+				$select . '>' . htmlspecialchars($values['name']) .
+				"</option>\n";
 		}
 
 		return $html;
