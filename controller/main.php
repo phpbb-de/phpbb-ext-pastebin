@@ -123,33 +123,40 @@ class main
 		// Some default values
 		$error = $s_hidden_fields = [];
 
-		// Latest snippets
-		$sql = $this->db->sql_build_query('SELECT', [
-				'SELECT'	=> 'pb.snippet_id, pb.snippet_time, pb.snippet_title, pb.snippet_desc, pb.snippet_secret, pb.snippet_hash, u.user_id, u.username, u.user_colour',
-				'FROM'		=> array(
-						$this->pastebin_table	=> 'pb',
-						USERS_TABLE		=> 'u',
-				),
-				//  Show all snippets to everyone and secret ones just to their author
-				'WHERE'		=> 'pb.snippet_author = u.user_id
-					AND (pb.snippet_secret = 0
-						OR pb.snippet_author = ' . (int) $this->user->data['user_id'] . ')',
-				'ORDER_BY'	=> 'pb.snippet_time DESC'
-		]);
-		$result = $this->db->sql_query_limit($sql, 20);
+		/* Latest snippets only for the ones with read permission */
+		if ($this->auth->acl_get('u_pastebin_view')) {
+			$user_id = (int)$this->user->data['user_id'];
 
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$this->template->assign_block_vars('latest_snippets', array(
-				'URL'			=> $this->helper->route('phpbbde_pastebin_main_controller', array('mode'=>'view', 's' => $row['snippet_hash'])),
-				'DESC'			=> $row['snippet_desc'],
-				'TITLE'			=> $row['snippet_title'],
-				'SNIPPET_TIME'	=> $this->user->format_date($row['snippet_time']),
-				'TITLE_SHORT'	=> (utf8_strlen($row['snippet_title']) > 25) ? utf8_substr($row['snippet_title'], 0, 25) . $this->language->lang('PASTEBIN_ELLIPSIS') : $row['snippet_title'],
-				'AUTHOR_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-			));
+			/* Check secret snippets again guest ID */
+			$own_secret = ($user_id !== ANONYMOUS)
+				? ' OR pb.snippet_author = ' . $user_id
+				: '';
+
+			/* Latest snippets */
+			$sql = $this->db->sql_build_query('SELECT', [
+				'SELECT'	=> 'pb.snippet_id, pb.snippet_time, pb.snippet_title, pb.snippet_desc, pb.snippet_secret, pb.snippet_hash, u.user_id, u.username, u.user_colour',
+				'FROM'		=> [
+					$this->pastebin_table	=> 'pb',
+					USERS_TABLE				=> 'u',
+				],
+				'WHERE'		=> 'pb.snippet_author = u.user_id
+			AND (pb.snippet_secret = 0' . $own_secret . ')',
+				'ORDER_BY'	=> 'pb.snippet_time DESC',
+			]);
+			$result = $this->db->sql_query_limit($sql, 20);
+
+			while ($row = $this->db->sql_fetchrow($result)) {
+				$this->template->assign_block_vars('latest_snippets', array(
+					'URL' => $this->helper->route('phpbbde_pastebin_main_controller', array('mode' => 'view', 's' => $row['snippet_hash'])),
+					'DESC' => $row['snippet_desc'],
+					'TITLE' => $row['snippet_title'],
+					'SNIPPET_TIME' => $this->user->format_date($row['snippet_time']),
+					'TITLE_SHORT' => (utf8_strlen($row['snippet_title']) > 25) ? utf8_substr($row['snippet_title'], 0, 25) . $this->language->lang('PASTEBIN_ELLIPSIS') : $row['snippet_title'],
+					'AUTHOR_FULL' => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+				));
+			}
+			$this->db->sql_freeresult($result);
 		}
-		$this->db->sql_freeresult($result);
 
 		// Default template variables
 		$this->template->assign_vars(array(
