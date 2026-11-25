@@ -472,7 +472,7 @@ class main
 
 					if ($this->request->is_set_post('cancel'))
 					{
-						redirect($this->helper->route('phpbbde_pastebin_main_controller', array("mode"=>"view","s"=>$snippet_hash))); // TODO
+						redirect($this->helper->route('phpbbde_pastebin_main_controller', array("mode"=>"view","s"=>$snippet_hash)));
 					}
 
 					/* Check delete permission with going to edit path */
