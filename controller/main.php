@@ -177,28 +177,29 @@ class main
 				{
 					trigger_error('PASTEBIN_FORM_INVALID');
 				}
-				else
+
+				$new_text = $this->request->raw_variable('edit_snippet', '');
+
+				if (trim($new_text) === '')
 				{
-					$data = [
-						'snippet_hash'		=> $snippet_hash,
-						'snippet_text'		=> $this->request->raw_variable('edit_snippet', ''),
-					];
-
-					$snippet->load_from_array($data);
-					$snippet->submit();
-
-					$redirect_append = array("mode"=>"view","s"=>$snippet_hash);
-					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', $redirect_append);
-
-					$message = $this->language->lang('PASTEBIN_SNIPPET_MODERATED');
-					$message .= '<br><br>';
-					$message .= $this->language->lang('PASTEBIN_RETURN_SNIPPET', '<a href="' . $redirect_url . '">', '</a>');
-
-					meta_refresh(3, $redirect_url);
-					trigger_error($message);
+					trigger_error('PASTEBIN_ERR_NO_BODY');
 				}
 
-		break;
+				$snippet->load_from_array([
+					'snippet_hash'	=> $snippet_hash,
+					'snippet_text'	=> $new_text,
+				]);
+				$snippet->submit();
+
+				$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', ['mode' => 'view', 's' => $snippet_hash]);
+
+				$message = $this->language->lang('PASTEBIN_SNIPPET_MODERATED');
+				$message .= '<br><br>';
+				$message .= $this->language->lang('PASTEBIN_RETURN_SNIPPET', '<a href="' . $redirect_url . '">', '</a>');
+
+				meta_refresh(1, $redirect_url);
+				trigger_error($message);
+			break;
 
 			case 'post':
 				// process submitted data from the posting form
