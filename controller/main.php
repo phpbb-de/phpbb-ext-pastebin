@@ -228,11 +228,18 @@ class main
 			'S_AUTH_VIEW'	=> ($this->auth->acl_get('u_pastebin_view')) ? true : false,
 			'S_AUTH_POST'	=> ($this->auth->acl_get('u_pastebin_post')) ? true : false,
 		));
+		// Check for auth, which is needed several times
+		$auth_edit = ($this->auth->acl_get('m_pastebin_edit') || ($this->auth->acl_get('u_pastebin_edit') && $this->user->data['user_id'] == $snippet['snippet_author']));
 
 		// Now let's decide what to do
 		switch ($mode)
 		{
 			case 'edit_snippet':
+				if (!$auth_edit)
+				{
+					trigger_error('PASTEBIN_AUTH_NO_POST');
+				}
+				
 				if (!check_form_key('pastebinform'))
 				{
 					trigger_error('PASTEBIN_FORM_INVALID');
@@ -507,7 +514,6 @@ class main
 					$pruning_months	= $this->request->variable('pruning_months', 0);
 					$prunable		= $pruning_months != -1;
 
-					$auth_edit = ($this->auth->acl_get('m_pastebin_edit') || ($this->auth->acl_get('u_pastebin_edit') && $this->user->data['user_id'] == $snippet['snippet_author']));
 					$auth_delete =  ($this->auth->acl_get('m_pastebin_delete') || ($this->auth->acl_get('u_pastebin_delete') && $this->user->data['user_id'] == $snippet['snippet_author']));
 
 					// Generic permissions check
