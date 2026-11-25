@@ -119,8 +119,9 @@ class main
 		$error = $s_hidden_fields = [];
 
 		/* Latest snippets only for the ones with read permission */
-		if ($this->auth->acl_get('u_pastebin_view')) {
-			$user_id = (int)$this->user->data['user_id'];
+		if ($this->auth->acl_get('u_pastebin_view'))
+		{
+			$user_id = (int) $this->user->data['user_id'];
 
 			/* Check secret snippets again guest ID */
 			$own_secret = ($user_id !== ANONYMOUS)
@@ -140,7 +141,8 @@ class main
 			]);
 			$result = $this->db->sql_query_limit($sql, 20);
 
-			while ($row = $this->db->sql_fetchrow($result)) {
+			while ($row = $this->db->sql_fetchrow($result))
+			{
 				$this->template->assign_block_vars('latest_snippets', array(
 					'URL' => $this->helper->route('phpbbde_pastebin_main_controller', array('mode' => 'view', 's' => $row['snippet_hash'])),
 					'DESC' => $row['snippet_desc'],
