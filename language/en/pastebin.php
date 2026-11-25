@@ -69,9 +69,13 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_INSTALLED'		=> 'Pastebin was successfully installed.',
 	'PASTEBIN_INVALID_FILENAME'	=> '%s is an invalid filename',
 	'PASTEBIN_NOT_UPLOADED'		=> 'The upload of the file failed.',
+
 	'PASTEBIN_NO_AUTH'			=> 'Information',
 	'PASTEBIN_NO_AUTH_EXPLAIN'	=> 'You cannot add new entries to the pastebin.',
+	'PASTEBIN_NO_AUTH_DELETE'	=> 'You cannot delete this entry.',
+	'PASTEBIN_NO_AUTH_EDIT'	    => 'You cannot edit this entry.',
 	'PASTEBIN_NO_AUTH_GUEST_EXPLAIN' => 'You have to log in or register to add new entries to the pastebin.',
+
 	'PASTEBIN_PARTIAL_UPLOAD'	=> 'The file was only partially uploaded.',
 	'PASTEBIN_PHP_SIZE_NA'		=> 'The file is too large.',
 	'PASTEBIN_PHP_SIZE_OVERRUN'	=> 'The file is larger than the allowed maximum of %d MiB.',

@@ -323,7 +323,7 @@ class main
 					// Everything went fine :)
 					$sql_ary = array(
 							'snippet_author'	=> $this->user->data['user_id'],
-							'snippet_time'		=> time(),
+							'snippet_time'		=> $time,
 							'snippet_title'		=> $data['snippet_title'],
 							'snippet_desc'		=> $data['snippet_desc'],
 							'snippet_secret'	=> (int) $data['snippet_secret'],
@@ -472,7 +472,13 @@ class main
 						redirect($this->helper->route('phpbbde_pastebin_main_controller', array("mode"=>"view","s"=>$snippet_hash))); // TODO
 					}
 
-					if ($delete && $auth_delete)
+					/* Check delete permission with going to edit path */
+					if ($delete && !$auth_delete)
+					{
+						trigger_error('PASTEBIN_NOT_AUTH_DELETE');
+					}
+
+					if ($delete)
 					{
 						// Confirm box
 						if (!confirm_box(true))
@@ -488,6 +494,14 @@ class main
 					}
 					else if ($auth_edit)
 					{
+						if (!check_form_key('pastebinform'))
+						{
+							trigger_error('PASTEBIN_FORM_INVALID');
+						}
+
+						// Validate input
+						$secret = in_array($secret, [0, 1], true) ? $secret : 0;
+
 						$snippet->load_from_array(array(
 							'snippet_prunable'	=> (int) $prunable,
 							'snippet_highlight'	=> $highlight,
@@ -496,7 +510,7 @@ class main
 						));
 						$snippet->submit();
 
-						$redirect_append = array("mode"=>"view","s"=>$snippet_hash);
+						$redirect_append = array("mode" => "view", "s" => $snippet_hash);
 					}
 					else
 					{
