@@ -19,7 +19,6 @@ class main
 	 * Construct
 	 *
 	 * @param \phpbb\auth\auth $auth
-	 * @param \phpbb\cache\service $cache
 	 * @param \phpbb\request\request $request
 	 * @param \phpbb\db\driver\driver_interface $db
 	 * @param \phpbb\template\template $template
@@ -29,11 +28,9 @@ class main
 	 * @param \phpbb\controller\helper $helper
 	 * @param \phpbbde\pastebin\functions\pastebin $pastebin
 	 * @param string $root_path
-	 * @param string $php_ext
 	 */
 	public function __construct(
 		protected \phpbb\auth\auth $auth,
-		protected \phpbb\cache\service $cache,
 		protected \phpbb\config\config $config,
 		protected \phpbb\request\request $request,
 		protected \phpbb\db\driver\driver_interface $db,
@@ -47,10 +44,8 @@ class main
 		protected \phpbbde\pastebin\functions\pastebin $pastebin,
 		protected \phpbbde\pastebin\functions\pb_common $pb_common,
 		protected $root_path,
-		protected $php_ext,
 		protected $highlighter_css,
 		protected $pastebin_table,
-		protected $pastebin_langs_table,
 	)
 	{
 	}
