@@ -82,6 +82,7 @@ class main
 		$mode				= $this->request->variable('mode', '');
 		$snippet_hash		= $this->request->variable('s', '');
 		$submit				= $this->request->is_set_post('submit');
+		$auth_edit = $auth_delete = false;
 
 		if (in_array($mode, array('view', 'download', 'moderate', 'edit_snippet')))
 		{
@@ -110,9 +111,12 @@ class main
 			$this->pastebin->load_from_array($data);
 			$snippet = $this->pastebin;
 
+			$auth_edit   = $this->can_edit($data);
+			$auth_delete = $this->can_delete($data);
+
 			$this->template->assign_vars([
-				'S_AUTH_EDIT'	=> ($this->auth->acl_get('m_pastebin_edit') || ($this->auth->acl_get('u_pastebin_edit') && $snippet['snippet_author'] == $this->user->data['user_id'])) ? true : false,
-				'S_AUTH_DELETE'	=> ($this->auth->acl_get('m_pastebin_delete') || ($this->auth->acl_get('u_pastebin_delete') && $snippet['snippet_author'] == $this->user->data['user_id'])) ? true : false,
+				'S_AUTH_EDIT'	=> $auth_edit,
+				'S_AUTH_DELETE'	=> $auth_delete,
 			]);
 		}
 
@@ -162,6 +166,11 @@ class main
 		switch ($mode)
 		{
 			case 'edit_snippet':
+				if (!$auth_edit)
+				{
+					trigger_error('PASTEBIN_NOT_AUTH_EDIT');
+				}
+
 				if (!check_form_key('pastebinform'))
 				{
 					trigger_error('PASTEBIN_FORM_INVALID');
@@ -452,9 +461,6 @@ class main
 					$prunable		= !($prune_unit === 'infinite' && ($this->auth->acl_get('u_pastebin_post_notlim') || !$data['snippet_prunable']));
 					$secret			= $this->request->variable('snippet_secret', 0);
 
-					$auth_edit = ($this->auth->acl_get('m_pastebin_edit') || ($this->auth->acl_get('u_pastebin_edit') && $this->user->data['user_id'] == $snippet['snippet_author']));
-					$auth_delete =  ($this->auth->acl_get('m_pastebin_delete') || ($this->auth->acl_get('u_pastebin_delete') && $this->user->data['user_id'] == $snippet['snippet_author']));
-
 					// Generic permissions check
 					if (!$auth_edit && !$auth_delete)
 					{
@@ -604,5 +610,24 @@ class main
 				'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
 				'S_CONFIRM_CODE'	=> !$this->auth->acl_get('u_pastebin_post_novc'),
 		));
+	}
+
+	private function is_owner_with_permission(string $permission, array $data): bool
+	{
+		return $this->auth->acl_get($permission)
+			&& (int) $this->user->data['user_id'] !== ANONYMOUS
+			&& (int) $data['snippet_author'] === (int) $this->user->data['user_id'];
+	}
+
+	private function can_edit(array $data): bool
+	{
+		return $this->auth->acl_get('m_pastebin_edit')
+			|| $this->is_owner_with_permission('u_pastebin_edit', $data);
+	}
+
+	private function can_delete(array $data): bool
+	{
+		return $this->auth->acl_get('m_pastebin_delete')
+			|| $this->is_owner_with_permission('u_pastebin_delete', $data);
 	}
 }
