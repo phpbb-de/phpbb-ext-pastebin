@@ -11,6 +11,7 @@
 namespace phpbbde\pastebin\controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class main
 {
@@ -408,38 +409,41 @@ class main
 						trigger_error('PASTEBIN_AUTH_NO_VIEW');
 					}
 
-					// Thanks download.php
-					$snippet_text = $data['snippet_text'];
+					$snippet_text = (string) $data['snippet_text'];
 
+					// Re-convert the title back from the DB
 					$filename = $this->pb_common->build_download_filename(
-						$data['snippet_title'],
+						htmlspecialchars_decode((string) $data['snippet_title'], ENT_QUOTES),
 						(string) ($data['snippet_file_ext'] ?? ''),
 						(string) $data['snippet_highlight']
 					);
 
-					$user_agent = $this->request->server('HTTP_USER_AGENT', '');
-					if (strpos($user_agent, 'MSIE') !== false || strpos($user_agent, 'Safari') !== false || strpos($user_agent, 'Konqueror') !== false)
+					// Replace problematic characters:  (/ \ : * ? " < > |)
+					$filename = preg_replace('/[\x00-\x1f\x7f\/\\\\:*?"<>|]+/u', '_', $filename) ?? '';
+					$filename = trim($filename);
+
+					if (trim($filename, '._ ') === '')
 					{
-						$filename = "filename=" . rawurlencode($filename);
+						$filename = 'snippet.txt';
 					}
-					else
-					{
-						$filename = "filename*=UTF-8''" . rawurlencode($filename);
-					}
-					// TODO: Internet Explorer stuff can be removed
-					// Do not set Content-Disposition to inline please, it is a security measure for users using the Internet Explorer.
+
+					// Fallback, Symfony asks for ASCII without '%')
+					$ascii_fallback = preg_replace('/[^\x20-\x7e]|%/', '_', $filename);
+
 					$response = new Response($snippet_text, 200);
-					$response->headers->set('Pragma', 'public');
-					$response->headers->set('Content-Type', 'text/plain');
-					$response->headers->set('Content-Disposition', "attachment; $filename");
-					$response->setContent($snippet_text);
+					$response->headers->set('Content-Type', 'text/plain; charset=UTF-8');
+					$response->headers->set('X-Content-Type-Options', 'nosniff');
+					$response->headers->set('Cache-Control', 'private');
+					$response->headers->set('Content-Length', (string) strlen($snippet_text));
 
-					if ($size = @strlen($snippet_text))
-					{
-						$response->headers->set('Content-Length', $size);
-					}
-
-					@set_time_limit(0);
+					$response->headers->set(
+						'Content-Disposition',
+						$response->headers->makeDisposition(
+							ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+							$filename,
+							$ascii_fallback
+						)
+					);
 
 					return $response;
 				}
