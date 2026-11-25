@@ -30,7 +30,7 @@
 
 	<h3>{{ lang('PASTEBIN_COPY_PASTE') }}</h3>
 	<form id="edit_form" method="post" action="{{ S_FORM_ACTION }}">
-		<p>
+		<div class="sourcecode">
 			{{ lang('PASTEBIN_COPY_PASTE_EXPLAIN') }} {{ DOWNLOAD_SNIPPET_EXPLAIN }}<br>
 			<div class="textwrapper">
 				<textarea id="copy_paste" class="inputbox" name="edit_snippet" rows="5" cols="76" tabindex="4">{{ SNIPPET_TEXT_ORIG }}</textarea>
@@ -41,6 +41,6 @@
 				{{ S_HIDDEN_FIELDS_V }}
 				&nbsp;<input type="submit" class="button1" value="{{ lang('PASTEBIN_SNIPPET_SAVE') }}">
 			{% endif %}
-		</p>
+		</div>
 		{{ S_FORM_TOKEN }}
 	</form>
