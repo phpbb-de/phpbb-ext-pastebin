@@ -62,7 +62,7 @@
 	</div>
 
 	{% if S_AUTH_VIEW %}
-	<div class="last-snippets mini-panel navbar">
+	<div class="last-snippets{{ !S_AUTH_POST && !S_MODE == 'view' ? ' last-snippets-auth-post' }} mini-panel navbar">
 		<h3>{{ lang('PASTEBIN_LATEST_SNIPPETS') }}</h3>
 
 		{% if loops.latest_snippets|length %}
