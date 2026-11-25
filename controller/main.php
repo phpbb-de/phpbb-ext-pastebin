@@ -598,7 +598,7 @@ class main
 		$highlight_select = $this->pb_common->highlight_select($highlight);
 
 		$captcha_in_use = $this->config['captcha_plugin'];
-		$is_recaptcha = strpos($captcha_in_use, 'recaptcha');
+		$is_recaptcha = str_contains($captcha_in_use, 'recaptcha');
 
 		add_form_key('pastebinform');
 
