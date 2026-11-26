@@ -106,9 +106,9 @@ class pb_common
 		{
 			$select		= ($name_clean === $selected) ? ' selected' : '';
 			$autosyntax	= preg_replace('/ *, */', ' ', $values['file_autosyntax']);
-			$html .= '<option value="' . htmlspecialchars($name_clean) .
-				'" data-autosyntax="' . htmlspecialchars($autosyntax) . '"' .
-				$select . '>' . htmlspecialchars($values['name']) .
+			$html .= '<option value="' . utf8_htmlspecialchars($name_clean) .
+				'" data-autosyntax="' . utf8_htmlspecialchars($autosyntax) . '"' .
+				$select . '>' . utf8_htmlspecialchars($values['name']) .
 				"</option>\n";
 		}
 

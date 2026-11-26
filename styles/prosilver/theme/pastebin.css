@@ -114,6 +114,10 @@
 		margin-top: 10px;
 	}
 
+	& .sourcecode {
+		margin: 20px 0;
+	}
+
 	& input[name="confirm_code"] { 
 		margin: 5px 0;
 	}

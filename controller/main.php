@@ -20,7 +20,6 @@ class main
 	 * Construct
 	 *
 	 * @param \phpbb\auth\auth $auth
-	 * @param \phpbb\cache\service $cache
 	 * @param \phpbb\request\request $request
 	 * @param \phpbb\db\driver\driver_interface $db
 	 * @param \phpbb\template\template $template
@@ -30,11 +29,9 @@ class main
 	 * @param \phpbb\controller\helper $helper
 	 * @param \phpbbde\pastebin\functions\pastebin $pastebin
 	 * @param string $root_path
-	 * @param string $php_ext
 	 */
 	public function __construct(
 		protected \phpbb\auth\auth $auth,
-		protected \phpbb\cache\service $cache,
 		protected \phpbb\config\config $config,
 		protected \phpbb\request\request $request,
 		protected \phpbb\db\driver\driver_interface $db,
@@ -48,10 +45,8 @@ class main
 		protected \phpbbde\pastebin\functions\pastebin $pastebin,
 		protected \phpbbde\pastebin\functions\pb_common $pb_common,
 		protected $root_path,
-		protected $php_ext,
 		protected $highlighter_css,
 		protected $pastebin_table,
-		protected $pastebin_langs_table,
 	)
 	{
 	}
@@ -83,6 +78,7 @@ class main
 		$mode				= $this->request->variable('mode', '');
 		$snippet_hash		= $this->request->variable('s', '');
 		$submit				= $this->request->is_set_post('submit');
+		$auth_edit = $auth_delete = false;
 
 		if (in_array($mode, array('view', 'download', 'moderate', 'edit_snippet')))
 		{
@@ -111,42 +107,54 @@ class main
 			$this->pastebin->load_from_array($data);
 			$snippet = $this->pastebin;
 
+			$auth_edit   = $this->can_edit($data);
+			$auth_delete = $this->can_delete($data);
+
 			$this->template->assign_vars([
-				'S_AUTH_EDIT'	=> ($this->auth->acl_get('m_pastebin_edit') || ($this->auth->acl_get('u_pastebin_edit') && $snippet['snippet_author'] == $this->user->data['user_id'])) ? true : false,
-				'S_AUTH_DELETE'	=> ($this->auth->acl_get('m_pastebin_delete') || ($this->auth->acl_get('u_pastebin_delete') && $snippet['snippet_author'] == $this->user->data['user_id'])) ? true : false,
+				'S_AUTH_EDIT'	=> $auth_edit,
+				'S_AUTH_DELETE'	=> $auth_delete,
 			]);
 		}
 
 		// Some default values
 		$error = $s_hidden_fields = [];
 
-		// Latest snippets
-		$sql = $this->db->sql_build_query('SELECT', [
-				'SELECT'	=> 'pb.snippet_id, pb.snippet_time, pb.snippet_title, pb.snippet_desc, pb.snippet_secret, pb.snippet_hash, u.user_id, u.username, u.user_colour',
-				'FROM'		=> array(
-						$this->pastebin_table	=> 'pb',
-						USERS_TABLE		=> 'u',
-				),
-				//  Show all snippets to everyone and secret ones just to their author
-				'WHERE'		=> 'pb.snippet_author = u.user_id
-					AND (pb.snippet_secret = 0
-						OR pb.snippet_author = ' . (int) $this->user->data['user_id'] . ')',
-				'ORDER_BY'	=> 'pb.snippet_time DESC'
-		]);
-		$result = $this->db->sql_query_limit($sql, 20);
-
-		while ($row = $this->db->sql_fetchrow($result))
+		/* Latest snippets only for the ones with read permission */
+		if ($this->auth->acl_get('u_pastebin_view'))
 		{
-			$this->template->assign_block_vars('latest_snippets', array(
-				'URL'			=> $this->helper->route('phpbbde_pastebin_main_controller', array('mode'=>'view', 's' => $row['snippet_hash'])),
-				'DESC'			=> $row['snippet_desc'],
-				'TITLE'			=> $row['snippet_title'],
-				'SNIPPET_TIME'	=> $this->user->format_date($row['snippet_time']),
-				'TITLE_SHORT'	=> (utf8_strlen($row['snippet_title']) > 25) ? utf8_substr($row['snippet_title'], 0, 25) . $this->language->lang('PASTEBIN_ELLIPSIS') : $row['snippet_title'],
-				'AUTHOR_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-			));
+			$user_id = (int) $this->user->data['user_id'];
+
+			/* Check secret snippets again guest ID */
+			$own_secret = ($user_id !== ANONYMOUS)
+				? ' OR pb.snippet_author = ' . $user_id
+				: '';
+
+			/* Latest snippets */
+			$sql = $this->db->sql_build_query('SELECT', [
+				'SELECT'	=> 'pb.snippet_id, pb.snippet_time, pb.snippet_title, pb.snippet_desc, pb.snippet_secret, pb.snippet_hash, u.user_id, u.username, u.user_colour',
+				'FROM'		=> [
+					$this->pastebin_table	=> 'pb',
+					USERS_TABLE				=> 'u',
+				],
+				'WHERE'		=> 'pb.snippet_author = u.user_id
+			AND (pb.snippet_secret = 0' . $own_secret . ')',
+				'ORDER_BY'	=> 'pb.snippet_time DESC',
+			]);
+			$result = $this->db->sql_query_limit($sql, 20);
+
+			while ($row = $this->db->sql_fetchrow($result))
+			{
+				$this->template->assign_block_vars('latest_snippets', array(
+					'URL' => $this->helper->route('phpbbde_pastebin_main_controller', array('mode' => 'view', 's' => $row['snippet_hash'])),
+					'DESC' => $row['snippet_desc'],
+					'TITLE' => $row['snippet_title'],
+					'SNIPPET_TIME' => $this->user->format_date($row['snippet_time']),
+					'TITLE_SHORT' => (utf8_strlen($row['snippet_title']) > 25) ? utf8_substr($row['snippet_title'], 0, 25) . $this->language->lang('PASTEBIN_ELLIPSIS') : $row['snippet_title'],
+					'AUTHOR_FULL' => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+				));
+			}
+			$this->db->sql_freeresult($result);
 		}
-		$this->db->sql_freeresult($result);
 
 		// Default template variables
 		$this->template->assign_vars(array(
@@ -163,32 +171,38 @@ class main
 		switch ($mode)
 		{
 			case 'edit_snippet':
+				if (!$auth_edit)
+				{
+					trigger_error('PASTEBIN_NOT_AUTH_EDIT');
+				}
+
 				if (!check_form_key('pastebinform'))
 				{
 					trigger_error('PASTEBIN_FORM_INVALID');
 				}
-				else
+
+				$new_text = $this->request->raw_variable('edit_snippet', '');
+
+				if (trim($new_text) === '')
 				{
-					$data = [
-						'snippet_hash'		=> $snippet_hash,
-						'snippet_text'		=> $this->request->raw_variable('edit_snippet', ''),
-					];
-
-					$snippet->load_from_array($data);
-					$snippet->submit();
-
-					$redirect_append = array("mode"=>"view","s"=>$snippet_hash);
-					$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', $redirect_append);
-
-					$message = $this->language->lang('PASTEBIN_SNIPPET_MODERATED');
-					$message .= '<br><br>';
-					$message .= $this->language->lang('PASTEBIN_RETURN_SNIPPET', '<a href="' . $redirect_url . '">', '</a>');
-
-					meta_refresh(3, $redirect_url);
-					trigger_error($message);
+					trigger_error('PASTEBIN_ERR_NO_BODY');
 				}
 
-		break;
+				$snippet->load_from_array([
+					'snippet_hash'	=> $snippet_hash,
+					'snippet_text'	=> $new_text,
+				]);
+				$snippet->submit();
+
+				$redirect_url = $this->helper->route('phpbbde_pastebin_main_controller', ['mode' => 'view', 's' => $snippet_hash]);
+
+				$message = $this->language->lang('PASTEBIN_SNIPPET_MODERATED');
+				$message .= '<br><br>';
+				$message .= $this->language->lang('PASTEBIN_RETURN_SNIPPET', '<a href="' . $redirect_url . '">', '</a>');
+
+				meta_refresh(1, $redirect_url);
+				trigger_error($message);
+			break;
 
 			case 'post':
 				// process submitted data from the posting form
@@ -315,7 +329,7 @@ class main
 					// Everything went fine :)
 					$sql_ary = array(
 							'snippet_author'	=> $this->user->data['user_id'],
-							'snippet_time'		=> time(),
+							'snippet_time'		=> $time,
 							'snippet_title'		=> $data['snippet_title'],
 							'snippet_desc'		=> $data['snippet_desc'],
 							'snippet_secret'	=> (int) $data['snippet_secret'],
@@ -456,9 +470,6 @@ class main
 					$prunable		= !($prune_unit === 'infinite' && ($this->auth->acl_get('u_pastebin_post_notlim') || !$data['snippet_prunable']));
 					$secret			= $this->request->variable('snippet_secret', 0);
 
-					$auth_edit = ($this->auth->acl_get('m_pastebin_edit') || ($this->auth->acl_get('u_pastebin_edit') && $this->user->data['user_id'] == $snippet['snippet_author']));
-					$auth_delete =  ($this->auth->acl_get('m_pastebin_delete') || ($this->auth->acl_get('u_pastebin_delete') && $this->user->data['user_id'] == $snippet['snippet_author']));
-
 					// Generic permissions check
 					if (!$auth_edit && !$auth_delete)
 					{
@@ -467,10 +478,16 @@ class main
 
 					if ($this->request->is_set_post('cancel'))
 					{
-						redirect($this->helper->route('phpbbde_pastebin_main_controller', array("mode"=>"view","s"=>$snippet_hash))); // TODO
+						redirect($this->helper->route('phpbbde_pastebin_main_controller', array("mode"=>"view","s"=>$snippet_hash)));
 					}
 
-					if ($delete && $auth_delete)
+					/* Check delete permission with going to edit path */
+					if ($delete && !$auth_delete)
+					{
+						trigger_error('PASTEBIN_NOT_AUTH_DELETE');
+					}
+
+					if ($delete)
 					{
 						// Confirm box
 						if (!confirm_box(true))
@@ -486,6 +503,14 @@ class main
 					}
 					else if ($auth_edit)
 					{
+						if (!check_form_key('pastebinform'))
+						{
+							trigger_error('PASTEBIN_FORM_INVALID');
+						}
+
+						// Validate input
+						$secret = in_array($secret, [0, 1], true) ? $secret : 0;
+
 						$snippet->load_from_array(array(
 							'snippet_prunable'	=> (int) $prunable,
 							'snippet_highlight'	=> $highlight,
@@ -494,7 +519,7 @@ class main
 						));
 						$snippet->submit();
 
-						$redirect_append = array("mode"=>"view","s"=>$snippet_hash);
+						$redirect_append = array("mode" => "view", "s" => $snippet_hash);
 					}
 					else
 					{
@@ -580,7 +605,7 @@ class main
 		$highlight_select = $this->pb_common->highlight_select($highlight);
 
 		$captcha_in_use = $this->config['captcha_plugin'];
-		$is_recaptcha = strpos($captcha_in_use, 'recaptcha');
+		$is_recaptcha = str_contains($captcha_in_use, 'recaptcha');
 
 		add_form_key('pastebinform');
 
@@ -608,5 +633,24 @@ class main
 				'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
 				'S_CONFIRM_CODE'	=> !$this->auth->acl_get('u_pastebin_post_novc'),
 		));
+	}
+
+	private function is_owner_with_permission(string $permission, array $data): bool
+	{
+		return $this->auth->acl_get($permission)
+			&& (int) $this->user->data['user_id'] !== ANONYMOUS
+			&& (int) $data['snippet_author'] === (int) $this->user->data['user_id'];
+	}
+
+	private function can_edit(array $data): bool
+	{
+		return $this->auth->acl_get('m_pastebin_edit')
+			|| $this->is_owner_with_permission('u_pastebin_edit', $data);
+	}
+
+	private function can_delete(array $data): bool
+	{
+		return $this->auth->acl_get('m_pastebin_delete')
+			|| $this->is_owner_with_permission('u_pastebin_delete', $data);
 	}
 }

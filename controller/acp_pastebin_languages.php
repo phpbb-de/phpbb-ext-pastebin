@@ -46,7 +46,6 @@ class acp_pastebin_languages
 			$this->update_lang_settings($column_autosyntax_update_list, 'lang_file_autosyntax');
 			$this->update_lang_settings($column_active_update_list, 'lang_active');
 
-
 			/* Log the change to admin log */
 			$this->log->add(
 				'admin',

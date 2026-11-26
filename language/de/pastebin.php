@@ -70,9 +70,13 @@ $lang = array_merge($lang, array(
 	'PASTEBIN_INSTALLED'		=> 'Das Pastebin wurde erfolgreich installiert.',
 	'PASTEBIN_INVALID_FILENAME'	=> '%s ist ein ungültiger Dateiname',
 	'PASTEBIN_NOT_UPLOADED'		=> 'Upload der Datei fehlgeschlagen.',
+
 	'PASTEBIN_NO_AUTH'			=> 'Information',
-	'PASTEBIN_NO_AUTH_EXPLAIN'	=> 'Du bist nicht befugt, neue Snippets hinzuzufügen.',
-	'PASTEBIN_NO_AUTH_GUEST_EXPLAIN' => 'Du musst dich anmelden um neue Snippets hinzufügen zu können.',
+	'PASTEBIN_NO_AUTH_EXPLAIN'	=> 'Du hast keine Berechtigung Einträge zu ergänzen.',
+	'PASTEBIN_NO_AUTH_DELETE'	=> 'Du kannst diesen Eintrag nicht löschen.',
+	'PASTEBIN_NO_AUTH_EDIT'		=> 'Du kannst diesen Eintrag nicht ändern.',
+	'PASTEBIN_NO_AUTH_GUEST_EXPLAIN' => 'Du musst angemeldet sein, um neue Einträge ergänzen zu können.',
+
 	'PASTEBIN_PARTIAL_UPLOAD'	=> 'Die Datei wurde nur teilweise hochgeladen.',
 	'PASTEBIN_PHP_SIZE_NA'		=> 'Die Datei überschreitet die maximale Dateigröße.',
 	'PASTEBIN_PHP_SIZE_OVERRUN'	=> 'Die Datei überschreitet die maximale Dateigröße von %d MiB.',
