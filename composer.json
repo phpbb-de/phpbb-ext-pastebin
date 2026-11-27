@@ -4,7 +4,7 @@
 	"description": "Provides a pastebin including syntax highlighting",
 	"homepage": "https://www.phpbb.de/community/",
 	"version": "3.0.0-RC2",
-	"time": "2026-11-01",
+	"time": "2026-11-27",
 	"license": "GPL-2.0-only",
 	"authors": [
 		{
